@@ -34,15 +34,55 @@ APKs, including the full decompressed partner whitelists.
 
 | App | Patch | What it does |
 |---|---|---|
-| Opera & Opera Beta | **Disable ad modules** | Rewrites the reflective class-name lookups (`com.opera.android.ads.{pangle,mintegral,liftoff}.*ModuleImpl`) to a non-existent class so no third-party ad SDK module is ever instantiated. Opera already tolerates missing modules — Pangle ships as an optional split. |
+| Opera & Opera Beta | **Disable ad modules** | Rewrites the reflective class-name lookups (`com.opera.android.ads.{pangle,mintegral,liftoff}.*ModuleImpl`) to a non-existent class so no third-party ad SDK module is ever instantiated. Safe by construction: the module availability probe (`Lk8;->a0()Z`) wraps the class lookup in try/catch and falls back to a no-op ads provider, exactly like an uninstalled Pangle split. |
+| Opera & Opera Beta | **Hide broken installation dialog** | Neutralizes the modal *"Your app installation appears to be broken. Try to uninstall and reinstall … again."* This dialog is Opera's **crash-recovery nag**, not a signature check — it also appears on unmodified installs after a crash, inside app-cloning tools (dual-space), or on ARM/x86 mismatches. Because a patched build cannot be "fixed" by reinstalling, the patch turns the dialog builder into a no-op and forces the `OperaApplication` broken-installation flag to `false` so startup continues normally. See [`evidence/ANALYSIS.md`](evidence/ANALYSIS.md) §"Broken installation dialog" for the full chain. |
 | Opera & Opera Beta | **Remove sponsored Speed Dial** | Appends `WHERE 0` to the suggested-sites database queries (`SELECT * FROM partner_data`, `… FROM partner_tree LIMIT 1`, `… FROM domain_data`), so no sponsored/partner tiles are ever shown. Schema and regular Speed Dial are untouched. |
 | Opera & Opera Beta | **Disable Acceptable Ads whitelist** | Scans `assets/abp_files/op/`, detects lists that consist *only* of allow directives (`DOCUMENT`/`WHITE.PLAIN`/`WHITE.GLOB` and no `BLACK` section) and replaces them with an empty compiled list under the same file name. Neutralizes the Google/Yandex measurement whitelist and the Taboola/gambling/affiliate whitelist — and any future pure-whitelist list Opera adds. |
 | Opera GX | **Remove sponsored Speed Dial** | Strips sponsored entries (Eneba, Instant Gaming, Amazon and other affiliates routed through `operagx.gg`, or carrying a `realUrl` partner field) from `assets/preloadedTopSites/*.json`, keeping organic tiles like YouTube/Twitch. |
 
-All bytecode patches use **string fingerprints** (SQL text, class-name constants)
-rather than obfuscated class names, so they match across stable, beta and
-different builds of the same version. Each patch fails loudly (instead of
-silently doing nothing) if its targets are missing.
+All bytecode patches use **structural fingerprints** (SQL text, class-name
+constants, resource-literal names like `string/welcome_init_failure`) rather
+than obfuscated class names, so they match across stable, beta and different
+builds of the same version. Each patch fails loudly (instead of silently doing
+nothing) if its targets are missing.
+
+## Memory usage
+
+Morphe Manager is an Android app; patching a 147 MB Chromium base APK inside a
+phone is inherently heavy, but the bundle used to make it *worse than needed*:
+the string-replacement patches scanned every class with
+`classDefForEach { mutableClassDefByOrNull(...) }`, which materializes a mutable
+copy of **every class in the app** — the documented out-of-memory antipattern in
+the Morphe patcher.
+
+Since v1.1.0 the patches use the same pattern as the official Morphe patches
+(`string(...).matchAllMethodIndicesForEach`, GmsCore-support style): only the
+few classes that actually change are ever copied into mutable form, and the
+scan runs on the patcher's prebuilt string index.
+
+Measured locally (Opera Beta 104.0.5262.91143 `base.apk`, 147 MB, all patches
+applied, JVM heap capped at 2 GB):
+
+| | before (v1.0.0) | after (v1.1.0) |
+|---|---|---|
+| Peak patch-process RSS | 1.1–1.5 GB (reported on device) | **333 MB** |
+
+On-device tip: in Morphe Manager's expert settings, raise the patching process
+limit to the maximum (~1280 MB) for headroom and fewer mid-patch kills.
+
+### Verifying a build yourself
+
+The bundle can be applied to a real APK headlessly on any JVM (this is what the
+release pipeline does before publishing):
+
+```bash
+./gradlew patchTestApk -PtestApk=/path/to/base.apk -PtestOut=/tmp/patched.apk
+```
+
+The driver reports per-patch success/failure and the peak RSS of the patching
+process. On Opera Beta 104.0.5262.91143 `base.apk` all four Opera/Beta patches
+succeed; the GX patch fails by design on non-GX input (its targets only exist
+in Opera GX).
 
 ## What the user asked for vs. what is technically possible
 
@@ -133,8 +173,8 @@ patches/src/main/kotlin/app/template/patches/opera/…
 ```
 
 Copy the `opera/` package into `patches/src/main/kotlin/app/template/patches/`
-and add the four `Compatibility` blocks from `OperaCompat.kt` to
-`shared/Constants.kt`.
+and register the four `Compatibility` blocks from `OperaCompat.kt` wherever
+your bundle declares its app targets.
 
 ## Limitations & honest notes
 
@@ -159,11 +199,14 @@ and add the four `Compatibility` blocks from `OperaCompat.kt` to
 ```
 patches/src/main/kotlin/app/template/patches/opera/
 ├── OperaCompat.kt                  Compatibility targets (stable/beta/GX)
-├── shared/StringConstantExtensions.kt  dexlib2 const-string rewriter
 ├── ads/DisableAdModulesPatch.kt    stable+beta: Pangle/Mintegral/Liftoff
 ├── ads/RemoveSponsoredSpeedDialPatch.kt  stable+beta: partner_data SQL
 ├── adblock/DisableAcceptableAdsPatch.kt  stable+beta: whitelist assets
+├── startup/HideBrokenInstallationDialogPatch.kt  stable+beta: crash-recovery nag
 └── gx/GxRemoveSponsoredTilesPatch.kt     GX: preloadedTopSites JSON
+patches/src/main/kotlin/util/
+├── PatchListGenerator.kt           patches-list.json generator (from the template)
+└── PatchTestDriver.kt              local headless verification driver (dev only)
 evidence/
 ├── ANALYSIS.md                     full reverse-engineering write-up
 ├── whitelist_97bda3c5_google_yandex_measurement.txt

@@ -140,3 +140,111 @@ operamobiletiles.ampxdirect.com               sponsored tiles delivery
 lsdk.opera-mini.net, interstitial.opera-mini.net, pay1.op-test.net,
 refpakrtsb.top, refpaydc.top, tembo.media     partner ad/affiliate infra
 ```
+
+## 5. Broken installation dialog (stable & beta) — reverse-engineered
+
+Observed in the wild: after installing a *patched* Opera Beta, the app shows a
+modal — *"Your app installation appears to be broken. Try to uninstall and
+reinstall Opera Beta again."* This section documents the full chain, traced in
+Opera Beta 104.0.5262.91143 (`base.apk`); the same strings and structure exist
+in Opera stable 103.3.5234.91185. **It is not a signature or APK-integrity
+check** — no code path compares signing certificates, digests of the APK, or
+Play Integrity verdicts before showing this dialog.
+
+### 5.1 The dialog builder
+
+All variants are built by one static method:
+
+```
+Lkfo;->d0(Landroid/app/Activity; I)V        (obfuscated name; release build)
+```
+
+It creates an `AlertDialog.Builder`, is not cancelable, and picks the message
+by the `reason` int parameter:
+
+| reason | string resource | text |
+|---|---|---|
+| 0 | `welcome_init_failure` (0x7f1415a5) | Your app installation appears to be broken. Try to uninstall and reinstall %1$s again. |
+| 1 | `welcome_init_emulated_arm` (0x7f1415a4) | The installed app version is supporting ARM but detected hardware is x86 … |
+| 2 | `welcome_init_failure` via title/message pair (`0x7f1404b9`/`0x7f1404b8`) | same as 0 with a separate title |
+| 3, 4, 5 | `welcome_init_failure` (0x7f1415a5) | same as 0 |
+
+The positive button depends on the installer: if
+`r9n.l(context) == "com.android.vending"` it offers *Play Store*
+(`welcome_play_store`), otherwise *App settings*.
+
+### 5.2 Who calls `d0`, and when
+
+| caller | gate | meaning |
+|---|---|---|
+| `BrowserActivity.onCreate` | `OperaApplication.U()` | main browser start-up |
+| `Lg9k.onCreate` (base of `PreviousCrashActivity`) | `OperaApplication.U()` | crash-recovery screen |
+| `Lcom/opera/android/startup/PreviousCrashActivity;->I(I)` | crash counter (`Lvep;->A(I)I` → 0/1) | shown after a recorded crash |
+| `Lku3;->c(I)` | crash counter | crash-recovery callback |
+| `Ln6k.invoke` (×2, Compose fragment observers) | fragment state `Lq9k;(reason)` | downstream UI of the flag |
+
+`OperaApplication.U()Z` simply returns
+`OperaApplication.h != null`, and `h` (a static `Integer` "reason") is written
+in exactly one place — `OperaApplication.onCreate`:
+
+1. if the data dir path (`Context.getDataDir()`) contains any of
+   `OperaApplication.K[]` → reason 2,
+2. else if the originating installer package
+   (`InstallSourceInfo.getOriginatingPackageName()`, via `r9n.s`) contains any
+   of `K[]` → reason 3,
+3. else if `getFilesDir()` is null or not a directory → reason 4,
+4. else `h` stays null and nothing is shown.
+
+`K[]` is a fixed blacklist of app-cloning frameworks, decoded from
+`OperaApplication.<clinit>`:
+
+```
+dualaid, dualspace, excelliance, gspace, parallel_intl, parallel_lite,
+parallelspace, virtualapp, waxmoon
+```
+
+On top of that, the whole reason-assignment block only runs in the *main*
+process (`Locp;->k()Z` ≙ `!processName.contains(":")`).
+
+### 5.3 What actually triggers it on a patched install
+
+* **Crash recovery.** If any run of the app crashes after the crash handler is
+  installed (`OperaApplication.V()` — Chromium breakpad wiring, recorded under
+  `crashhandler`), the next launch can route through
+  `PreviousCrashActivity` → `d0(activity, 0)` → the "broken installation"
+  dialog. A patched build that hits an unrelated one-time startup crash is
+  then nagged forever, and the suggested fix (reinstall) reproduces the
+  problem. Opera forums show the same dialog on *unmodified* installs
+  (rooted devices, Opera 65, LineageOS 17.1).
+* **ABI mismatch.** The first-run init (`Lwt2;->c(I)`) constructs
+  `Lq9k;(reason = 2)` when the ARM build runs on x86 hardware — relevant when
+  splits are merged incorrectly, not to signature checks.
+* **Cloned-app sandboxes** match `K[]` and legitimately report reason 2/3.
+
+### 5.4 Why the ad-module rename does not crash the mediation loader
+
+The class names rewritten by *Disable ad modules* are consumed by suppliers
+(`Lzdc;`/`Lt0e;`/`Lqyf;` extend a shared holder `Lk8;`). Before any reflective
+lookup, the loader probes availability:
+
+```
+Lay;->d()  (DI case) :  Class.forName(supplier.className, false, Lqyf;.class.getClassLoader())
+                        → TRUE / catch → FALSE
+Lk8;->a0()Z          :  returns that Lazy<Boolean>
+Lqyf;->s0(Lxo7;)     :  if (!a0()) return new Li0f;(...)   // no-op ads provider
+```
+
+Only when the probe succeeds does it call
+`Lmzg.k(name, "createAdsProvider", …)` — and `Lmzg.k` itself catches the
+lookup exception and returns `null` (the caller's `Objects.requireNonNull`
+would NPE, but that path is unreachable while the probe is intact, because the
+probe and the lookup use the same string). Renaming the constant therefore
+degrades gracefully to "module not installed" — the same state as a device
+without the optional `split_pangle_ads.apk`.
+
+### 5.5 Patch response
+
+The *Hide broken installation dialog* patch (v1.1.0) turns `d0` into a no-op
+and forces `U()` to `false`, so neither crash recovery nor the clone-detection
+flag can interrupt start-up with this dialog. Genuine crashes still surface as
+crashes (visible in `adb logcat`), which is more actionable than the dialog.

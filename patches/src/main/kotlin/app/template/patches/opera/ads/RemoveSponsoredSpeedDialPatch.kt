@@ -1,11 +1,18 @@
 package app.template.patches.opera.ads
 
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.patch
+import app.morphe.patcher.string
+import app.morphe.patcher.util.matchAllMethodIndicesForEach
 import app.template.patches.opera.OPERA_BETA_COMPATIBILITY
 import app.template.patches.opera.OPERA_COMPATIBILITY
 import app.template.patches.opera.OPERA_DIRECT_COMPATIBILITY
-import app.template.patches.opera.shared.replaceStringConstants
+import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.immutable.reference.ImmutableStringReference
 
 /**
  * Opera's start page embeds "suggested sites" — sponsored Speed Dial tiles and
@@ -24,9 +31,15 @@ import app.template.patches.opera.shared.replaceStringConstants
  * The patch appends `WHERE 0` to each query, so the tables always read as empty:
  * no sponsored tiles are ever shown, while the database schema stays intact and
  * the sync/insert code keeps running harmlessly.
+ *
+ * Replacement runs on the patcher's prebuilt string index via
+ * `matchAllMethodIndicesForEach`, so only the matched methods are ever
+ * materialized as mutable classes (the whole-app `classDefForEach` +
+ * `mutableClassDefByOrNull` scan used before pushed peak patching memory to
+ * 1.1-1.5 GB; see README "Memory usage").
  */
 @Suppress("unused")
-val operaRemoveSponsoredSpeedDialPatch = bytecodePatch(
+val operaRemoveSponsoredSpeedDialPatch = patch(
     name = "Remove sponsored Speed Dial",
     description = "Stops sponsored/partner tiles from appearing on the start page " +
         "by making Opera's suggested-sites database queries return no rows. " +
@@ -43,10 +56,18 @@ val operaRemoveSponsoredSpeedDialPatch = bytecodePatch(
         )
 
         var patched = 0
-        classDefForEach { classDef ->
-            val mutableClass = mutableClassDefByOrNull(classDef.type) ?: return@classDefForEach
-            for (method in mutableClass.methods) {
-                patched += method.replaceStringConstants(sqlReplacements)
+        for ((originalSql, emptySql) in sqlReplacements) {
+            string(originalSql).matchAllMethodIndicesForEach(requireMatches = false) { index ->
+                val register = getInstruction<OneRegisterInstruction>(index).registerA
+                replaceInstruction(
+                    index,
+                    BuilderInstruction21c(
+                        Opcode.CONST_STRING,
+                        register,
+                        ImmutableStringReference(emptySql),
+                    ),
+                )
+                patched++
             }
         }
 

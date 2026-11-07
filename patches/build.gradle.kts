@@ -26,6 +26,9 @@ val patchListGeneratorClasspath: Configuration by configurations.creating
 
 dependencies {
     compileOnly(libs.gson)
+    // Runtime dep of morhe-patcher; needed at compile time only by the local
+    // PatchTestDriver (util/PatchTestDriver.kt), never by the patches themselves.
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     patchListGeneratorClasspath(libs.gson)
 }
 
@@ -37,5 +40,24 @@ tasks {
 
         classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
         mainClass.set("util.PatchListGeneratorKt")
+    }
+
+    register<JavaExec>("patchTestApk") {
+        description = "Applies the built bundle to a local APK for verification (dev only)"
+
+        dependsOn(build)
+
+        classpath = sourceSets["main"].runtimeClasspath + patchListGeneratorClasspath
+        mainClass.set("util.PatchTestDriverKt")
+        if (project.hasProperty("testApk")) {
+            systemProperty("testApk", project.property("testApk") as String)
+        }
+        if (project.hasProperty("testBundle")) {
+            systemProperty("testBundle", project.property("testBundle") as String)
+        }
+        if (project.hasProperty("testOut")) {
+            systemProperty("testOut", project.property("testOut") as String)
+        }
+        jvmArgs("-Xmx2g")
     }
 }

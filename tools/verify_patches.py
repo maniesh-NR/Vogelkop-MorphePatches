@@ -2,8 +2,9 @@
 their detection rules behave exactly as intended."""
 import gzip, json, re, zipfile, io, os
 
-STABLE = '/home/z/my-project/work/play_stable/base.apk'
-GX_DIR = '/home/z/my-project/work/gx_stub_smali/assets/preloadedTopSites'
+STABLE = '/tmp/opera_stable.apk'
+BETA = '/home/z/my-project/upload/beta_extract/apkm/base.apk'
+GX_DIR = '/tmp/gx_x/assets/preloadedTopSites'
 
 # ── Patch 1: DisableAcceptableAdsPatch (stable & beta) ────────────────────────
 EMPTY = ('[default]\nBLACK = ([])\nDOMAINLESS = (["NO_ELEMENT":([]),])\n'
@@ -34,7 +35,7 @@ assert len(EMPTY.encode()) == 132
 print('OK: exactly the two partner whitelists are selected.\n')
 
 # same check on beta
-zb = zipfile.ZipFile('/home/z/my-project/work/play_beta/base.apk')
+zb = zipfile.ZipFile('/home/z/my-project/upload/beta_extract/apkm/base.apk')
 sel_b = []
 for name in sorted(n for n in zb.namelist() if n.startswith('assets/abp_files/op/')):
     try:
@@ -102,14 +103,25 @@ print('OK: all outputs valid JSON, organic tiles kept.\n')
 # ── Bytecode patch target strings present in BOTH stable & beta ──────────────
 print('=== Bytecode patch string presence ===')
 import subprocess
-for label, tree in (('stable', '/home/z/my-project/work/ps_smali'),
-                    ('beta', '/home/z/my-project/work/pb_smali')):
-    for s in ('"SELECT \\* FROM partner_data"', '"com.opera.android.ads.pangle.PangleAdsModuleImpl"',
-              '"com.opera.android.ads.mintegral.MintegralAdsModuleImpl"',
-              '"com.opera.android.ads.liftoff.LiftoffAdsModuleImpl"'):
-        r = subprocess.run(['rg', '-l', s, tree, '--glob', '*.smali'],
-                           capture_output=True, text=True)
-        n = len(r.stdout.strip().splitlines()) if r.stdout.strip() else 0
-        print(f'{label:7s} {s[:55]:57s} found in {n} file(s)')
-        assert n >= 1, f'MISSING: {s} in {label}'
+# Scan the dex files of both APKs directly (no smali tree needed).
+import zipfile
+DEX_NEEDLES = (
+    b'SELECT * FROM partner_data',
+    b'com.opera.android.ads.pangle.PangleAdsModuleImpl',
+    b'com.opera.android.ads.mintegral.MintegralAdsModuleImpl',
+    b'com.opera.android.ads.liftoff.LiftoffAdsModuleImpl',
+)
+for label, apk_path in (('stable', STABLE), ('beta', BETA)):
+    z = zipfile.ZipFile(apk_path)
+    dexes = [n for n in z.namelist() if n.startswith('classes') and n.endswith('.dex')]
+    for s in DEX_NEEDLES:
+        n = sum(1 for dn in dexes if s in z.read(dn))
+        print(f'{label:7s} {s.decode():55s} found in {n} dex file(s)')
+        assert n >= 1, f'MISSING: {s!r} in {label}'
+    # HideBrokenInstallationDialogPatch fingerprint: resource name resolved via
+    # resourceLiteral from resources.arsc; check the dialog text is present there.
+    arsc = z.read('resources.arsc')
+    assert 'installation appears to be broken'.encode() in arsc, f'{label}: dialog text missing'
+    assert 'supporting ARM but detected hardware is x86'.encode() in arsc, f'{label}: ARM text missing'
+    print(f'{label:7s} welcome_init_failure / welcome_init_emulated_arm    present in resources.arsc')
 print('OK: all bytecode fingerprints present in stable and beta.')

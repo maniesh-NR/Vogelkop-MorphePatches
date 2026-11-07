@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "patches": [
     {
       "name": "Disable Acceptable Ads whitelist",
@@ -89,6 +89,90 @@
     {
       "name": "Disable ad modules",
       "description": "Prevents Opera from loading its bundled third-party ad network modules (Liftoff/Vungle, Mintegral, Pangle/ByteDance) by breaking the reflective class lookup used by the ad mediation layer.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser.beta",
+          "name": "Opera Browser Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#C15746",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "104.0.5262.91143",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide broken installation dialog",
+      "description": "Prevents the \"Your app installation appears to be broken. Try to uninstall and reinstall\" dialog from blocking startup. The dialog is Opera's crash-recovery nag (it also appears on unmodified installs after a crash or inside app-cloning tools), not a signature check, and its reinstall advice cannot fix a patched build.",
       "default": true,
       "category": null,
       "compatiblePackages": [
