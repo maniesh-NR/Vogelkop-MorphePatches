@@ -10,7 +10,7 @@ patches {
         author = "maniesh-NR"
         contact = "https://github.com/maniesh-NR/Vogelkop-MophePatches"
         website = "https://morphe.software/"
-        license = "GPLv3"
+        license = "AGPL-3.0"
     }
 }
 

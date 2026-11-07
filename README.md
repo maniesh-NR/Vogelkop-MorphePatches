@@ -1,4 +1,9 @@
-# Morphe Patches — Opera Browser / Opera Beta / Opera GX
+# Vogelkop-MophePatches
+
+Morphe patches repository. This project is named after the Vogelkop bowerbird, a
+species of bird that has its males build an elaborate fort made of shiny things
+and whose mating call is able to mimic complex sounds (including car alarms,
+camera shutters, and chainsaws).
 
 De-ads the Opera browser family, for use with the
 [Morphe](https://morphe.software/) patcher (ReVanced-style Android patcher):
@@ -143,4 +148,6 @@ evidence/
 
 ## License
 
-GPLv3, matching upstream morphe-patches.
+[AGPL-3.0](LICENSE) — the repository license. The patch sources are laid out to
+be drop-in compatible with the upstream [morphe-patches](https://github.com/rushiranpise/morphe-patches)
+project.
