@@ -20,6 +20,9 @@ fun main() {
     val apk = File(System.getProperty("testApk") ?: error("-DtestApk=<file> required"))
     val bundle = File(System.getProperty("testBundle") ?: "build/libs/patches-1.0.0.mpp")
     val out = File(System.getProperty("testOut") ?: "build/patched-test.apk")
+    // Optional package name; when set, only patches whose compatibility list
+    // includes it are executed (mirrors what Morphe Manager does per app).
+    val testPackage = System.getProperty("testPackage")
 
     var peakRssKb = 0L
     val sampler = thread(isDaemon = true, name = "rss-sampler") {
@@ -34,9 +37,14 @@ fun main() {
         }
     }
 
-    val patches = loadPatchesFromJar(setOf(bundle))
-    logger.info("Loaded ${patches.size} patches:")
-    patches.forEach { logger.info("  - ${it.name}") }
+    val allPatches = loadPatchesFromJar(setOf(bundle))
+    val patches = if (testPackage == null) allPatches else allPatches.filter { patch ->
+        val packages: List<app.morphe.patcher.patch.Compatibility>? =
+            runCatching { patch.compatibility }.getOrNull()
+        packages == null || packages.any { it.packageName == testPackage }
+    }
+    logger.info("Loaded ${allPatches.size} patches, running ${patches.size}" +
+        (testPackage?.let { " for $it" } ?: ""))
 
     val started = System.currentTimeMillis()
     val failed = mutableListOf<String>()

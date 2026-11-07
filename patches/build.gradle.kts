@@ -2,7 +2,7 @@ group = "app.morphe.patches.opera"
 
 patches {
     about {
-        name = "Vogelkop Morphe Patches"
+        name = "Vogelkop patches"
         description = "De-ads Opera Browser, Opera Beta and Opera GX: removes " +
             "sponsored Speed Dial tiles, disables the hidden Acceptable-Ads " +
             "partner whitelists and stops third-party ad modules from loading."
@@ -57,6 +57,9 @@ tasks {
         }
         if (project.hasProperty("testOut")) {
             systemProperty("testOut", project.property("testOut") as String)
+        }
+        if (project.hasProperty("testPackage")) {
+            systemProperty("testPackage", project.property("testPackage") as String)
         }
         jvmArgs("-Xmx2g")
     }

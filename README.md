@@ -35,16 +35,27 @@ APKs, including the full decompressed partner whitelists.
 | App | Patch | What it does |
 |---|---|---|
 | Opera & Opera Beta | **Disable ad modules** | Rewrites the reflective class-name lookups (`com.opera.android.ads.{pangle,mintegral,liftoff}.*ModuleImpl`) to a non-existent class so no third-party ad SDK module is ever instantiated. Safe by construction: the module availability probe (`Lk8;->a0()Z`) wraps the class lookup in try/catch and falls back to a no-op ads provider, exactly like an uninstalled Pangle split. |
+| Opera & Opera Beta | **Ignore browser boot failures** | Opera's Play builds download their Chromium engine (`libopera.so`) on first run ("MainLibraryBoot"); when that setup fails, the welcome screen previously called the now-hidden *broken installation* dialog and then waited forever — the "stuck on the purple splash, black screen after restart" bug. This patch converts the boot-failure announcements (`MainLibraryBoot` coordinator, found via its stable log tag) into success notifications so startup always continues. Locating the coordinator and its callback interface is fully structural (class/method names differ between stable and beta and are never matched by name). |
+| Opera, Opera Beta & GX | **Spoof app signature** | Presents Opera's original "Opera Software" signing certificate to the app instead of the Morphe key, using a `PackageInfo.CREATOR` parcel proxy installed by a tiny extension (see `extensions/`, ApkSignatureKillerEx lineage). This fixes the engine-download failure class above: the first-run setup of a re-signed APK can be rejected when it reports a foreign certificate. The official certificate (SHA-256 `5d6afbf8…b8`) is bundled; an optional `signature` option accepts a custom Base64 DER. |
 | Opera & Opera Beta | **Hide broken installation dialog** | Neutralizes the modal *"Your app installation appears to be broken. Try to uninstall and reinstall … again."* This dialog is Opera's **crash-recovery nag**, not a signature check — it also appears on unmodified installs after a crash, inside app-cloning tools (dual-space), or on ARM/x86 mismatches. Because a patched build cannot be "fixed" by reinstalling, the patch turns the dialog builder into a no-op and forces the `OperaApplication` broken-installation flag to `false` so startup continues normally. See [`evidence/ANALYSIS.md`](evidence/ANALYSIS.md) §"Broken installation dialog" for the full chain. |
 | Opera & Opera Beta | **Remove sponsored Speed Dial** | Appends `WHERE 0` to the suggested-sites database queries (`SELECT * FROM partner_data`, `… FROM partner_tree LIMIT 1`, `… FROM domain_data`), so no sponsored/partner tiles are ever shown. Schema and regular Speed Dial are untouched. |
 | Opera & Opera Beta | **Disable Acceptable Ads whitelist** | Scans `assets/abp_files/op/`, detects lists that consist *only* of allow directives (`DOCUMENT`/`WHITE.PLAIN`/`WHITE.GLOB` and no `BLACK` section) and replaces them with an empty compiled list under the same file name. Neutralizes the Google/Yandex measurement whitelist and the Taboola/gambling/affiliate whitelist — and any future pure-whitelist list Opera adds. |
 | Opera GX | **Remove sponsored Speed Dial** | Strips sponsored entries (Eneba, Instant Gaming, Amazon and other affiliates routed through `operagx.gg`, or carrying a `realUrl` partner field) from `assets/preloadedTopSites/*.json`, keeping organic tiles like YouTube/Twitch. |
 
 All bytecode patches use **structural fingerprints** (SQL text, class-name
-constants, resource-literal names like `string/welcome_init_failure`) rather
-than obfuscated class names, so they match across stable, beta and different
-builds of the same version. Each patch fails loudly (instead of silently doing
-nothing) if its targets are missing.
+constants, resource-literal names like `string/welcome_init_failure`, the
+`MainLibraryBoot: ` log tag, framework-stable overrides like `doInBackground`)
+rather than obfuscated class names, so they match across stable, beta and
+different builds of the same version. Each patch fails loudly (instead of
+silently doing nothing) if its targets are missing.
+
+### About Google Play Protect
+
+Play Protect's *"scan this app"* / lockscreen prompt appears for **every**
+sideloaded APK that is not signed by a known vendor — it is a property of the
+installer, not of these patches, and it cannot be patched away. Scanning or
+bypassing it is safe here: the bundle is open source, and the release assets
+carry an Ed25519 signature (`morphe-signing.pub`) you can verify.
 
 ## Memory usage
 
@@ -80,9 +91,11 @@ release pipeline does before publishing):
 ```
 
 The driver reports per-patch success/failure and the peak RSS of the patching
-process. On Opera Beta 104.0.5262.91143 `base.apk` all four Opera/Beta patches
-succeed; the GX patch fails by design on non-GX input (its targets only exist
-in Opera GX).
+process. Pass `-PtestPackage=<package>` to only run patches that declare
+compatibility with that app (as Morphe Manager does). On Opera Beta
+104.0.5262.91143 and Opera stable 103.3.5234.91185 `base.apk` all six
+Opera/Beta patches succeed; on Opera GX 3.3.18 the two GX-compatible patches
+succeed.
 
 ## What the user asked for vs. what is technically possible
 
@@ -197,18 +210,29 @@ your bundle declares its app targets.
 ## File map
 
 ```
-patches/src/main/kotlin/app/template/patches/opera/
-├── OperaCompat.kt                  Compatibility targets (stable/beta/GX)
-├── ads/DisableAdModulesPatch.kt    stable+beta: Pangle/Mintegral/Liftoff
-├── ads/RemoveSponsoredSpeedDialPatch.kt  stable+beta: partner_data SQL
-├── adblock/DisableAcceptableAdsPatch.kt  stable+beta: whitelist assets
-├── startup/HideBrokenInstallationDialogPatch.kt  stable+beta: crash-recovery nag
-└── gx/GxRemoveSponsoredTilesPatch.kt     GX: preloadedTopSites JSON
+patches/src/main/kotlin/app/template/patches/
+├── opera/
+│   ├── OperaCompat.kt                  Compatibility targets (stable/beta/GX)
+│   ├── ads/DisableAdModulesPatch.kt    stable+beta: Pangle/Mintegral/Liftoff
+│   ├── ads/RemoveSponsoredSpeedDialPatch.kt  stable+beta: partner_data SQL
+│   ├── adblock/DisableAcceptableAdsPatch.kt  stable+beta: whitelist assets
+│   ├── startup/HideBrokenInstallationDialogPatch.kt  stable+beta: crash-recovery nag
+│   ├── startup/IgnoreBrowserBootFailuresPatch.kt     stable+beta: MainLibraryBoot deadlock
+│   └── gx/GxRemoveSponsoredTilesPatch.kt     GX: preloadedTopSites JSON
+└── shared/signature/SpoofAppSignaturePatch.kt  all: original-cert spoof (w/ extension)
+patches/src/main/resources/extensions/extension.mpe   raw-dex extension bundled in the .mpp
+extensions/extension/src/.../SignatureHookApp.kt      runtime hook source (Kotlin, no stdlib)
+tools/
+├── android-stubs/                      compile-only android framework stubs
+├── build_extension.sh                  builds extension.mpe (kotlinc + D8, no Android SDK)
+└── verify_patches.py                   static fingerprint verification harness
 patches/src/main/kotlin/util/
-├── PatchListGenerator.kt           patches-list.json generator (from the template)
-└── PatchTestDriver.kt              local headless verification driver (dev only)
+├── PatchListGenerator.kt               patches-list.json generator (from the template)
+└── PatchTestDriver.kt                  local headless verification driver (dev only)
+patches-bundle.png                      source icon shown by Morphe Manager (must sit
+                                        next to patches-bundle.json in the repo root)
 evidence/
-├── ANALYSIS.md                     full reverse-engineering write-up
+├── ANALYSIS.md                         full reverse-engineering write-up
 ├── whitelist_97bda3c5_google_yandex_measurement.txt
 └── whitelist_f66a1f2c_partner_affiliate.txt
 ```
@@ -228,7 +252,10 @@ evidence/
   Desktop, and the [`morphe-patches-template`](https://github.com/MorpheApp/morphe-patches-template)
   this repo's build layout is based on (including `util/PatchListGenerator.kt`).
 - **[rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-patches)** —
-  community patch collection that served as the initial structural reference.
+  community patch collection that served as the initial structural reference,
+  and whose `shared/signature` patches (GPL-3.0, from jkennethcarino/adobo,
+  originally [ApkSignatureKillerEx](https://github.com/L-JINBIN/ApkSignatureKillerEx))
+  were ported to Kotlin for the *Spoof app signature* extension used here.
 - **Tooling**: [Apktool](https://apktool.org/) (resources/smali),
   [JADX](https://github.com/skylot/jadx) (decompilation), dexlib2/smali
   (bytecode rewriting), plus Opera's own filter-list format (OFA compiled lists).

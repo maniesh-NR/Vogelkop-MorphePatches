@@ -1,5 +1,5 @@
-c15632007a0228fc9fb9cd4dd17ff422ae8c1be49f4d39cffc4bcbb1f2881ecc  patches-1.1.2.mpp
-53f6627b160b9e66f047757a3a0c7d7f73b75fb77cf6d1ae572921f654de4693  patches-1.1.2-sources.mpp
-2cdcad4ed545ce7aa8f4c99a0fd295c17656439952ecddb91e4c65992d93c772  patches-1.1.2-javadoc.mpp
-1d7762253c620938ee975af7ab60542e6fe2f3a78674fd16cca70fc1a56aedaf  patches-list.json
-863d196d63743f088e03468a9f3cabc0cbd87d36895c23fee143ec49d75a7fc4  patches-bundle.json
+1346730f6fb6b3aac9c95f1020774fe84ff200f19609d1ba43ea6cf0e4d1b0b1  patches-bundle.json
+50aa2caaff227da96195ab63b1d4e7cfc398437e7471eea5f35e410f83f90bf0  patches-list.json
+5b3a0323fd3449a591a216c91cda2fa5f1d7736e101af3565bdcb5b7723f4a85  patches/build/libs/patches-1.2.0.mpp
+8b623fb904848b1639ff0884bafa0128404a3619ee7e925a2ed81b94f6efd9e2  patches/build/libs/patches-1.2.0-sources.mpp
+ef10d20b474f495f13ba01e9f401d2f0929203fbc33ec9a4cf1398c22612aeae  patches/build/libs/patches-1.2.0-javadoc.mpp

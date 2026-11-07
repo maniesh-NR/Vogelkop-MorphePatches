@@ -248,3 +248,94 @@ The *Hide broken installation dialog* patch (v1.1.0) turns `d0` into a no-op
 and forces `U()` to `false`, so neither crash recovery nor the clone-detection
 flag can interrupt start-up with this dialog. Genuine crashes still surface as
 crashes (visible in `adb logcat`), which is more actionable than the dialog.
+
+## 6. First-run engine download, MainLibraryBoot and the v1.2.0 splash fix
+
+### 6.1 The engine is not in the APK
+
+Opera stable/beta Play bundles ship **no browser engine**: `base.apk` contains
+only ten small helper libraries plus an 84 MB `lib/armeabi-v7a/libopera.so`
+(the whole Chromium engine, 32-bit only) — and a decoy
+`lib/arm64-v8a/libdummy.so` that is itself a **32-bit ARM ELF**. When
+`PackageManager` picks the primary ABI it reads ELF headers
+(`NativeLibraryHelper.findSupportedAbi`); the 32-bit ELF in the arm64 directory
+is rejected, so installs fall back to `armeabi-v7a` and the app runs 32-bit on
+every device. Chromium's `LibraryLoader` then does
+`System.loadLibrary("opera")` (`Lz4o;->l[0]`).
+
+### 6.2 MainLibraryBoot
+
+Engine load/start is coordinated by a small state machine (class
+`Le7d;` in Beta 104.0.5262.91143, `Ly0d;` in stable 103.3.5234.91185), found
+by its `"MainLibraryBoot: "` log tag. States: 1 initial, 2 loading,
+3 success, 4 failed with reason `1=LIB_LOAD`, `2=CHROMIUM_START`,
+`3=EMULATED_ARM`. The boot `AsyncTask.doInBackground` calls the loader
+singleton (`Lwbc;->a()` / `Lr5c;->a()`), catching `UnsatisfiedLinkError` and
+the boot exception type; `onPostExecute` re-checks `Build.SUPPORTED_32_BIT_ABIS`
+(x86-only ⇒ EMULATED_ARM) and otherwise reports
+`b(reason, throwable)`, which logs `"MainLibraryBoot: <REASON>"` and announces
+the failure to every registered callback via
+`invoke-interface {client, reason}, <callback>-><name>(I)V`.
+A separate watchdog (`Lqy3;`) announces `CHROMIUM_START` if startup stalls.
+
+The welcome screen (`WelcomeActivity` via `Lu9k;`) reacts to the failure state
+(`Lq9k;`) in its Compose observers (`Ln6k;`/`Lo9k;`) by calling the
+*broken installation* dialog builder `Lkfo;->d0` — and nothing else. With
+v1.1.x that builder is a no-op, so a failed engine boot left the purple welcome
+splash up forever (black screen after the process was killed): the reported
+Opera Beta symptom.
+
+### 6.3 Why the boot failed on patched installs
+
+The patched APK is byte-for-byte equivalent to the original except for dex,
+two whitelist assets and `resources.arsc`; every `.so` entry is reused
+unchanged and stays 4 KB/16 KB-aligned, the manifest is identical, and
+`resources.arsc` remains uncompressed and 4-aligned. Static analysis found no
+APK-level difference that can break `System.loadLibrary`. The remaining
+difference is the **signing certificate** (Morphe key instead of Opera's), and
+Opera's Java code reads its own signature in several places (preinstall
+partner check `Ldtg;->c`, MoMi SDK integrity, metrics `Lg11;`), making a
+certificate-gated first-run setup the plausible failure — the engine pack is
+downloaded at first run, exactly when the hang occurs. (Remote devices are
+needed for a definitive `adb logcat` confirmation; the boot coordinator logs
+`MainLibraryBoot: LIB_LOAD/CHROMIUM_START` with the throwable.)
+
+### 6.4 Official certificate
+
+The official `Opera_103_3_5234_91185_Generic_Opera_arm8_LZMA.apk` from
+`ftp.opera.com` carries the vendor signing certificate:
+
+```
+subject/issuer: CN=Opera Software, C=NO (self-signed)
+validity:       2010-03-02 .. 2037-07-18
+SHA-256:        5d6afbf87f652af04647ada0df634cf22370900b164b09d50bd23aa2cb5285b8
+```
+
+The same vendor key signs Play and get.opera.com builds of Opera, Opera Beta
+and Opera GX, so it is embedded (Base64 DER) in the *Spoof app signature*
+patch as the default spoof target.
+
+### 6.5 Patch response (v1.2.0)
+
+* **Spoof app signature** — an extension (raw-dex `extensions/extension.mpe`,
+  Kotlin port of rushiranpise's `SignatureHookApp`, ApkSignatureKillerEx
+  lineage) re-parents `OperaApplication`/`LeanplumApplication` and swaps
+  `PackageInfo.CREATOR` with a proxy that rewrites the signature/signing-info
+  fields of this package's `PackageInfo` parcels back to the Opera
+  certificate. All in-app signature reads — SDKs, the first-run setup, the
+  engine download client — then observe the vendor identity.
+* **Ignore browser boot failures** — in the MainLibraryBoot coordinator, both
+  `invoke-interface … -><name>(I)V` failure announcements (the
+  `b(I, Throwable)` flush loop and the late-subscriber branch) are rewritten
+  to `invoke-interface … ->onSuccess()V`. A boot failure can no longer
+  deadlock the welcome screen; startup continues exactly as it does on
+  success. The coordinator is located via the stable `"MainLibraryBoot: "`
+  log tag and the callback interface via the registration method's parameter
+  type — never by obfuscated names (they differ between stable and beta:
+  `Le7d;->c(I)V` vs `Ly0d;->e(I)V`).
+
+Verified by the local driver on Beta 104.0.5262.91143 and stable
+103.3.5234.91185 `base.apk` (all six patches) and GX 3.3.18 (both GX
+patches); the patched output was re-disassembled to confirm the re-parenting,
+the rewritten announcements and the embedded certificate, and re-checked for
+native-lib alignment.
