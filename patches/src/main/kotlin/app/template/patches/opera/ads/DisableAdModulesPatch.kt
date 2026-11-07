@@ -4,6 +4,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.opera.OPERA_BETA_COMPATIBILITY
 import app.template.patches.opera.OPERA_COMPATIBILITY
+import app.template.patches.opera.OPERA_DIRECT_COMPATIBILITY
 import app.template.patches.opera.shared.replaceStringConstants
 
 /**
@@ -30,7 +31,7 @@ val operaDisableAdModulesPatch = bytecodePatch(
         "reflective class lookup used by the ad mediation layer.",
     default = true,
 ) {
-    compatibleWith(OPERA_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
+    compatibleWith(OPERA_COMPATIBILITY, OPERA_DIRECT_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
 
     execute {
         val deadModule = "com.opera.android.ads.disabled.DisabledByMorphe"

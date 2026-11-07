@@ -6,7 +6,7 @@ import app.template.patches.opera.OPERA_GX_COMPATIBILITY
 
 /**
  * Opera GX (the WebView-based 3.x app, package com.opera.gx) pre-seeds its start
- * page from `assets/preloadedTopSites/*.json`. Half of the default tiles are
+ * page from the JSON files in `assets/preloadedTopSites`. Half of the default tiles are
  * sponsored: affiliate entries routed through Opera's `operagx.gg` shortener
  * (Eneba, Instant Gaming), entries with an explicit `realUrl` partner field, and
  * Amazon storefronts tagged `?tag=operagx-mob-sp-sd-*` in the per-country

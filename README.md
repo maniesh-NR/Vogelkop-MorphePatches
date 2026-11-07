@@ -74,43 +74,63 @@ APK patch cannot embed uBlock Origin itself. What these patches do instead:
 | Opera Beta | `base.apk` of the Play bundle (104.0.5262.91143, versionCode 1910404306) | Beta full builds are not on the public CDN. |
 | Opera GX | The XAPK/APKM bundle from APKMirror (3.3.18, versionCode 199) | GX is a WebView-based app (66 MB); no core download involved. |
 
-All three patches for stable/beta are registered for both the Play and the
-direct-download version codes of their version.
+No version codes are pinned: there is one release per version per file type,
+and every patch fails loudly (instead of silently doing nothing) if its targets
+are missing.
 
-## Using the patches
+## Importing into Morphe
 
-### With the Morphe app
+**Yes — this repo is a first-class Morphe patch source.** It is built on the
+official [`MorpheApp/morphe-patches-template`](https://github.com/MorpheApp/morphe-patches-template)
+layout (Gradle plugin `app.morphe.patches`, patcher `app.morphe:morphe-patcher`),
+and every release ships a compiled `patches-<version>.mpp` bundle that Morphe
+Manager / Morphe Desktop load directly.
 
-1. Build the patches bundle (below) and host it, or add this repo as a patch
-   source in Morphe (`morphe.software/add-source?github=maniesh-NR/Vogelkop-MophePatches`).
-2. Select the APK/XAPK for the Opera app you want to patch.
+### Add this repo as a patch source
+
+1. Open this link (or paste the repo URL into **Morphe Manager → Settings →
+   Patch sources**):
+
+   **https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MophePatches**
+
+2. Morphe reads the latest GitHub release of this repo, so pick the Opera
+   APK/XAPK you want to patch when prompted.
 3. Enable the Opera patches (all default-on) and patch.
 4. Install the patched APK. If you patch a Play split bundle, merge it to a
    universal APK first, and uninstall the original (different signature).
 
-### Building
+Alternatively, download `patches-<version>.mpp` from the
+[releases page](https://github.com/maniesh-NR/Vogelkop-MophePatches/releases)
+and load it in [Morphe Desktop](https://github.com/MorpheApp/morphe-desktop)
+like any other patch bundle.
+
+### Building the bundle yourself
+
+The Morphe patches Gradle plugin is published on GitHub Packages, so a local
+build needs a GitHub token with `read:packages` access:
 
 ```bash
-# The Morphe patches Gradle plugin lives in GitHub Packages:
-#   gpr.user / gpr.key in gradle.properties (a PAT with read:packages)
-./gradlew :patches:build          # or the plugin's generate/bundle task
+export GITHUB_ACTOR=<your-github-username>
+export GITHUB_TOKEN=<pat-with-read-packages>   # or gpr.user/gpr.key in gradle.properties
+./gradlew buildAndroid                         # → patches/build/libs/patches-*.mpp
+./gradlew generatePatchesList                  # → regenerates patches-list.json
 ```
 
-`patches-list.json` in this repo is a pre-rendered reference of the generated
-output; the Gradle plugin regenerates it at build time.
+`patches-list.json` and `patches-bundle.json` in the repo root are generated
+from the compiled bundle (they are committed by the release pipeline, matching
+upstream conventions).
 
-### Submitting to rushiranpise/morphe-patches
+### Reusing the patches upstream
 
-The source tree is laid out exactly like upstream:
+The source tree is laid out exactly like the official template:
 
 ```
 patches/src/main/kotlin/app/template/patches/opera/…
 ```
 
 Copy the `opera/` package into `patches/src/main/kotlin/app/template/patches/`
-and add the three `Compatibility` blocks from `OperaCompat.kt` to
-`shared/Constants.kt`. `PATCHES.md` and `patches-list.json` regenerate on
-release.
+and add the four `Compatibility` blocks from `OperaCompat.kt` to
+`shared/Constants.kt`.
 
 ## Limitations & honest notes
 
@@ -145,6 +165,27 @@ evidence/
 ├── whitelist_97bda3c5_google_yandex_measurement.txt
 └── whitelist_f66a1f2c_partner_affiliate.txt
 ```
+
+## Attribution & acknowledgements
+
+- **Built with AI**: this project — the reverse-engineering pass over the three
+  Opera APKs, the patch code, fingerprints and the analysis in
+  [`evidence/`](evidence/ANALYSIS.md) — was produced by the **Z.ai autonomous
+  coding agent**, powered by the **GLM** large language model from Z.ai, working
+  from a user brief (find Opera's built-in ads and paid "Acceptable Ads"
+  whitelists, and write Morphe patches against them). All findings were verified
+  mechanically against the real APKs; see [`tools/verify_patches.py`](tools/verify_patches.py)
+  for the verification harness.
+- **[Morphe](https://morphe.software/) / [MorpheApp](https://github.com/MorpheApp)** —
+  the patcher framework, the patches Gradle plugin, Morphe Manager / Morphe
+  Desktop, and the [`morphe-patches-template`](https://github.com/MorpheApp/morphe-patches-template)
+  this repo's build layout is based on (including `util/PatchListGenerator.kt`).
+- **[rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-patches)** —
+  community patch collection that served as the initial structural reference.
+- **Tooling**: [Apktool](https://apktool.org/) (resources/smali),
+  [JADX](https://github.com/skylot/jadx) (decompilation), dexlib2/smali
+  (bytecode rewriting), plus Opera's own filter-list format (OFA compiled lists).
+- **Opera**, of course, for the browser being patched.
 
 ## License
 

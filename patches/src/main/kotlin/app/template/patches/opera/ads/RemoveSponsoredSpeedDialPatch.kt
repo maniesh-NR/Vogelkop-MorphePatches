@@ -4,6 +4,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.template.patches.opera.OPERA_BETA_COMPATIBILITY
 import app.template.patches.opera.OPERA_COMPATIBILITY
+import app.template.patches.opera.OPERA_DIRECT_COMPATIBILITY
 import app.template.patches.opera.shared.replaceStringConstants
 
 /**
@@ -32,7 +33,7 @@ val operaRemoveSponsoredSpeedDialPatch = bytecodePatch(
         "Regular Speed Dial entries and bookmarks are not affected.",
     default = true,
 ) {
-    compatibleWith(OPERA_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
+    compatibleWith(OPERA_COMPATIBILITY, OPERA_DIRECT_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
 
     execute {
         val sqlReplacements = mapOf(

@@ -4,6 +4,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.resourcePatch
 import app.template.patches.opera.OPERA_BETA_COMPATIBILITY
 import app.template.patches.opera.OPERA_COMPATIBILITY
+import app.template.patches.opera.OPERA_DIRECT_COMPATIBILITY
 import java.io.ByteArrayInputStream
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
@@ -47,7 +48,7 @@ val operaDisableAcceptableAdsPatch = resourcePatch(
         "blocker actually blocks them.",
     default = true,
 ) {
-    compatibleWith(OPERA_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
+    compatibleWith(OPERA_COMPATIBILITY, OPERA_DIRECT_COMPATIBILITY, OPERA_BETA_COMPATIBILITY)
 
     execute {
         val abpDirectory = get("assets/abp_files/op")

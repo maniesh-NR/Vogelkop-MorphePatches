@@ -1,0 +1,7 @@
+{
+  "created_at": "2026-11-07T09:04:54",
+  "description": "## v1.0.0\n\nFirst release of the Vogelkop Morphe patches: de-ads the Opera browser family.\n\n### Patches\n- **Disable ad modules** (Opera & Opera Beta): breaks the reflective class lookup for the bundled Liftoff/Vungle, Mintegral and Pangle/ByteDance ad SDK modules.\n- **Remove sponsored Speed Dial** (Opera & Opera Beta): neutralizes the suggested-sites partner_data / partner_tree / domain_data queries, so sponsored tiles never load.\n- **Disable Acceptable Ads whitelist** (Opera & Opera Beta): replaces the hidden pure-whitelist filter lists in assets/abp_files/op/ (Google/Yandex measurement, Taboola, gambling + affiliate DOCUMENT exceptions, AppsFlyer/Adjust/Kochava/CJ allows) with empty compiled lists.\n- **Remove sponsored Speed Dial** (Opera GX): strips operagx.gg affiliate / realUrl partner entries from the preloaded start page.\n\n### Import\nAdd as patch source: https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MophePatches",
+  "download_url": "https://github.com/maniesh-NR/Vogelkop-MophePatches/releases/download/v1.0.0/patches-1.0.0.mpp",
+  "signature_download_url": "",
+  "version": "1.0.0"
+}
