@@ -6,10 +6,10 @@ patches {
         description = "De-ads Opera Browser, Opera Beta and Opera GX: removes " +
             "sponsored Speed Dial tiles, disables the hidden Acceptable-Ads " +
             "partner whitelists and stops third-party ad modules from loading."
-        source = "https://github.com/maniesh-NR/Vogelkop-MophePatches"
+        source = "https://github.com/maniesh-NR/Vogelkop-MorphePatches"
         author = "maniesh-NR"
-        contact = "https://github.com/maniesh-NR/Vogelkop-MophePatches"
-        website = "https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MophePatches"
+        contact = "https://github.com/maniesh-NR/Vogelkop-MorphePatches"
+        website = "https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MorphePatches"
         license = "AGPL-3.0"
     }
 }

@@ -1,4 +1,8 @@
-# Vogelkop-MophePatches
+<div align="center">
+  <img src="assets/logo.png" alt="Vogelkop Morphe Patches — a Vogelkop bowerbird decorating its bower with blue gems" width="380"/>
+</div>
+
+# Vogelkop-MorphePatches
 
 Morphe patches repository. This project is named after the Vogelkop bowerbird, a
 species of bird that has its males build an elaborate fort made of shiny things
@@ -91,7 +95,7 @@ Manager / Morphe Desktop load directly.
 1. Open this link (or paste the repo URL into **Morphe Manager → Settings →
    Patch sources**):
 
-   **https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MophePatches**
+   **https://morphe.software/add-source?github=maniesh-NR/Vogelkop-MorphePatches**
 
 2. Morphe reads the latest GitHub release of this repo, so pick the Opera
    APK/XAPK you want to patch when prompted.
@@ -100,7 +104,7 @@ Manager / Morphe Desktop load directly.
    universal APK first, and uninstall the original (different signature).
 
 Alternatively, download `patches-<version>.mpp` from the
-[releases page](https://github.com/maniesh-NR/Vogelkop-MophePatches/releases)
+[releases page](https://github.com/maniesh-NR/Vogelkop-MorphePatches/releases)
 and load it in [Morphe Desktop](https://github.com/MorpheApp/morphe-desktop)
 like any other patch bundle.
 
