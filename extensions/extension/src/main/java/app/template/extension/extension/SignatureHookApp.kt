@@ -74,6 +74,15 @@ class SignatureHookApp : Application() {
     companion object {
         // ---- state (declared before the init block; see class comment) -----
 
+        /**
+         * Result of the hook installation, written during the companion
+         * initializer (before any app code) and read at runtime by
+         * `StartupDiag` through reflection: "not-run", "ok(creator-proxy)",
+         * "ok(no-creator-proxy)" or "failed:<throwable-class>".
+         */
+        @JvmField
+        var installState: String = "not-run"
+
         private var ownPackageName: String? = null
         private var ownSignatureBase64: String? = null
         private var originalSignatures: Array<Signature>? = null
@@ -296,7 +305,8 @@ class SignatureHookApp : Application() {
                 val creator: Parcelable.Creator<PackageInfo> =
                     getPackageInfoCreator(packageName, fakeSignature)
 
-                if (!installCreator(creator)) {
+                val proxyInstalled = installCreator(creator)
+                if (!proxyInstalled) {
                     Log.w(
                         "VogelkopSpoof",
                         "PackageInfo.CREATOR could not be replaced on this Android build; " +
@@ -306,7 +316,9 @@ class SignatureHookApp : Application() {
 
                 clearPackageInfoCache()
                 clearParcelCreators()
+                installState = if (proxyInstalled) "ok(creator-proxy)" else "ok(no-creator-proxy)"
             } catch (t: Throwable) {
+                installState = "failed:" + t.javaClass.getName()
                 Log.w("VogelkopSpoof", "Signature spoof fallback layer failed; call-site hooks remain active", t)
             }
         }

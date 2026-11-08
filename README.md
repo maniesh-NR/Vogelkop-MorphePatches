@@ -240,6 +240,33 @@ Copy the `opera/` package into `patches/src/main/kotlin/app/template/patches/`
 and register the four `Compatibility` blocks from `OperaCompat.kt` wherever
 your bundle declares its app targets.
 
+## If a patched build crashes on launch (v1.2.4+)
+
+Since v1.2.4 the *Startup diagnostics* patch (default on) makes every patched
+build report its own crashes — no `adb logcat`, no root, no PC needed:
+
+1. Install the patched APK and open it (it may crash — that is fine).
+2. Open any file manager and go to
+   `Android/data/<package>/files/vogelkop-diag.log`
+   (e.g. `Android/data/com.opera.browser/files/vogelkop-diag.log` for Opera,
+   `com.opera.browser.beta` for Beta, `com.opera.gx` for GX). On some devices
+   the path is under the internal storage root's `Android/data/…` folder.
+3. Share the file. It contains:
+   - a **breadcrumb trail** of how far startup got
+     (`attach-base-context` → `app-onCreate entered` → `app-onCreate completed`);
+   - the **full stack trace of every uncaught crash**, with thread, process
+     and timestamp;
+   - device model, Android version, app version;
+   - `apk-signature-sha256` (the certificate the APK actually carries), the
+     `signature-spoof state` (`ok(creator-proxy)` / `ok(no-creator-proxy)` /
+     `failed:<throwable>` / `absent`) and the certificate the spoof presents —
+     together these prove whether *Spoof app signature* engaged at runtime.
+
+The diagnostics never alter app behavior and never throw; the crash handler
+chains to Opera's own breakpad handler, so Opera's crash reporting keeps
+working. On the next successful launch the log simply shows the breadcrumb
+trail.
+
 ## Limitations & honest notes
 
 - **Opera's first-party promo cards / news feed**: start-page promos are served

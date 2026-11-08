@@ -5,6 +5,76 @@ Opera GX) are documented here. Versions follow the tags in this repository;
 each tag matches a GitHub release carrying the compiled `patches-<version>.mpp`
 bundle.
 
+## v1.2.4 (2026-11-08)
+
+### Startup diagnostics — the app now reports its own crashes
+
+The instant crash-on-open reported for v1.2.0–v1.2.3 patched builds persisted
+through three signature-spoof rewrites, because the only available evidence
+was "it crashes when I open it" — no device stack trace was ever captured.
+v1.2.4 removes that dependency on `adb logcat`:
+
+- **New patch: *Startup diagnostics*** (default on, all four supported
+  packages). It merges its own extension dex (`extensions/diag.mpe`, class
+  `app.template.extension.diag.StartupDiag`) and instruments **every
+  `Application` subclass** of the target app at three register-neutral
+  injection points (existing registers are only ever read, never written):
+  the start of every `attachBaseContext(Context)` (which runs before
+  ContentProviders and `Application.onCreate`), the start of every
+  `onCreate()`, and before every `return-void` in every `onCreate()`.
+- **Any uncaught exception is self-reported.** An uncaught-exception handler
+  is installed at `attachBaseContext` — early enough to capture provider and
+  pre-onCreate crashes — and writes the full stack trace, thread, process
+  name and timestamp to
+  `Android/data/<package>/files/vogelkop-diag.log`, a file any file manager
+  can open without permissions or root. The handler **chains to the previous
+  default handler** (Opera's breakpad wiring) so Opera's own crash flow is
+  preserved, and re-asserts itself at every injection point because Opera
+  swaps the handler during `onCreate`. Every entry point is wrapped in
+  `try/Throwable` — a diagnostic layer must never be the crash.
+- **Startup breadcrumbs.** The log records each stage
+  (`attach-base-context`, `app-onCreate entered/completed`), the device
+  model, Android/SDK version, app version, and - decisively for this
+  project - **which signing certificate the app currently sees for itself**
+  (Opera's vendor certificate proves the spoof engaged at runtime; the Morphe
+  key means it did not) and **the spoof hook's own install state**.
+- The hook extension exposes its install result as a public static field
+  (`SignatureHookApp.installState`: `ok(creator-proxy)` /
+  `ok(no-creator-proxy)` / `failed:<throwable-class>`), read reflectively by
+  the diagnostics so they work with the spoof disabled too. Because the
+  diagnostics are independent of *Spoof app signature* (separate extension
+  dex, separate patch), a no-spoof build still self-reports.
+
+### What v1.2.4 ruled out (local end-to-end reproduction)
+
+The whole patching pipeline was reproduced locally for the first time —
+official `Opera_103_3_5234_91185_Generic_Opera_arm8_LZMA.apk` (sha256
+verified) patched with Morphe Desktop CLI v2.1.1 and the v1.2.3 bundle — and
+the output was audited byte-by-byte. All of the following check out, so
+these are **not** the crash cause:
+
+- all 135 redirected call sites match the merged helper descriptors exactly,
+  with matching register counts; no un-redirected `getPackageInfo` /
+  `SigningInfo` reads remain in app code;
+- the extension dex is merged exactly once, placeholders rewritten, no
+  duplicate classes across the 9 dex files; every dex passes D8's strict
+  parser; the re-parented hierarchy is correct;
+- all native libraries stay byte-identical and STORED (including the
+  156 MB arm64 engine); `AndroidManifest.xml` is semantically identical
+  (only line-number metadata differs);
+- the rebuilt `resources.arsc` contains the exact same entries as the
+  original (config chunks reordered, entries identical) and parses in
+  aapt2/libandroidfw semantics.
+
+### Signing key rotated
+
+The bundle signing key was rotated (the previous private key was lost with a
+recycled build environment). `morphe-signing.pub` now contains the new public
+key; bundle verification is unchanged - each release simply carries a
+signature made by the new key, exactly as in the v1.1.2 rotation. The key
+file is not committed; `MORPHE_SIGNING_KEY` (or a local `morphe-signing.key`)
+signs release builds.
+
 ## v1.2.3 (2026-11-08)
 
 ### Spoof app signature — two-layer redesign (community-informed)

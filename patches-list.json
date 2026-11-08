@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "patches": [
     {
       "name": "Disable Acceptable Ads whitelist",
@@ -692,6 +692,115 @@
           "values": null
         }
       ]
+    },
+    {
+      "name": "Startup diagnostics",
+      "description": "Records a startup breadcrumb trail and the full stack trace of any launch crash to Android/data/<package>/files/vogelkop-diag.log (openable with any file manager). Also logs which signing certificate the app sees for itself, proving whether the signature spoof engaged. Leave enabled while debugging a startup crash; it does not alter app behavior and never throws.",
+      "default": true,
+      "category": null,
+      "compatiblePackages": [
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser",
+          "name": "Opera Browser",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF1B36",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "103.3.5234.91185",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.browser.beta",
+          "name": "Opera Browser Beta",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#C15746",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "104.0.5262.91143",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.opera.gx",
+          "name": "Opera GX",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#F81C4C",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "3.3.18",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
     }
   ]
 }
