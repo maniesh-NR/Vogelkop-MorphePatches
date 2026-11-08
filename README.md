@@ -34,9 +34,10 @@ APKs, including the full decompressed partner whitelists.
 
 | App | Patch | What it does |
 |---|---|---|
+| All three apps | **Disable analytics & tracking** | Rewrites the tracker endpoint constants embedded in the dex to a dead host: 81 constants on stable/beta (Firebase Analytics `app-measurement.com`, Google Ads/Doubleclick/IMA, `pagead2.googlesyndication.com`, and Leanplum's `Constants.API_HOST_NAME` static field) and 8 on GX. Firebase infrastructure that features depend on (push notifications, feature flags, GX's internal filter list) is deliberately untouched. |
 | Opera & Opera Beta | **Disable ad modules** | Rewrites the reflective class-name lookups (`com.opera.android.ads.{pangle,mintegral,liftoff}.*ModuleImpl`) to a non-existent class so no third-party ad SDK module is ever instantiated. Safe by construction: the module availability probe (`Lk8;->a0()Z`) wraps the class lookup in try/catch and falls back to a no-op ads provider, exactly like an uninstalled Pangle split. |
-| Opera & Opera Beta | **Ignore browser boot failures** | Opera's Play builds download their Chromium engine (`libopera.so`) on first run ("MainLibraryBoot"); when that setup fails, the welcome screen previously called the now-hidden *broken installation* dialog and then waited forever — the "stuck on the purple splash, black screen after restart" bug. This patch converts the boot-failure announcements (`MainLibraryBoot` coordinator, found via its stable log tag) into success notifications so startup always continues. Locating the coordinator and its callback interface is fully structural (class/method names differ between stable and beta and are never matched by name). |
-| Opera, Opera Beta & GX | **Spoof app signature** | Presents Opera's original "Opera Software" signing certificate to the app instead of the Morphe key, using a `PackageInfo.CREATOR` parcel proxy installed by a tiny extension (see `extensions/`, ApkSignatureKillerEx lineage). This fixes the engine-download failure class above: the first-run setup of a re-signed APK can be rejected when it reports a foreign certificate. The official certificate (SHA-256 `5d6afbf8…b8`) is bundled; an optional `signature` option accepts a custom Base64 DER. |
+| Opera & Opera Beta | **Ignore browser boot failures** | The Chromium engine ships inside the APK (an 84 MB 32-bit `libopera.so`, kept byte-identical by patching). If its load or start still fails (e.g. x86 hardware without ARM translation), Opera's MainLibraryBoot coordinator announces the failure to the welcome flow, which previously called the now-hidden *broken installation* dialog and then waited forever — the "stuck on the purple splash, black screen after restart" symptom. This patch converts those failure announcements into success notifications so startup always continues. The coordinator and its callback interface are located fully structurally (stable `"MainLibraryBoot: "` log tag). |
+| Opera, Opera Beta & GX | **Spoof app signature** | Presents Opera's original "Opera Software" signing certificate to the app instead of the Morphe key, using a `PackageInfo.CREATOR` parcel proxy installed by a tiny extension (see `extensions/`, ApkSignatureKillerEx lineage). Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics); with the spoof those reads keep their vendor-build behavior. The official certificate (SHA-256 `5d6afbf8…b8`) is bundled; an optional `signature` option accepts a custom Base64 DER. |
 | Opera & Opera Beta | **Hide broken installation dialog** | Neutralizes the modal *"Your app installation appears to be broken. Try to uninstall and reinstall … again."* This dialog is Opera's **crash-recovery nag**, not a signature check — it also appears on unmodified installs after a crash, inside app-cloning tools (dual-space), or on ARM/x86 mismatches. Because a patched build cannot be "fixed" by reinstalling, the patch turns the dialog builder into a no-op and forces the `OperaApplication` broken-installation flag to `false` so startup continues normally. See [`evidence/ANALYSIS.md`](evidence/ANALYSIS.md) §"Broken installation dialog" for the full chain. |
 | Opera & Opera Beta | **Remove sponsored Speed Dial** | Appends `WHERE 0` to the suggested-sites database queries (`SELECT * FROM partner_data`, `… FROM partner_tree LIMIT 1`, `… FROM domain_data`), so no sponsored/partner tiles are ever shown. Schema and regular Speed Dial are untouched. |
 | Opera & Opera Beta | **Disable Acceptable Ads whitelist** | Scans `assets/abp_files/op/`, detects lists that consist *only* of allow directives (`DOCUMENT`/`WHITE.PLAIN`/`WHITE.GLOB` and no `BLACK` section) and replaces them with an empty compiled list under the same file name. Neutralizes the Google/Yandex measurement whitelist and the Taboola/gambling/affiliate whitelist — and any future pure-whitelist list Opera adds. |
@@ -96,6 +97,15 @@ compatibility with that app (as Morphe Manager does). On Opera Beta
 104.0.5262.91143 and Opera stable 103.3.5234.91185 `base.apk` all six
 Opera/Beta patches succeed; on Opera GX 3.3.18 the two GX-compatible patches
 succeed.
+
+The runtime hook extension is compiled against the real Android framework
+and mechanically audited: `tools/build_extension.sh` builds `extension.mpe`
+and runs `tools/AuditExtDex.java`, which resolves **every** `android/*`
+reference in the built dex against the framework through reflection and fails
+the build if any of them would not exist on a device. (That guard is the
+outcome of v1.2.0, whose stub-compiled extension crashed every patched app at
+startup.) `tools/FindStrings.java` and `tools/VerifyApkSig.java` are the
+matching inspection helpers used to verify patched output.
 
 ## What the user asked for vs. what is technically possible
 
@@ -213,6 +223,7 @@ your bundle declares its app targets.
 patches/src/main/kotlin/app/template/patches/
 ├── opera/
 │   ├── OperaCompat.kt                  Compatibility targets (stable/beta/GX)
+│   ├── analytics/DisableAnalyticsPatch.kt      all: tracker endpoints → dead host
 │   ├── ads/DisableAdModulesPatch.kt    stable+beta: Pangle/Mintegral/Liftoff
 │   ├── ads/RemoveSponsoredSpeedDialPatch.kt  stable+beta: partner_data SQL
 │   ├── adblock/DisableAcceptableAdsPatch.kt  stable+beta: whitelist assets
@@ -223,8 +234,11 @@ patches/src/main/kotlin/app/template/patches/
 patches/src/main/resources/extensions/extension.mpe   raw-dex extension bundled in the .mpp
 extensions/extension/src/.../SignatureHookApp.kt      runtime hook source (Kotlin, no stdlib)
 tools/
-├── android-stubs/                      compile-only android framework stubs
-├── build_extension.sh                  builds extension.mpe (kotlinc + D8, no Android SDK)
+├── build_extension.sh                  builds+audits extension.mpe (real framework, no Android SDK)
+├── AuditExtDex.java                    audits every android/* ref in the extension dex
+├── FindStrings.java                    finds where strings live in an APK's dex (fields vs code)
+├── VerifyApkSig.java                   apksig-based output signature check
+├── .cache/                             downloaded build deps (gitignored)
 └── verify_patches.py                   static fingerprint verification harness
 patches/src/main/kotlin/util/
 ├── PatchListGenerator.kt               patches-list.json generator (from the template)

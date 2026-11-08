@@ -81,10 +81,12 @@ internal val extractPackageNamePatch = resourcePatch {
 val operaSpoofAppSignaturePatch = bytecodePatch(
     name = "Spoof app signature",
     description = "Makes the app see the original Opera signing certificate " +
-        "after Morphe re-signs it. Opera's first run downloads its Chromium " +
-        "engine (MainLibraryBoot) and re-signed APKs can fail that setup with " +
-        "a foreign certificate, which previously left the app stuck on the " +
-        "welcome splash. Does not bypass Play Integrity hardware attestation.",
+        "after Morphe re-signs it. Opera's code reads its own signature in " +
+        "several places (preinstall partner checks, the MoMi SDK, metrics), " +
+        "and a patched build would answer those reads with the Morphe key. A " +
+        "PackageInfo.CREATOR parcel proxy presents the vendor certificate, so " +
+        "those code paths keep their vendor-build behavior. Does not bypass " +
+        "Play Integrity hardware attestation.",
     default = true,
 ) {
     compatibleWith(OPERA_COMPATIBILITY, OPERA_DIRECT_COMPATIBILITY, OPERA_BETA_COMPATIBILITY, OPERA_GX_COMPATIBILITY)

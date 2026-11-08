@@ -2,6 +2,9 @@ rootProject.name = "morphe-patches-opera"
 
 pluginManagement {
     repositories {
+        // Local builds without a GitHub token: publish MorpheApp/morphe-patcher and
+        // MorpheApp/morphe-patches-gradle-plugin to the local Maven repository first.
+        mavenLocal()
         maven("https://maven.aliyun.com/repository/public")
         maven {
             name = "GitHubPackages"
@@ -25,6 +28,7 @@ dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.PREFER_SETTINGS
     repositories.clear()
     repositories {
+        mavenLocal()
         maven("https://maven.aliyun.com/repository/public")
         maven("https://maven.aliyun.com/repository/google")
         mavenCentral()
