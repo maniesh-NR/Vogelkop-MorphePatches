@@ -20,6 +20,24 @@ API="https://api.github.com/repos/$REPO_SLUG"
 
 auth=(-H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json")
 
+# retry wrapper: uploads.github.com occasionally drops a connection (curl 22/56)
+gh_upload() {  # gh_upload <release-id> <file> <name> [content-type]
+    local rid="$1" file="$2" name="$3" ct="${4:-application/octet-stream}" n
+    for n in 1 2 3 4 5; do
+        if curl -sS -o /dev/null -w '%{http_code}' -X POST "${auth[@]}" \
+            -H "Content-Type: $ct" --data-binary "@$file" \
+            "https://uploads.github.com/repos/$REPO_SLUG/releases/$rid/assets?name=$name" \
+            | grep -qE '^(201|200)$'; then
+            echo "  uploaded $name"
+            return 0
+        fi
+        echo "  upload $name failed (attempt $n/5), retrying in $((n*3))s…" >&2
+        sleep $((n*3))
+    done
+    echo "upload of $name failed after 5 attempts" >&2
+    return 1
+}
+
 echo "== push main =="
 git push origin main
 
@@ -35,10 +53,14 @@ PAYLOAD=$(python3 -c \
 RELEASE_ID=$(curl -sf "${auth[@]}" -X POST "$API/releases" -d "$PAYLOAD" \
     | python3 -c "import json,sys;print(json.load(sys.stdin)['id'])")
 
-echo "== upload asset (release $RELEASE_ID) =="
-curl -sf "${auth[@]}" -X POST \
-    -H "Content-Type: application/octet-stream" \
-    --data-binary "@$BUNDLE" \
-    "$API/releases/$RELEASE_ID/assets?name=patches-$VER.mpp" >/dev/null
+echo "== upload assets (release $RELEASE_ID) =="
+gh_upload "$RELEASE_ID" "$BUNDLE" "patches-$VER.mpp"
+for kind in sources javadoc; do
+    f="patches/build/libs/patches-$VER-$kind.mpp"
+    [ -f "$f" ] && gh_upload "$RELEASE_ID" "$f" "$(basename "$f")"
+done
+if [ -f SHA256SUMS.txt ]; then
+    gh_upload "$RELEASE_ID" SHA256SUMS.txt SHA256SUMS.txt text/plain
+fi
 
 echo "done: https://github.com/$REPO_SLUG/releases/tag/v$VER"
