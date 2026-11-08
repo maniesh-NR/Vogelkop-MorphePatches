@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "patches": [
     {
       "name": "Disable Acceptable Ads whitelist",
@@ -567,7 +567,7 @@
     },
     {
       "name": "Spoof app signature",
-      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics), and a patched build would answer those reads with the Morphe key. A PackageInfo.CREATOR parcel proxy presents the vendor certificate, so those code paths keep their vendor-build behavior. Does not bypass Play Integrity hardware attestation.",
+      "description": "Makes the app see the original Opera signing certificate after Morphe re-signs it. Opera's code reads its own signature in several places (preinstall partner checks, the MoMi SDK, metrics), and a patched build would answer those reads with the Morphe key. Signature-reading call sites are redirected to a helper that presents the vendor certificate, with a PackageInfo.CREATOR parcel proxy as a second, independent layer. Does not bypass Play Integrity hardware attestation.",
       "default": true,
       "category": null,
       "compatiblePackages": [
