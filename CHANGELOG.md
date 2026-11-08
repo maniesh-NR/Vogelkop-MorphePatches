@@ -5,6 +5,60 @@ Opera GX) are documented here. Versions follow the tags in this repository;
 each tag matches a GitHub release carrying the compiled `patches-<version>.mpp`
 bundle.
 
+## v1.2.5 (2026-11-08)
+
+### Modded-APK cross-analysis: permission hygiene + wider endpoint net
+
+Two community modded Opera builds (vadj's Opera 103.3.5234.91185 mod and
+ANiK555's Opera Mini mod, both from mobilism) were downloaded, decompiled and
+diffed against the original APKs to harvest techniques for this bundle.
+
+- **New patch: *Remove ad & tracking permissions*** (default on, all four
+  supported packages). Deletes ad-profiling/tracking entries from
+  AndroidManifest.xml: Google Privacy Sandbox
+  `ACCESS_ADSERVICES_AD_ID`/`_ATTRIBUTION`/`_TOPICS`, the Google Advertising
+  ID (`com.google.android.gms.permission.AD_ID`), Play install-referrer
+  attribution (`BIND_GET_INSTALL_REFERRER_SERVICE`),
+  `android.permission.READ_BASIC_PHONE_STATE` and the Huawei AppGallery
+  telemetry shim — remove-if-present semantics (5 entries on stable/beta,
+  4 on GX), plus the `android.adservices.AD_SERVICES_CONFIG` manifest
+  property when a future build declares one. The permission list mirrors the
+  one the ANiK555 Opera Mini mod strips from its manifest (the only part of
+  that build that is statically readable — its dexes are DexProtector-protected
+  and its own native lib `libANiK555.so` is injected). Apps must already
+  tolerate every runtime permission being denied, so nothing user-visible
+  can break.
+- **Disable analytics & tracking: endpoint list extended** from 81 to 93
+  constants on stable/beta (12 on GX, up from 8): the Pangle/TikTok ad
+  pipeline (`*.pangle.io`, `api16-access-ttp-b.tiktokpangle-b.us`,
+  `lf-static.tiktokpangle-cdn-us.com`, `sf16-static.i18n-pglstatp.com`,
+  `analytics.tiktok.com/i18n/pixel`), the Liftoff/Vungle pipeline
+  (`logs./events./adx./config.ads.vungle.com`), AppsFlyer including its
+  Privacy-Sandbox trigger (`privacy-sandbox.appsflyersdk.com`) — all hosts
+  enumerated from the string-pool diff of vadj's mod, which deleted the
+  whole Pangle SDK (3,731 `com.bytedance.*` classes + its IAB OMOID consent
+  stack) — and Google's crash telemetry (`*.crashlytics.com`, present on GX).
+  `www.`/`ssl.`/`app.`/`api2.`/`register.` subdomain spellings were
+  consolidated into bare-domain CONTAINS matches. The host rewrites verified
+  in the patched output dex: every reachable ad/measurement call site now
+  points at `0.0.0.0`.
+- **Validation of our existing approach**: vadj's mod does not delete the
+  Opera mediation loader either — it only excludes `split_pangle_ads` from
+  its merge and lets the loader fall back to the no-op ads provider, which
+  is precisely the safety argument documented for *Disable ad modules*
+  since v1.0.0. His only other change is a self-promotion dialog
+  (`com.ap.va.abror`), not adopted.
+- Full E2E re-run on real APKs: all patches pass on Opera stable
+  103.3.5234.91185 (base + merged), Opera Beta 104.0.5262.91143 (base) and
+  Opera GX 3.3.18 (base).
+
+### Signing key rotated again
+
+The sandbox holding the v1.2.4 private key was recycled between sessions;
+the key was regenerated and `morphe-signing.pub` updated (same procedure as
+the v1.1.2 and v1.2.4 rotations — the bundle signature is self-contained, so
+Manager verification is unaffected).
+
 ## v1.2.4 (2026-11-08)
 
 ### Startup diagnostics — the app now reports its own crashes
