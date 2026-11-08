@@ -18,6 +18,26 @@ API="https://api.github.com/repos/$REPO_SLUG"
 [ -n "${GITHUB_ACTOR:-}" ] && [ -n "${GITHUB_TOKEN:-}" ] || {
     echo "export GITHUB_ACTOR and GITHUB_TOKEN first" >&2; exit 1; }
 
+# Guard against the (real, bit us in v1.2.5) failure mode where a later
+# `build`-dependent gradle task re-runs `jar` AFTER buildAndroid and rewrites
+# the bundle as a plain unsigned jar without classes.dex. buildAndroid must
+# be the LAST gradle task; verify the artifact is actually the signed one.
+python3 - "$BUNDLE" <<'PYEOF'
+import struct, sys, zipfile, io
+data = open(sys.argv[1], 'rb').read()
+eocd = data.rfind(b'PK\x05\x06')
+clen = struct.unpack_from('<H', data, eocd + 20)[0]
+comment = data[eocd + 22:eocd + 22 + clen]
+if not comment.startswith(b'MorpheSig1 '):
+    sys.exit(f"{sys.argv[1]} is NOT signed (no MorpheSig1 comment) — "
+             "run `./gradlew buildAndroid` as the LAST gradle task, then retry")
+names = zipfile.ZipFile(io.BytesIO(data)).namelist()
+if not any(n.endswith('classes.dex') for n in names):
+    sys.exit(f"{sys.argv[1]} has no classes.dex — the jar task overwrote the "
+             "buildAndroid output; re-run `./gradlew buildAndroid` last")
+print(f"bundle OK: signed ({clen}-byte comment), classes.dex present, {len(data)} bytes")
+PYEOF
+
 auth=(-H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github+json")
 
 # retry wrapper: uploads.github.com occasionally drops a connection (curl 22/56)
