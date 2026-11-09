@@ -150,9 +150,6 @@ binaries forever). All anonymously downloadable:
 - `opera-gx-3.3.18-v1.2.5-test.apk` — desktop-CLI GX build, all 5 GX patches
 - `Vogelkop-Opera-Stable-103.3-patched-v1.2.4-full.apk` / `-nospoof.apk` —
   v1.2.4 full builds (untested by user so far)
-- `morphe-desktop-all.jar` — the Morphe Desktop CLI used for E2E patch tests
-- `opera-beta-104.0.5262-v1.2.6-test.apk`, `opera-gx-3.3.18-v1.2.6-test.apk` —
-  fresh v1.2.6 E2E builds (beta: 9 patches, gx: 5 patches)
 
 Original .apkm SHA-256s (inputs are APKMirror downloads, 2026-11-07):
 stable `284fb24c1822752cbfff41b1a37bdec2…` (see filename), beta
