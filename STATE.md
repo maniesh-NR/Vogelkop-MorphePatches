@@ -242,3 +242,5 @@ v1.3.0 build notes: gradle needs GITHUB_ACTOR/GITHUB_TOKEN non-null at settings-
 (the token lives in the git remote URL — extract to .buildenv, gitignored, never print it);
 JDK_JAVA_OPTIONS=-Xmx2560m; a patched-APK rebuild takes ~8 min on the sandbox (zero-patch
 fast path is 10 s). Keystore: morphe.keystore, alias `morphe`, store+key password `Morphe`.
+- **B0b** merge-WITH-pangle control (APKEditor merge incl. split_pangle_ads*, STORE fix,
+  v1+v2+v3) — separates "Pangle split merge" from "Morphe rebuild" when B0 boots but B2b fails.
