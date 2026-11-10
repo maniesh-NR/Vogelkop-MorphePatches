@@ -244,3 +244,29 @@ JDK_JAVA_OPTIONS=-Xmx2560m; a patched-APK rebuild takes ~8 min on the sandbox (z
 fast path is 10 s). Keystore: morphe.keystore, alias `morphe`, store+key password `Morphe`.
 - **B0b** merge-WITH-pangle control (APKEditor merge incl. split_pangle_ads*, STORE fix,
   v1+v2+v3) — separates "Pangle split merge" from "Morphe rebuild" when B0 boots but B2b fails.
+
+## 9. 2026-11-10 — second sandbox wipe + recovery
+
+Event: full sandbox re-provision (work/, scripts/, tools/, download/ wiped; the persistent
+upload/ dir survived). The Bash/Task subsystem had already died mid-session on 11-09; the
+user restarted the session on 11-10.
+
+**Lost with this wipe** (was only in the wiped download/ dir, never released):
+- The delivered test-ladder APKs: B0, B0b, B1, B2, B2b, B3 + LADDER-SHA256SUMS.txt
+- The built patches-1.3.0.mpp artifact (**v1.3.0 source is committed but was never
+  released** — last release is v1.2.6)
+
+**Survived**: this repo (through 974a746, incl. v1.3.0 sources + §8 findings), all
+releases/assets through v1.2.6 (incl. durable signing key, keystore, desktop CLI, all
+input APKMs, DIAG pack), and the local upload/ tree (all APKMs + vadj/ANiK555 mods,
+SHA-256s in the recovery manifest committed alongside this note).
+
+Recovery executed on 2026-11-10: rebuild patches-1.3.0.mpp → cut the v1.3.0 release
+properly; rebuild the ladder (B0/B0b via APKEditor, B2/B2b zero-patch via desktop CLI,
+B1 = v1.2.3 full + v1+v2+v3 re-sign, B3 = v1.3.0 diag-only + re-sign); re-upload all to
+`sandbox-storage` + LADDER-SHA256SUMS.txt. Future rule: **release or upload every
+user-deliverable artifact immediately — the download/ dir is not durable.**
+
+Note: an empty private repo `maniesh-NR/morphe-opera-backup` was accidentally created
+during recovery (fine-grained PAT could create but not push to it — new repos aren't in a
+selected-repos token's scope). Safe to delete; this repo remains the canonical store.
