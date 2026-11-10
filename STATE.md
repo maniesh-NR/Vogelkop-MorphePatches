@@ -383,3 +383,49 @@ morphe.keystore (new) · SHA256SUMS.txt. All state=uploaded, verified via API li
 1. On-device boot test (9-row checklist). 2. Merge with .apkm splits via build_bisect.sh
 (uploaded APK is base-only). 3. Publish v1.3.1. 4. Revoke PAT. 5. Then wipe this release
 per its own note (it still contains morphe-signing.key + the new APK keystore).
+
+## 12. 2026-11-10 (even later) — parse-error postmortem + UNIVERSAL v1.3.1 build (D0) uploaded
+
+User hit **"There was a problem while parsing the package"** installing the base-only APK.
+
+**Root cause (confirmed via aapt2 xmltree):** bundle base module carries
+`android:isSplitRequired=true` + `requiredSplitTypes="base__density"` → Android refuses
+standalone install no matter how valid the rest is. (HANDOFF.md had warned "base-only,
+not the final installable" — now proven in practice.) Everything else was healthy:
+arsc/.so stored uncompressed, manifest parsed, signature valid.
+
+**Fix:** APKEditor 1.4.9 (`m -i merge_in -o out`, B0-rung method) merging the patched
+base + 46 splits → universal APK. APKEditor's output was already zipaligned
+(`zipalign -c -p 4` rc=0); signed its raw output directly (a zipalign rewrite emitted
+hundreds of "header mismatch" warnings on APKEditor's zip style — skipped to stay
+closest to the proven B0 pipeline).
+
+**D-rung (new):**
+- **D0 = `Opera_Beta_104.0.5262.91143_v1.3.1_universal_signed.apk`** — v1.3.1 patches
+  ONLY on STOCK base (no v1.3.0 Morphe functional patches), universal-merged.
+  153,368,929 bytes, sha256 d714dcad75c74d10645f816c242347db8c44a8dbd8d61dc8cd74b7cfffc22b7a.
+  Uploaded + verified downloadable. This is the installable test vehicle for the
+  v1.3.1 features (dialog bypass + VPN Pro removal) in isolation.
+- **D1 (pending)** = C1 (all v1.3.0 Morphe patches minus spoof) + v1.3.1 patches =
+  the full v1.3.1 release content. Blocked this session: C1 download from the release
+  throttled to ~53 KB/s (26 MB of 177 MB in 500 s; APKEditor jar from the same host
+  later came instantly, so transient). Retry when convenient: download C1, apktool d,
+  run apply_v131_patches.py (NOTE: script's class paths are smali_classes3-hardcoded;
+  generalize to glob smali* before running on C1), apktool b, sign.
+
+**Verification performed on D0 (all pass):** isSplitRequired/requiredSplitTypes = 0 ·
+badging parses · VpnPro components = 0 · free-VPN VpnReceiver = 1 kept · arsc + .so
+Stored · unzip -t clean · apksigner verify Verifies (v3) · **bytecode proof via
+dexdump on the final APK**: `wdn.a()Z` = `const/4 v0, #0; return v0` (2 insns),
+`r65.l(Z)Z` = same — both feature gates hard-dead in the shipped dex.
+
+**apksigner quirk (documented, not a problem):** `verify --verbose` reports
+"v1: false, v2: false, v3: true" for minSdk≥29 APKs — it does not attempt v1/v2
+verification for that platform range. v1 JAR artifacts ARE present
+(META-INF/MORPHE.SF/.RSA + 770 KB MANIFEST.MF). Installability on Android 10+ is
+guaranteed by the verifying v3 signature (v3 supported since API 28; minSdk 29).
+
+**Install notes for D0:** device must be Android 10+ (minSdk 29 — the A50 baseline on
+Android 9 Pie cannot install this app at all, patched or not) · uninstall any previous
+Morphe/ladder build first (keystore rotated, §11) · boot test checklist in
+docs/v1.3.1/HANDOFF.md.
