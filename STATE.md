@@ -288,3 +288,45 @@ Recovery executed on 2026-11-10 (COMPLETE):
 Note: an empty private repo `maniesh-NR/morphe-opera-backup` was accidentally created
 during recovery (fine-grained PAT could create but not push to it — new repos aren't in a
 selected-repos token's scope). Safe to delete; this repo remains the canonical store.
+
+## 10. 2026-11-10 (later) — LADDER VERDICT: patch content is the killer; bisect rungs C1/C2 delivered
+
+User ladder results (all tested on device, uninstall between rungs):
+
+| Rung | Recipe | Result |
+|---|---|---|
+| B0 | APKEditor merge, no pangle, v1+v2+v3, no Morphe | **Boots** |
+| B2b | Morphe zero patches, v1+v2+v3 | **Boots** |
+| B1 | v1.2.3 ALL patches, v1+v2+v3 | **Crashes immediately** |
+| B3 | v1.3.0 diag-only (exclusive, no spoof), v1+v2+v3 | **Boots** |
+
+Verdict: Morphe pipeline exonerated (B2b), v1+v2+v3 re-signing exonerated (B0/B2b/B3),
+diagnostics exonerated (B3). **One (or more) of the functional patches in the "all"
+selection kills the app at launch.** Prime suspect: `Spoof app signature` — instant-crash
+signature matches Application-class failure, and the patch swaps superclasses of TWO
+classes (`com.opera.android.OperaApplication` AND `com.leanplum.LeanplumApplication`
+-> `app.template.extension.extension.SignatureHookApp`; Leanplum swap newly observed on
+Beta 104).
+
+Bisect rungs built (scripts/build_bisect.sh in build sandbox; from patches-1.3.0.mpp,
+both re-signed v1+v2+v3, both include "Startup diagnostics" for traces):
+- **C1** `morphe-v130-nospoof-v123.apk` = all patches MINUS spoof (default selection
+  `-d "Spoof app signature"`). Dex-verified: NO class extends SignatureHookApp.
+- **C2** `morphe-v130-spoofdiag-v123.apk` = spoof ONLY + diag (`--exclusive -e "Spoof app
+  signature" -e "Startup diagnostics"`). Dex-verified: OperaApplication + LeanplumApplication
+  both extend SignatureHookApp.
+- SHA-256: C1 068c8e02…, C2 95875bfe… (C-SHA256SUMS.txt). Delivered to download/.
+
+Interpretation for next results: C2 crash => spoof is the killer (fix or drop the
+superclass swap; consider patch-level getPackageInfo hooking without Application swap).
+C1 crash => killer among the other 8 (bisect further in halves). Both boot => interaction
+effect (spoof × another patch) — then pair-testing.
+
+Also requested by user (feature work for v1.3.1, pending recon):
+1. Remove the purple first-launch Terms & Conditions dialog (Next button).
+2. Remove the startup "make Opera the default browser" prompt.
+3. Remove the "Help us make Opera better" dialog AND force its data-collection toggles
+   OFF by default without user intervention.
+Recon = jadx re-install + Beta 104 dex/resources analysis (dialogs named Onboarding/
+FirstRun/Terms/Consent/DefaultBrowser expected; privacy toggles map to pref defaults).
+NOTE: user-device baseline is Android 9 (A50) but beta minSdk 29 — irrelevant here.
