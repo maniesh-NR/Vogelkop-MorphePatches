@@ -261,11 +261,29 @@ releases/assets through v1.2.6 (incl. durable signing key, keystore, desktop CLI
 input APKMs, DIAG pack), and the local upload/ tree (all APKMs + vadj/ANiK555 mods,
 SHA-256s in the recovery manifest committed alongside this note).
 
-Recovery executed on 2026-11-10: rebuild patches-1.3.0.mpp → cut the v1.3.0 release
-properly; rebuild the ladder (B0/B0b via APKEditor, B2/B2b zero-patch via desktop CLI,
-B1 = v1.2.3 full + v1+v2+v3 re-sign, B3 = v1.3.0 diag-only + re-sign); re-upload all to
-`sandbox-storage` + LADDER-SHA256SUMS.txt. Future rule: **release or upload every
-user-deliverable artifact immediately — the download/ dir is not durable.**
+Recovery executed on 2026-11-10 (COMPLETE):
+- `patches-1.3.0.mpp` rebuilt from source, signature verified against
+  `morphe-signing.pub` (FtCmZgVC…, same durable key — updates from v1.2.6 need no
+  trust prompt), **released as v1.3.0** (tag, release, sources/javadoc/SHA256SUMS
+  assets). CHANGELOG entry + patches-bundle.json updated for 1.3.0.
+- Test ladder rebuilt and verified (spoof presence checked in dex: B1 has
+  SignatureHookApp, B3/B2b do not; all v1+v2+v3 re-signs verify with
+  `--min-sdk-version 21`; note: default `apksigner verify` infers a high minSdk
+  from Opera's manifest and reports v1/v2 as false even though present — use
+  `--min-sdk-version 21`): B0, B0b (APKEditor merge ± pangle), B2 (zero-patch
+  v2-only), B2b, B1 (v1.2.3 all + v123), B3 (v1.3.0 diag-only + v123).
+- All rungs + LADDER-SHA256SUMS.txt uploaded to `sandbox-storage`; delivered to
+  the user's download dir with LADDER-README.md (testing order + interpretation
+  matrix mirror of §8).
+- Build toolchain notes for the next wipe: APKEditor 1.4.9 (REAndroid), Android
+  build-tools r34 (apksigner 0.9 / zipalign), morphe-desktop-all.jar from
+  sandbox-storage; morphe-patcher/morphe-patches-gradle-plugin cloned fresh and
+  `publishToMavenLocal` needs Aliyun mirrors prepended (sandbox IP rate-limits
+  plugins.gradle.org / maven central) and `-PskipGpgSigning=true` patch (no GPG
+  key in sandbox). Ladder build script preserved at
+  `scripts/build_ladder.sh` + `scripts/upload_ladder.sh` in the build sandbox.
+- User's next action: run the ladder per LADDER-README.md (rungs 1–3 first) and
+  report results; the interpretation matrix determines the fix.
 
 Note: an empty private repo `maniesh-NR/morphe-opera-backup` was accidentally created
 during recovery (fine-grained PAT could create but not push to it — new repos aren't in a
