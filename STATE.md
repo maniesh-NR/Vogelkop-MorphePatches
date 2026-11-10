@@ -429,3 +429,34 @@ guaranteed by the verifying v3 signature (v3 supported since API 28; minSdk 29).
 Android 9 Pie cannot install this app at all, patched or not) · uninstall any previous
 Morphe/ladder build first (keystore rotated, §11) · boot test checklist in
 docs/v1.3.1/HANDOFF.md.
+
+### §12 addendum — D1 BUILT AND UPLOADED (same session, later)
+
+C1 download succeeded on retry (throttle was transient; 2 MB probe flew at 4.1 MB/s, the
+full 177 MB needed one resume). C1 sha256 re-verified = 068c8e02… (matches C-SHA256SUMS).
+
+**D1 = `Opera_Beta_104.0.5262.91143_v1.3.1_FULL_universal_signed.apk`** — the complete
+v1.3.1: C1 content (all v1.3.0 Morphe patches minus spoof) + all 7 v1.3.1 patches.
+176,700,330 bytes, sha256 964c4f497a6aa4a41a9def974a39a15395fc6aaaa10af66c91b55543510b89dc.
+Uploaded to sandbox-storage + release notes updated. **This is the recommended install.**
+
+Build path: apktool d C1 (10 dex — Morphe extension dex included; merged arsc with the
+pangle shared library pkgId 132 decoded fine) → apply_v131_patches.py (ALL anchors
+matched on the C1 tree; target classes still in smali_classes3; 03z mbridge fix needed
+and applied) → apktool b clean → sign raw output → verify.
+
+Anchor notes discovered during D1: WelcomeActivity has a 4th eula_accepted.gdpr site
+(inside `startActivityForResult`, the "lock user into welcome flow" guard) present in
+the ORIGINAL base too (recon §10's display had truncated it). Left unpatched by design:
+it only matters while the welcome flow is actively running, which the onCreate/onStart
+bypass skips entirely. Callers: if BrowserActivity still launches WelcomeActivity on
+fresh state, the patched activity no-ops through the accepted path and finishes.
+
+Verification (D1, all pass): isSplitRequired=0 · badging OK · VpnPro components=0 ·
+VpnReceiver=1 kept · arsc/.so stored · zipalign -c rc=0 · unzip -t clean · apksigner
+verify OK · dexdump bytecode proof: wdn.a()Z and r65.l(Z)Z both `const/4 v0, #0;
+return v0` in the shipped classes3.dex.
+
+Remaining: on-device boot test of D1 (D0 available as the isolation control if D1
+misbehaves — it differs only by the v1.3.0 Morphe patch content) → then publish v1.3.1
+and wipe this release.
