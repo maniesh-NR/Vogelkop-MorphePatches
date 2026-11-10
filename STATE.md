@@ -330,3 +330,56 @@ Also requested by user (feature work for v1.3.1, pending recon):
 Recon = jadx re-install + Beta 104 dex/resources analysis (dialogs named Onboarding/
 FirstRun/Terms/Consent/DefaultBrowser expected; privacy toggles map to pref defaults).
 NOTE: user-device baseline is Android 9 (A50) but beta minSdk 29 — irrelevant here.
+
+## 11. 2026-11-10 (final) — v1.3.1: spoof dropped, first-run dialogs + VPN Pro patches designed, smoke-built, uploaded
+
+**Third sandbox recycle** (toolchain, repo clone, PAT, and morphe.keystore all lost again;
+only `upload/` survived). Everything re-derived from the original .apkm in ~1h.
+
+### v1.3.1 patch set (all NEW except where noted)
+| # | Patch | Mechanism |
+| --- | --- | --- |
+| 01 | Spoof app signature | **REMOVED** — was the sole killer per C1/C2 verdict. Not replaced in v1.3.1 (AppComponentFactory-based redesign parked for v1.4.x). |
+| 02a | Welcome T&C bypass | `WelcomeActivity` onCreate+onStart: insert `const/4 vX, 0x1` after `SettingsManager.i("eula_accepted.gdpr")` move-result, before branch (2 sites). |
+| 02b | CMP consent never asked | `r65.l(Z)Z` body → `const/4 v0, 0x0; return v0`. Never asking = default-deny = all toggles off (user requirement 3 from §10). |
+| 02c | Default-browser prompt never shown | `mm6.e`: insert `const/4 v13, 0x0` after `show_enable_default_browser_dialog_on_startpage` getBoolean, before `if-eqz` (defense-in-depth; welcome-flow bypass already covers it). |
+| 03a | VPN Pro system surfaces | Manifest: strip `VpnProReceiver` (BOOT_COMPLETED), `VpnProQuickSettingsTileService`, `VpnProAppWidget`. Free-VPN `VpnReceiver` untouched. |
+| 03b | VPN Pro feature gate | `wdn.a()Z` ("is VPN Pro supported") body → `const/4 v0, 0x0; return v0`. All 6 callers (ggn/nlk/yvg/yi2/hlk/ydn) short-circuit to "not supported". |
+| 03c | VPN Pro strings blanked | `values/strings.xml`: vpn_pro_title, omnibox_suggested_vpn_pro_title, switch_to_vpn_pro_{button,banner_body,reminder_dialog_title} → `" "`. Localized values-* NOT patched (v1.3.2 if needed). |
+| 03z | (workaround) mbridge theme | `MBCommonActivity android:theme="@-2113273852"` → `@android:style/Theme.Translucent.NoTitleBar`. Pre-existing apktool 2.11.1/aapt2 link failure, hits unpatched tree too. |
+
+### VPN Pro recon summary (evidence/vpn-pro-recon.md)
+53 classes reference VpnPro/vpn_pro/VPN_PRO; 109 vpn_pro* string resources; 3 manifest
+components; `MainMenuVpnProBannerState` exists only as a signature string in r7d (class
+stripped by R8); VpnProBanner inflated only from vpn_settings_info_{premium,free}.xml;
+the main-menu banner visibility is gated upstream by `ggn` → `wdn.a()Z`, which is why
+03b is the load-bearing patch. 3-layer approach (03a+03b+03c) chosen for redundancy.
+
+### Smoke test (this sandbox, passed)
+apktool d (7 dex, 45,244 smali) → apply_v131_patches.py (idempotent, all 6+1 applied) →
+apktool b (all 7 dex assembled clean) → zipalign → apksigner (v3, min-sdk 29) → verify OK,
+unzip -t OK. `Opera_Beta_104.0.5262.91143_v1.3.1_base_signed.apk` 147,004,228 bytes,
+sha256 1ec93ab66d5d679cb81814a05ec061c21fcfa7ec680b6ff2af6d7c531b4f6384.
+**On-device boot test still required before declaring v1.3.1 working** (sandbox has no
+emulator; expect pass — no v1.3.1 patch touches Application hierarchy).
+
+### ⚠ KEYS — read §3 first, then this
+- New `morphe.keystore` (RSA-2048, CN=Morphe,O=Vogelkop,C=ZZ, alias morphe, pass Morphe,
+  sha256 1fb06b11776bc509e6f5a9073d9571c5153307b95b26e54bbcf07b7a7fa880ea) generated
+  this session after the recycle lost the v1.3.0 one.
+- **The release's old morphe.keystore asset (the v1.3.0 APK-signing key) was OVERWRITTEN
+  by the v1.3.1 upload script (same asset name) and is NOT recoverable** (not in git,
+  GitHub asset deletion is permanent, private key not extractable from signed APKs).
+- Impact: NONE public (v1.3.0 never shipped; it was the crashing version). Only test
+  devices with bisect-ladder builds (B0–C2) installed must uninstall before installing
+  new-key builds. C1 remains downloadable+bootable, just not upgrade-in-place.
+- Bundle-signing Ed25519 key (morphe-signing.key) UNAFFECTED — still valid in the release.
+
+### Uploaded to sandbox-storage (release id 438742968)
+Opera_Beta_104.0.5262.91143_v1.3.1_base_signed.apk · morphe_v1.3.1_patches.zip ·
+morphe.keystore (new) · SHA256SUMS.txt. All state=uploaded, verified via API listing.
+
+### Remaining for release (see docs/v1.3.1/HANDOFF.md)
+1. On-device boot test (9-row checklist). 2. Merge with .apkm splits via build_bisect.sh
+(uploaded APK is base-only). 3. Publish v1.3.1. 4. Revoke PAT. 5. Then wipe this release
+per its own note (it still contains morphe-signing.key + the new APK keystore).
