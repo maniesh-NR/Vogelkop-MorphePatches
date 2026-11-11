@@ -530,3 +530,99 @@ Android 10+ device with matching sha256, the next suspects are device-side
 (download integrity, installer quirks) since the artifact now differs from the
 bootable C1 by three surgically-edited entries only. → publish v1.3.1, revoke
 PAT, wipe release.
+
+## 14. 2026-11-11 (later) — E1/E2 device verdict → ROOT CAUSE FOUND in 02b (G-rung)
+
+### Device results (user report)
+- **E1, E2**: install OK, **black screen + immediate crash on open** (E1
+  triggered a Play-Protect prompt during install; heuristic noise, unrelated).
+- **F-rung (patch-subset isolation, built in the lost 4th-sandbox session;
+  exact partition unrecorded — the sandbox wiped before commit): F1, F2 both
+  crash.**
+- **K-rung (true control: B0b bytes + new-key re-sign, never built before):**
+  **boots, same as unpatched.**
+
+Interpretation (robust under every plausible F-partition): re-signing with the
+new keystore, the python zip rewrite, zipalign and the merge substrate are all
+exonerated; the killer lives in the v1.3.1 patch content, with at least one
+killer among the four DEX patches {02a, 02b, 02c, 03b} under any split that
+keeps 02b on both crashing sides (which both F results require).
+
+### Root cause (proven on-host, byte level)
+**02b corrupted `r65.l(Z)Z`'s dead code.** The E-rung patcher wrote
+`const/4 v0,0; return v0` (4 bytes) over the method head. That is a clean,
+whole-instruction write for `wdn.a()` (patch 03b — head iget-boolean is
+exactly 2 units) but NOT for `r65.l`, whose head is a 1-unit `const/4 v0,1`
+followed by the FIRST unit of a 2-unit `if-nez v2,+0x2c`. The 4-byte write
+split the if-nez; its operand bytes `2c 00` (+ the following original bytes
+`55 12 3b 7e`) became the start of the unreachable region and decode as a
+**phantom `sparse-switch v0` with payload offset 2,117,800,533 units**
+(0x7E3B1255) — far outside the 48-unit method.
+
+ART's `MethodVerifier` walks every instruction linearly (unreachable ones
+included) before flow analysis; an unresolvable switch payload = hard
+verification failure. `r65` is instantiated unconditionally in
+`hjf.onCreate` (`application.h()`) — the base class of EVERY Opera activity,
+so the FIRST `WelcomeActivity.onCreate` throws VerifyError → black screen →
+instant crash. Symptom match is exact, and it explains both E1 and E2 (the
+defect is lineage-independent) as well as F1/F2.
+
+Forensic proof (`scripts/dex_structural_walk.py`, ART-style walk of every
+method):
+- C1 (boots): 47,865 methods, **0 failures**.
+- E2 (crashes): **1 failure — `Lr65;->l`** (the phantom switch).
+- E1 (crashes): same single failure.
+- jadx independently chokes on E2's r65.l ("Payload for switch not found at
+  0x7e3b1257") and decompiles the fixed method cleanly.
+
+Why the E-rung verification missed it: `validate_build.py` checked only the
+FIRST TWO instructions of each head-patched method ("const/4 …; return …"),
+never the structural integrity of the rest.
+
+### Fix (G-rung)
+- **02b rewritten**: single operand-byte flip `const/4 v0,1` → `const/4 v0,0`.
+  v0 is the method's only source of "true" (returned at `:cond_0`, passed as
+  the `getBoolean("startup.request_cmp_consent")` default), so EVERY original
+  path now returns false — identical intended semantics (CMP never asked,
+  consents default-denied), zero structural change, no dead code. jadx
+  round-trip: `return (j0 || getBoolean(pref, false)) ? false : false;`.
+- **Structural integrity gate added** to `v131_binary_patch.py`
+  (`structural_walk_dex`): after patching, EVERY method of EVERY dex is
+  walked ART-style (opcode decode + switch/array payload resolution +
+  exact insns_size termination); the build dies on any failure. The gate is
+  also part of `validate_build.py` now. This class of defect cannot ship
+  again.
+- 03b left as-is: its 4-byte write consumes exactly the 2-unit iget-boolean;
+  E1/E2 pass the structural walk on wdn.a (verified), so its dead code is
+  well-formed.
+
+### G-rung artifacts (all: zipalign OK, apksigner v1+v2+v3 OK, badging OK,
+unzip -t OK, structural walk clean except G0-by-design; on
+sandbox-storage + delivered to download/)
+| Rung | Recipe | Expect | sha256 |
+| --- | --- | --- | --- |
+| **G1** `G1-v131fix-FULL-universal_signed.apk` | C1 + all six v1.3.1 patches, FIXED 02b — **release candidate**; differs from crashing E2 by exactly 2 bytes (r65.l units 1-2) | boots | 06b75fd842368f391de88ebcf6471f457b435bd6a710177c031ab39b20a39045 |
+| **G2** `G2-v131fix-STOCK-universal_signed.apk` | B0b + all six patches, FIXED 02b — substrate control | boots | d37d802ec9c822b397e643cfdbc6fbd105cd131d9261b6bb1819bb7ea74f05b1 |
+| **G0** `G0-v131old02b-ONLY-universal_signed.apk` | C1 + ONLY the legacy-broken 02b (differs from booting C1 by the 4 head bytes + dex sums; structural walk fails on exactly r65.l) — forensic confirmation of sufficiency | crash | 28d163d58bad160ed496cb2f6e66d4ee35884e0f9934637a49a0a28b6528f2a6 |
+
+Patcher CLI additions: `--only-02b`, `--02b-legacy-broken` (G0 forensics only;
+the legacy path skips the structural gate for r65.l explicitly).
+
+### Sandbox/recovery note (4th recycle)
+This session started after another full sandbox wipe (work/ gone; only
+upload/ + the GitHub repo/releases survived). Everything was re-derived in
+~45 min from the release assets (B0b/C1/E1/E2/keystore sha256-verified
+against STATE) + fresh toolchain (build-tools r34, androguard 4.1.4,
+jadx 1.5.1). The F/K rungs' exact definitions were NOT committed before the
+wipe — lesson applied: this section records the full G-rung spec + hashes
+at build time, and the patcher/validator changes are committed in the same
+session as the build.
+
+### Remaining
+1. Device test G1 (G2 control, G0 optional forensics) per
+   download/G-RUNG-README.md.
+2. G1 boots → run the 9-row boot-test checklist → publish v1.3.1 (G1 becomes
+   the release artifact), revoke PAT, wipe sandbox-storage release.
+3. G1 still crashes → second killer exists beyond 02b; grab
+   `adb logcat -b crash` (G1 carries the startup-diagnostics extension from
+   C1, so its own trail may be recoverable too).
