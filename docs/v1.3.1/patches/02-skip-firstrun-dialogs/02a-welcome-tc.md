@@ -88,3 +88,22 @@ Same shape: insert `const/4 v0, 0x1`. With `v0 = 1`, `if-nez v0` is always true
   `eula_accepted.gdpr`; the only first-run gate is the two sites above.
   Other references are writes (post-acceptance) or read-via-SettingsManager
   helpers that are not on the welcome-flow critical path. Safe.
+
+## Binary-implementation addendum (2026-11-11, E-rung — supersedes the site list above)
+
+Androguard ground truth on the shipped dex shows the smali recon above
+**under-counted**: `WelcomeActivity` has **FOUR**
+`SettingsManager.i("eula_accepted.gdpr")` sites, not two:
+
+| # | Method | Reg / branch | Role |
+| --- | --- | --- | --- |
+| 1 | `onCreate` #1 | `v4` / `if-eqz` | gates `m9k.S()` pre-onboarding hook (Site 1 above ✓) |
+| 2 | `onCreate` #2 | `v1` / `if-eqz` | **the actual fresh-launch gate**: chooses `q0o.f()` (proceed) vs adding the onboarding/T&C fragment. Missed by the smali recon; NOT patched in D1 — D1 would still have shown the T&C onboarding on a fresh install |
+| 3 | `onStop` | `v0` / `if-nez` | re-lock guard (mislabeled "onStart" as Site 2 above; the `apply_v131_patches.py` text-replace did land in this method) |
+| 4 | `startActivityForResult` | `v0` / `if-nez` | lock-in wrapper (`rm5.z` + `nqi` callback). Now patched too: since the patch never writes `eula_accepted.gdpr`, the wrapper would otherwise stay **permanently** engaged |
+
+The binary patcher (`scripts/v131_binary_patch.py`) replaces
+`invoke (3 units) + move-result (1 unit)` — 8 bytes — with
+`const/4 vN, 0x1 + 3 × nop` at all four sites: length-preserving, no branch
+offset fixups, the getter call is skipped (it is a pure SharedPreferences
+read). Post-patch disassembly is asserted by `scripts/validate_build.py`.

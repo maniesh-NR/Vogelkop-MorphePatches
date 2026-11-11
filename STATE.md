@@ -460,3 +460,73 @@ return v0` in the shipped classes3.dex.
 Remaining: on-device boot test of D1 (D0 available as the isolation control if D1
 misbehaves — it differs only by the v1.3.0 Morphe patch content) → then publish v1.3.1
 and wipe this release.
+
+## 13. 2026-11-11 — E-rung: D1 parse-error on device confirmed → binary patch pipeline (no apktool anywhere)
+
+User report: **D1 (`Opera_Beta_…_FULL_universal_signed.apk`) also fails on device with
+"there was a problem parsing this package"** (same as base-signed before it).
+
+### Root cause (by elimination; the only systematic difference)
+Every device-proven build (B0/B0b/C1 — installed AND launched) descends from Opera's
+ORIGINAL dex/manifest/arsc bytes. Every apktool-rebuilt build (base_signed, D0, D1)
+passed every host-side check we have (unzip -t, zipalign -c, apksigner verify,
+aapt dump badging, androguard parse, dexdump) yet is rejected by the device
+PackageManager. The one thing they alone share is the **aapt2-recompiled
+resources / re-serialized manifest lineage** (apktool d→b, then APKEditor merge on
+top). §12's isSplitRequired finding correctly explained the base-only failure but
+was not the whole story for universals. Fix: stop recompiling entirely.
+
+### Fix — byte-level patcher `scripts/v131_binary_patch.py` (E-rung)
+Applies the full v1.3.1 patch set with **equal-length binary edits** on a
+device-proven substrate; no apktool, no aapt2, no smali reassembly:
+- 02a: `invoke (3u) + move-result (1u)` → `const/4 vN,val + 3×nop` (8B→8B)
+- 02b/03b: method head (4B) → `const/4 v0,0; return v0`; remainder = dead code
+  (unreachable code is not verified; heads asserted before writing:
+  r65.l = `12 10` const/4 v0,1; wdn.a = `55 10` iget-boolean v0,p0)
+- 03a: binary AXML chunk cut of the 3 VpnPro elements + top-level size fixup
+  (string pool untouched; attrExt-relative attributeStart handled)
+- 03c: in-place string-pool blanking to `" "` — **all locales** (25–26 configs per
+  name; D1 only blanked the default config)
+- 03z: obsolete (was an apktool/aapt2 workaround)
+
+**02a scope corrected to FOUR sites** (androguard ground truth on C1/E1 dexes —
+the v1.3.1 smali recon had under-counted):
+1. onCreate #1 (v4, if-eqz) — gates m9k.S() pre-onboarding hook (doc Site 1 ✓)
+2. onCreate #2 (v1, if-eqz) — **the actual "show onboarding/T&C fragment vs
+   q0o.f() proceed" gate on fresh launches; missed by the smali recon and NOT
+   patched in D1** (D1 would still have shown the T&C onboarding)
+3. onStop (v0, if-nez) — the doc's "Site 2", mislabeled onStart; the smali
+   text-replace did hit this method in D1
+4. startActivityForResult (v0, if-nez) — lock-in wrapper, previously left alone
+   by design; now patched because eula is never written, which would leave the
+   wrapper permanently engaged
+
+### Artifacts (replaced D0/D1 on the release, same asset names)
+- **E2 = `Opera_Beta_104.0.5262.91143_v1.3.1_FULL_universal_signed.apk`**
+  (RECOMMENDED) = C1 (all v1.3.0 Morphe patches minus spoof, device-proven) +
+  binary v1.3.1 patches. 177,405,772 bytes,
+  sha256 8a99ccf6b6e3bbc535015f29779422ad2fa9b1a904bb44af74ea8a508ca59663.
+- **E1 = `Opera_Beta_104.0.5262.91143_v1.3.1_universal_signed.apk`**
+  (isolation control, replaces D0) = STOCK base + 46 splits APKEditor-merged
+  (B0b method) + binary v1.3.1 patches. 153,644,316 bytes,
+  sha256 e84bf658f642a6d0dc195cda81c1e83299b953441fbf4a80533ff763c6a8a384.
+- Both signed morphe.keystore / morphe (v1 JAR + v2 + v3 blocks;
+  `apksigner verify --min-sdk-version 24` → v2: true, v3: true).
+
+### Verification (both E1 & E2, all pass)
+apksigner verify (v2+v3) · zipalign -c -p 4 · aapt dump badging (minSdk 29 /
+targetSdk 37, versionName 104.0.5262.91143) · unzip -t · androguard bytecode
+proof on the shipped dex: `wdn.a()Z` and `r65.l(Z)Z` = `const/4 v0, 0; return v0`,
+mm6.e = `const-string …; const/4 v13, 0; nop; nop`, WelcomeActivity = 4 forced
+`const/4 vN, 1` sites · manifest VpnPro components = 0, free VpnReceiver = 1,
+no isSplitRequired/requiredSplitTypes/split attrs · arsc 5 strings = `" "` in
+every config · **CRC-level entry diff vs substrate: only AndroidManifest.xml +
+classes3.dex + resources.arsc changed** (dex/arsc edits are same-length).
+
+### Remaining
+On-device test of E2 (E1 as the isolation control if E2 misbehaves — they differ
+only by the v1.3.0 Morphe patch content). If E2 also fails to parse on a
+Android 10+ device with matching sha256, the next suspects are device-side
+(download integrity, installer quirks) since the artifact now differs from the
+bootable C1 by three surgically-edited entries only. → publish v1.3.1, revoke
+PAT, wipe release.
