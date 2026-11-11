@@ -52,6 +52,16 @@ BLANK_NAMES = (
     'switch_to_vpn_pro_button',
     'switch_to_vpn_pro_banner_body',
     'switch_to_vpn_pro_reminder_dialog_title',
+    # v1.3.1-R2 extension (W-rung): kill the remaining visible VPN Pro / eSIM
+    # promo texts. The chips themselves are removed at dex level (nt8 emptied),
+    # these blanks are defense-in-depth for any straggler surface.
+    'omnibox_suggested_esim_title',
+    'omnibox_suggested_esim_subtitle',
+    'switch_to_vpn_pro_reminder_dialog_body',
+    'free_vpn_pro_promo_banner_message',
+    'free_vpn_pro_upsell_promo_banner_message_half_year',
+    'free_vpn_pro_upsell_promo_banner_message_yearly',
+    'free_vpn_pro_onboarding_subtitle',
 )
 ANDROID_NS = 'http://schemas.android.com/apk/res/android'
 
