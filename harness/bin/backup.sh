@@ -72,6 +72,7 @@ fi
 # secrets/binaries/caches: repo .gitignore is the second layer (see ADR 0002)
 rsync -a --delete --delete-excluded --max-size=95m \
   --exclude='/.harness' --exclude='/.vault' --exclude='/.git' \
+  --exclude='/.tools' \
   --exclude='/upload'   --exclude='/skills' \
   --exclude='node_modules' --exclude='__pycache__' --exclude='.cache' \
   --exclude='.venv' --exclude='.next' --exclude='*.pyc' --exclude='.DS_Store' \

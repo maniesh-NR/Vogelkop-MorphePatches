@@ -77,6 +77,21 @@ apktool 3.0.3, androguard 4.1.4) was re-provisioned from scratch.
   only the 3 intended files changed (+4 files with benign static-default-value
   encoding drops; class count identical).
 
+## v1.3.2 recon (2026-11-12)
+
+- **#8 adblock defaults + Secure DNS: recon COMPLETE** — full findings in
+  `evidence/adblock-defaults-recon.md`; tested manifest rewriter at
+  `scripts/abp_manifest_patch.py` (byte-exact round-trip on stock; promotes
+  39 lists to default-on, removes `opera_fixes`; stable 103 + beta 104
+  manifests byte-identical). Patch = A(manifest)+B(empty opera_fixes
+  assets)+C(SettingsManager defaults: ad_blocking/dns_over_https_enabled/
+  dns_over_https_mode → 1)+D(pin zi3.k/q → h(), classes.dex). Custom-list
+  UI already ships in 103/104. Implementation awaits the W2 device verdict
+  (target substrate).
+- Sandbox toolchain re-provisioned from scratch again (recycle #3):
+  jadx 1.5.2 + baksmali 3.0.10 under `/home/z/my-project/.tools/`
+  (excluded from the backup mirror); recon dumps under `.tools/recon/`.
+
 ## Tooling (reconstructed this session)
 
 - `scripts/v131_binary_patch.py` — fixed-02b patcher, `--only`, `--no-patches`,

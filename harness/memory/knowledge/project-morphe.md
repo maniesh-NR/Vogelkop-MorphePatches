@@ -52,15 +52,23 @@ These answer the ROADMAP's open question "which list set reached 100%?":
 - Add **custom blocklist support** (user can add their own lists).
 - **Secure DNS on by default, provider Cloudflare (1.1.1.1)**.
 
-Recon still needed: adblock settings storage + list seeding path; secure-DNS
-setting location (both per ROADMAP #8). Target substrate: the W2 lineage once
-it passes its device round.
+Recon COMPLETE 2026-11-12 (see `evidence/adblock-defaults-recon.md` +
+`docs/v1.3.2-ROADMAP.md` #8): catalog + mode bitmasks live in
+`assets/op/abp.manifest` (binary format reverse-engineered, rewriter at
+`scripts/abp_manifest_patch.py`); defaults live in SettingsManager.<init>
+(classes3); the catalog can be replaced by server pushes (zi3/no7/ko7) so
+the patch also pins zi3.k/q to assets. Implementation awaits the W2
+device verdict.
 
 ## Gotchas
 
-- `scripts/upload_storage.py` has STALE paths from the old `/tmp/my-project`
-  sandbox layout (and a `/tmp` token path) — use
-  `harness/bin/storage_upload.py` instead, or fix it when touching it.
+- `scripts/upload_storage.py` (repo root scripts/) has STALE paths from the
+  old `/tmp/my-project` layout — use `harness/bin/storage_upload.py`.
+- Sandbox toolchain is volatile: jadx/baksmali/apktool were wiped by recycle
+  #3 (2026-11-12) and re-provisioned under `/home/z/my-project/.tools/`
+  (jadx 1.5.2, baksmali 3.0.10; dir excluded from the backup mirror).
+  Background processes are reaped between tool calls — run long decompiles
+  in the FOREGROUND with a ≤10-min timeout, one dex at a time.
 - Opera Beta inputs are `base.apk` + 39 splits inside the `.apkm`; GX is a
   WebView app (66 MB). Full input matrix: README "Which APK to patch".
 - Play Protect prompts for every sideloaded APK — installer property, not
