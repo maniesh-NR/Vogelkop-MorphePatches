@@ -23,7 +23,7 @@ mirror, so there is no recursion.
 + One repo, one history: the git log doubles as the backup log, and project
   commits interleave naturally with auto-snapshots.
 + Uncommitted rung work left behind by a crashed session is swept up by the
-  hourly job instead of being lost.
+  scheduled job instead of being lost.
 - Two copies of mirrored files on disk (the mirror is small by design).
 - A concurrently editing session can be snapshotted mid-edit; acceptable for
   a crash-safety backstop — it is a backup, not a release.

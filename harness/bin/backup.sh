@@ -41,6 +41,10 @@ if [ ! -f "$TOKEN_FILE" ]; then
     log "ERROR: no token at $TOKEN_FILE (and no uploaded key)"; exit 1
   fi
 fi
+# materialize the vault copy (askpass.sh reads from there)
+if [ "$TOKEN_FILE" != "$VAULT/github.token" ]; then
+  mkdir -p "$VAULT"; cp -- "$TOKEN_FILE" "$VAULT/github.token"; chmod 600 "$VAULT/github.token"
+fi
 TOKEN="$(tr -d '[:space:]' < "$TOKEN_FILE")"
 [ -n "$TOKEN" ] || { log "ERROR: token file is empty"; exit 1; }
 
@@ -124,7 +128,7 @@ cat > "$CLONE/harness/state/LATEST.md" <<EOF
 - Backup (UTC): $TS
 - Sandbox root: $SANDBOX
 - Mirror: $FILES files, $SIZE (filtered; see decisions/0002)
-- Schedule: automated hourly + end-of-session (see AGENTS.md)
+- Schedule: automated every 8 h + end-of-session (see AGENTS.md)
 
 ## Changed since the previous backup (first 60)
 \`\`\`

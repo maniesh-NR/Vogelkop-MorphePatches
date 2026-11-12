@@ -4,7 +4,7 @@ From the project's own history plus this bootstrap:
 
 - Sandbox recycles are THE threat model: two recycles during v1.3.x lost the
   toolchain, the keystore and repo history (root STATE.md header). Back up at
-  rung boundaries AND let the hourly job sweep up anything uncommitted.
+  rung boundaries AND let the scheduled job sweep up anything uncommitted.
 - `upload/` can contain live secrets (two different token files found on
   2026-11-12). Never mirror it unfiltered; never print such files; compare by
   hash (`cmp`/`sha256sum`) rather than reading them.

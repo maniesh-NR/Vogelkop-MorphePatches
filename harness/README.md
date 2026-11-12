@@ -5,8 +5,8 @@ Infrastructure that stops sandbox recycles from losing work. It lives in the
 and provides:
 
 1. **Frequent sandbox backups** — a filtered mirror of `/home/z/my-project`
-   plus any uncommitted project work, pushed to GitHub every hour and at the
-   end of every working session.
+   plus any uncommitted project work, pushed to GitHub every 8 hours and at
+   the end of every working session.
 2. **Harness-like memory** — structured, versioned agent memory (core /
    knowledge / episodes / decisions / procedures + a working-memory handoff
    file), so a fresh sandbox can resume exactly where the last one stopped.
@@ -66,8 +66,8 @@ bash /home/z/my-project/.harness/vogelkop/harness/bin/install.sh
 ```
 
 Then restore sandbox files with `bin/restore.sh` if needed, re-create the
-hourly cron job, and re-download big binaries from the `sandbox-storage`
-prerelease.
+automated backup cron job (every 8 h), and re-download big binaries from the
+`sandbox-storage` prerelease.
 
 ## Everyday use
 
@@ -92,7 +92,8 @@ python3 /home/z/my-project/.harness/vogelkop/harness/bin/storage_upload.py FILE 
 ## Schedule
 
 - **Automated**: a platform cron job ("Vogelkop sandbox backup") runs
-  `bin/backup.sh` hourly. It is a no-op when nothing changed.
+  `bin/backup.sh` every 8 hours (platform limit: 3 scheduled agent turns
+  per day). It is a no-op when nothing changed.
 - **Session end**: required after every work rung — see `AGENTS.md`.
 
 ## Security

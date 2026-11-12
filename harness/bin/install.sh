@@ -16,15 +16,20 @@ VAULT="$SANDBOX/.vault"
 CLONE="$SANDBOX/.harness/vogelkop"
 REPO_URL="${VOGELKOP_REPO:-https://github.com/maniesh-NR/Vogelkop-MorphePatches.git}"
 
-# 1. locate / import the token
+# 1. locate / import the token (always materialize the vault copy:
+#    askpass.sh and backup.sh read from $VAULT/github.token)
 TOKEN_FILE="${VOGELKOP_TOKEN:-$VAULT/github.token}"
 if [ ! -f "$TOKEN_FILE" ]; then
   UP="$SANDBOX/upload/Vogelkop access key.txt"
   [ -f "$UP" ] || { echo "ERROR: no token (looked at '$TOKEN_FILE' and the uploaded key)"; exit 1; }
-  mkdir -p "$VAULT"; cp -- "$UP" "$TOKEN_FILE"
+  TOKEN_FILE="$UP"
 fi
-chmod 600 "$TOKEN_FILE" 2>/dev/null || true
-TOKEN="$(tr -d '[:space:]' < "$TOKEN_FILE")"
+mkdir -p "$VAULT"
+if [ "$TOKEN_FILE" != "$VAULT/github.token" ]; then
+  cp -- "$TOKEN_FILE" "$VAULT/github.token"
+fi
+chmod 600 "$VAULT/github.token"
+TOKEN="$(tr -d '[:space:]' < "$VAULT/github.token")"
 [ -n "$TOKEN" ] || { echo "ERROR: token file is empty"; exit 1; }
 
 # 2. verify the token and resolve the login

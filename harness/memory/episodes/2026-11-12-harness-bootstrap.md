@@ -23,8 +23,9 @@
   `storage_upload.py`, AGENTS.md protocol (harness + root pointer), README.
 - Mirror policy tuned for a PUBLIC repo: `upload/`, `skills/`, secrets,
   binaries excluded; `state/MANIFEST.txt` records what exists (names+sizes).
-- First backup pushed and verified on GitHub; hourly automated job created;
-  fresh-sandbox install path tested end-to-end (dry run).
+- First backup pushed and verified on GitHub; automated job created (every
+  8 h — the platform caps scheduled agent turns at 3/day, so hourly was
+  rejected); fresh-sandbox install path tested end-to-end (dry run).
 
 ## Outcome / handoff
 

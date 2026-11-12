@@ -7,7 +7,8 @@
   files found on 2026-11-12), `download/` (deliverables), `scripts/` (agent
   scripts), `skills/` (platform skills — internal, never mirror).
 - The platform provides a cron tool for scheduled agent turns (used for the
-  hourly backup job). A system crontab would NOT survive — do not use one.
+  automated backup job; note: max 3 triggers/day). A system crontab would NOT
+  survive — do not use one.
 - Tools verified present: git 2.47.3, rsync 3.5.0, flock, curl, jq, python3
   (venv at /home/z/.venv). Egress to api.github.com and github.com works.
 - The sandbox root is itself a local-only git repo (branch `main`, one

@@ -4,7 +4,8 @@ Updated: 2026-11-12 (bootstrap session, UTC)
 
 ## Current state
 
-- Harness LIVE: hourly auto-backup job ("Vogelkop sandbox backup"), scripts
+- Harness LIVE: automated backup job "Vogelkop sandbox backup" (every 8 h —
+  the platform caps scheduled agent turns at 3/day), scripts
   in `harness/bin/`, memory seeded, first snapshot pushed and verified.
 - Project: v1.3.0 released; v1.3.1 W-rung W1/W2 built + host-verified,
   awaiting DEVICE TEST RESULTS from the user (root STATE.md §W-rung).

@@ -10,7 +10,7 @@ destroyed the toolchain, keystores and uncommitted rungs (see root
 `STATE.md`). Only `/home/z/my-project` persists; processes never do. This
 harness keeps, on GitHub: (a) a filtered mirror of the sandbox, (b)
 structured agent memory, (c) big binaries in the `sandbox-storage`
-prerelease — updated hourly and at session end.
+prerelease — updated every 8 hours and at session end.
 
 ## Canonical paths
 
@@ -52,7 +52,8 @@ prerelease — updated hourly and at session end.
 
 ## Automated backups
 
-A platform cron job ("Vogelkop sandbox backup") runs `bin/backup.sh` hourly —
+A platform cron job ("Vogelkop sandbox backup") runs `bin/backup.sh`
+every 8 hours (the platform caps scheduled agent turns at 3 per day) —
 a no-op when clean, and a sweep for uncommitted work when not. It is a
 backstop, not a substitute for "Session end": commit meaningfully yourself;
 the auto-snapshot is for crash safety only.
