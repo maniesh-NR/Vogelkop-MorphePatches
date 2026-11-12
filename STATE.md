@@ -77,6 +77,82 @@ apktool 3.0.3, androguard 4.1.4) was re-provisioned from scratch.
   only the 3 intended files changed (+4 files with benign static-default-value
   encoding drops; class count identical).
 
+| W1 | C1 + {02b, 02c, 03b, 03c-extended} (binary only) | **boots** — same as S3; four-innocent combo cleared |
+| W2 | W1 content + smali-rebuilt classes3.dex (02a', 02d, 02e, 03d) | installs, splash → PERSONALIZATION (T&C/features/consent gone — patches visibly work) → **"Start browsing" FREEZES; relaunch = black screen** |
+
+## W2 post-mortem (2026-11-12, root cause FOUND)
+
+W2 got through the entire redesigned onboarding and froze at the LAST gate.
+Full mechanism (verified in smali; classes/labels from recon dumps):
+
+1. After the last due step, the flow driver (`q0o.f()` → `cek` case 10,
+   classes.dex) checks `q0o.d.invoke()` = `tzn` case 2 =
+   `((m9k) activity.p.get()).e.g()`. FALSE → it posts `q0n(16)` = `g49`
+   (the "Almost there!" dependencies-loading screen) instead of `k0o.d`
+   (END → `L()` → `J()` → `g9k.J()` → browser).
+2. `m9k` = fresh-install startup-dependency waiter. `m9k.e` initializes to
+   `has_waited_for_startup_dependencies || !SettingsManager.J()`; `J()` is
+   `version_code == 0` = FRESH INSTALL, so on first run the waiter is ARMED.
+3. Two `k9k` deps must complete before `e` flips true:
+   - `j9k`: waits for the remote-config bundle (`jk5.a()` reads the
+     `config_bundle.active` pref); retries via `avj.g(2, mni-23)` — a queue
+     gated on startup-state bit 2 — then parks an `i9k` observer.
+   - `bac`: waits for the Leanplum/Braze start response (`m9c.a()`, the
+     "appboy-manager" Lazy + `Leanplum.addStartResponseHandler`).
+4. `g49.onCreate` arms a give-up timeout (`mni` case 24 → `m9k.R(true)`)
+   through `umi.tcl.d(...)` + `coh.k(~15s)` — the umi startup-flow delayed
+   executor. In S1 AND W2 neither the deps nor this timeout ever fire →
+   permanent "Almost there!"/black screen. (S1 and W2 share the same
+   divergence from stock: flow started during onCreate via `q0o.f()` with
+   the EULA-path timing skipped — exact stalled link not isolated, and with
+   the fix below it no longer matters.)
+5. Corroboration: W2 relaunch shows black (queue empty on rebuild because
+   PERSONALIZATION wrote its done-pref, so `cek` goes straight to the
+   `tzn`-2 check → still false → `g49` with no splash). S1 hung identically
+   at "Almost there!". Stock/C1/S3-S6 boot because the waiter resolves.
+
+### Fix (X-rung, v1.3.1-R3)
+
+- **02f — waiter bypass**: `m9k.<init>` forces the initial `jze` value to
+  TRUE (dead-code `const/4 p5, 0x1` insert before `Boolean.valueOf`). The
+  waiter never arms: `tzn`-2 returns true → `k0o.d` END → browser. Every
+  steady-state launch already skips the waiter (`version_code != 0`), so
+  forcing first-run parity with subsequent runs is low-risk. `t77` case 11
+  also writes `has_waited_for_startup_dependencies` when `e` fires true.
+- **02h — splash skip**: `q0o.f()`'s `pushed.sequence != 2` posting of
+  `q0n(15)` (hch = `delayed_launch_fragment`, the "Opera logo + loading
+  bar" screen) is bypassed (`if-eq v0,v1,:cond_2e` → `goto/16`). Only
+  readers of `pushed.sequence` are this site (dead) and cfn case 0xd
+  (forced false by 02e). hch's 10s force-launch timeout is thereby retired.
+- X1 = W2 + 02f (differential). X2 = W2 + 02f + 02h (feature candidate,
+  flash first).
+
+## X-rung build (2026-11-12, awaiting device results)
+
+- Base: `W-rung-rebuilt-classes3.dex` re-downloaded from the storage
+  release; W2 content provenance verified in the decoded tree (02a' sites
+  1/2, three cfn forced-false sites, nt8 empty array) before editing.
+- Toolchain re-provisioned for recycle #3: smali 3.0.10 (library jar from
+  Google Maven + baksmali fat jar classpath + antlr-runtime 3.5.3),
+  build-tools r34 under `work/tools/android-14/`. No apktool needed — raw
+  baksmali/smali on the dex directly.
+- `scripts/apply_x_rung_patches.py` (whitespace-flexible anchored edits,
+  hard assertions) + `scripts/build_x_rung.sh` (splice → binary-patch
+  02b/02c/03b/03c → zipalign → apksigner v1+v2+v3).
+- Host verification, both builds: structural gate 0 failures across all
+  dexes; 02b/02c/03b anchors held on the rebuilt dex; full smali-tree diff
+  vs the W2 tree = exactly 1 file (X1: m9k) / 2 files (X2: m9k, q0o);
+  entry-diff vs C1 = exactly {classes3.dex, resources.arsc, 3 signature
+  files}; all 9 patch markers re-verified inside the SIGNED APKs
+  (02a'×2, 02d/02e×3, 03d, 02f, [02h], 02b, 02c, 03b).
+- Uploaded to the storage release: X1/X2 APKs + X-rung dexes +
+  `X-RUNG-SHA256SUMS.txt`.
+
+```
+9e75640a5307979c2152c606bede55550e93e64052d6a01c01abc108ae48b66f  X1-rung-universal_signed.apk
+45d60f9a4674f21366e1e0d039fe9a3abbbf6b764cfaf7765bb0e00d10bdc410  X2-rung-universal_signed.apk
+```
+
 ## v1.3.2 recon (2026-11-12)
 
 - **#8 adblock defaults + Secure DNS: recon COMPLETE** — full findings in
