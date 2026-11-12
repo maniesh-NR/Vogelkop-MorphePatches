@@ -1,12 +1,13 @@
 # NEXT_SESSION.md — working memory / handoff
 
-Updated: 2026-11-12 (bootstrap session, UTC)
+Updated: 2026-11-12 (backup-policy session, UTC)
 
 ## Current state
 
-- Harness LIVE: automated backup job "Vogelkop sandbox backup" (every 8 h —
-  the platform caps scheduled agent turns at 3/day), scripts
-  in `harness/bin/`, memory seeded, first snapshot pushed and verified.
+- Harness LIVE with **event-driven backups** (ADR 0004): every execution
+  plan ends with `harness/bin/backup.sh` as its final step; the 8-hour
+  cron job was deleted 2026-11-12. Scripts in `harness/bin/`, memory
+  seeded, snapshots pushed and verified.
 - Project: v1.3.0 released; v1.3.1 W-rung W1/W2 built + host-verified,
   awaiting DEVICE TEST RESULTS from the user (root STATE.md §W-rung).
 
@@ -35,5 +36,6 @@ Updated: 2026-11-12 (bootstrap session, UTC)
 
 1. `git -C /home/z/my-project/.harness/vogelkop pull --rebase --autostash origin HEAD`
 2. Read `memory/MEMORY.md` → this file → root `STATE.md`.
-3. Do the work; at rung boundaries follow AGENTS.md "Session end"
-   (episode → NEXT_SESSION update → `backup.sh`).
+3. Do the work. EVERY reply ends with `bash harness/bin/backup.sh`
+   (AGENTS.md "End of every prompt — MANDATORY final step"); at rung
+   boundaries also write an episode + update this file BEFORE the backup.

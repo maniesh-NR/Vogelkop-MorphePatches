@@ -5,8 +5,9 @@ Infrastructure that stops sandbox recycles from losing work. It lives in the
 and provides:
 
 1. **Frequent sandbox backups** — a filtered mirror of `/home/z/my-project`
-   plus any uncommitted project work, pushed to GitHub every 8 hours and at
-   the end of every working session.
+   plus any uncommitted project work, pushed to GitHub as the LAST step of
+   every execution plan: every prompt response ends with a backup (no
+   fixed-interval timer — see `memory/decisions/0004`).
 2. **Harness-like memory** — structured, versioned agent memory (core /
    knowledge / episodes / decisions / procedures + a working-memory handoff
    file), so a fresh sandbox can resume exactly where the last one stopped.
@@ -42,7 +43,7 @@ harness/
 
 ## Fresh sandbox (bootstrap)
 
-The clone, the vault and the cron job are gone after a recycle. With the
+The clone and the vault are gone after a recycle. With the
 token available (uploaded as `Vogelkop access key.txt`, or already at
 `.vault/github.token`):
 
@@ -65,9 +66,9 @@ GIT_ASKPASS=/home/z/my-project/.vault/askpass.sh GIT_TERMINAL_PROMPT=0 \
 bash /home/z/my-project/.harness/vogelkop/harness/bin/install.sh
 ```
 
-Then restore sandbox files with `bin/restore.sh` if needed, re-create the
-automated backup cron job (every 8 h), and re-download big binaries from the
-`sandbox-storage` prerelease.
+Then restore sandbox files with `bin/restore.sh` if needed and re-download
+big binaries from the `sandbox-storage` prerelease. There is no cron job to
+re-create — backups run at the end of every execution plan (ADR 0004).
 
 ## Everyday use
 
@@ -89,12 +90,14 @@ python3 /home/z/my-project/.harness/vogelkop/harness/bin/storage_upload.py FILE 
    uncommitted project work in the clone), then push — with rebase-retry on
    divergence and automatic re-import of a re-uploaded key on auth failure.
 
-## Schedule
+## Backup policy
 
-- **Automated**: a platform cron job ("Vogelkop sandbox backup") runs
-  `bin/backup.sh` every 8 hours (platform limit: 3 scheduled agent turns
-  per day). It is a no-op when nothing changed.
-- **Session end**: required after every work rung — see `AGENTS.md`.
+- **Event-driven, no timers** (ADR 0004): `bin/backup.sh` is the last step
+  of every execution plan — every prompt response ends with a backup. It
+  is a cheap no-op when nothing changed, so it runs even after trivial
+  turns.
+- There is no scheduled backup job; the former 8-hour platform cron job
+  was removed on 2026-11-12 by owner decision.
 
 ## Security
 

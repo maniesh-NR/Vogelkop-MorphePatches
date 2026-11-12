@@ -17,8 +17,10 @@ this repository's Opera de-ads patches. Stored in the `harness/` section of
 
 1. Secrets are never printed, committed or echoed. The backup secret guard
    aborts a push if a known token string appears anywhere in the clone.
-2. After finishing meaningful work: write an episode in `memory/episodes/`,
-   update `state/NEXT_SESSION.md`, then run `bin/backup.sh`.
+2. EVERY execution plan ends with `bin/backup.sh` as its FINAL step — send
+   the reply only after it returns (no-op when clean; ADR 0004). At rung
+   boundaries also write an episode in `memory/episodes/` and update
+   `state/NEXT_SESSION.md` before the backup.
 3. Do not hand-edit `backup/sandbox/**` — it is rsync-managed.
 4. The sandbox is recycled between sessions; anything outside
    `/home/z/my-project` (and every running process) is ephemeral.

@@ -1,6 +1,6 @@
 # ADR 0003 — backup frequency
 
-Date: 2026-11-12 · Status: accepted
+Date: 2026-11-12 · Status: **superseded by [0004](0004-event-driven-backups.md)**
 
 ## Decision
 

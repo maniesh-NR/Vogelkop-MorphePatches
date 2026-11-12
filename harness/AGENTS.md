@@ -10,7 +10,7 @@ destroyed the toolchain, keystores and uncommitted rungs (see root
 `STATE.md`). Only `/home/z/my-project` persists; processes never do. This
 harness keeps, on GitHub: (a) a filtered mirror of the sandbox, (b)
 structured agent memory, (c) big binaries in the `sandbox-storage`
-prerelease — updated every 8 hours and at session end.
+prerelease — updated as the last step of every execution plan.
 
 ## Canonical paths
 
@@ -40,23 +40,31 @@ prerelease — updated every 8 hours and at session end.
 - NEVER write secrets into the clone — the backup secret guard aborts the
   push on known token values, and the repo is public.
 
-## Session end (and after every completed rung)
+## End of every prompt — MANDATORY final step
 
-1. Commit your project work with a descriptive rung message, as before.
-2. `harness/bin/session-log.sh "rung title"` → fill the episode file
-   (facts and outcomes, not prose).
-3. Update `harness/state/NEXT_SESSION.md` (current state, open threads,
-   what the next session should do).
-4. `bash harness/bin/backup.sh` — pushes memory + mirror + anything pending.
-5. Confirm the push succeeded before ending the session.
+EVERY execution plan ends with a backup: the reply to a prompt is sent
+only after `harness/bin/backup.sh` has run. No exceptions for trivial
+turns — the script is a cheap no-op when nothing changed.
 
-## Automated backups
+1. Commit your project work with a descriptive message (as before).
+2. If state or open threads changed, update `harness/state/NEXT_SESSION.md`.
+3. `bash harness/bin/backup.sh` — pushes memory + mirror + anything pending.
+4. Only once it returns (pushed, or "clean — nothing to back up") send the
+   reply. A FAILED backup (auth error, oversize file, secret guard) must be
+   reported to the user in the reply, never skipped silently.
 
-A platform cron job ("Vogelkop sandbox backup") runs `bin/backup.sh`
-every 8 hours (the platform caps scheduled agent turns at 3 per day) —
-a no-op when clean, and a sweep for uncommitted work when not. It is a
-backstop, not a substitute for "Session end": commit meaningfully yourself;
-the auto-snapshot is for crash safety only.
+At rung boundaries additionally: create the episode via
+`harness/bin/session-log.sh "rung title"` and fill it in (facts and
+outcomes, not prose) BEFORE the backup, so it is included in the push.
+
+## No scheduled backups (ADR 0004)
+
+There is deliberately NO fixed-interval backup job. Backups are purely
+event-driven — tied to the end of every execution plan (see above). The
+former 8-hour platform cron job ("Vogelkop sandbox backup") was removed
+on 2026-11-12 by owner decision; see `memory/decisions/0004`. If the
+sandbox is recycled mid-prompt, the loss window is bounded by the
+previous prompt's backup.
 
 ## Token lifecycle
 

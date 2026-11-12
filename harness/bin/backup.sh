@@ -56,7 +56,7 @@ mkdir -p "$SANDBOX/.harness"
 
 gc() { git -C "$CLONE" "$@"; }
 
-# single-instance lock (cron vs. interactive session)
+# single-instance lock (concurrent end-of-prompt backups)
 if command -v flock >/dev/null 2>&1; then
   exec 9>"$SANDBOX/.harness/backup.lock"
   flock -n 9 || { log "another backup is running — skipping"; exit 0; }
@@ -128,7 +128,7 @@ cat > "$CLONE/harness/state/LATEST.md" <<EOF
 - Backup (UTC): $TS
 - Sandbox root: $SANDBOX
 - Mirror: $FILES files, $SIZE (filtered; see decisions/0002)
-- Schedule: automated every 8 h + end-of-session (see AGENTS.md)
+- Trigger: last step of every execution plan (see AGENTS.md)
 
 ## Changed since the previous backup (first 60)
 \`\`\`
