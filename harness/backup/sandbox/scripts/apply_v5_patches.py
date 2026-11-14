@@ -38,6 +38,11 @@ match (fail-loud), mirroring apply_v4_patches.py.
 import re
 import sys
 
+USAGE NOTE (v5 session): S1 (SettingsManager defaults) is applied by this
+script; the remaining edits (S2..K1) are applied by apply_v5_patches_part2.py,
+which contains the indentation-corrected anchors (this file's later patterns
+predate a whitespace fix). Run part1 then part2 on a fresh tree.
+
 
 def edit(path, pattern, repl, flags=0, count=1):
     src = open(path).read()
