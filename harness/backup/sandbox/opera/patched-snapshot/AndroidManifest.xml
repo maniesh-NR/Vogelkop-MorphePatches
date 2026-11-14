@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:compileSdkVersion="37" android:compileSdkVersionCodename="17" android:installLocation="internalOnly" android:requiredSplitTypes="base__density" android:splitTypes="" package="com.opera.browser.beta" platformBuildVersionCode="37" platformBuildVersionName="17">
+    <permission android:name="com.opera.browser.beta.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+    <permission android:name="com.opera.browser.beta.permission.PRIVATE_PROVIDERS" android:protectionLevel="signature"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:maxSdkVersion="32" android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:maxSdkVersion="29" android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="com.opera.browser.beta.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+    <uses-permission android:name="com.opera.browser.permission.GET_PREINSTALL_DATA"/>
+    <uses-permission-sdk-23 android:maxSdkVersion="30" android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_ADVERTISE"/>
+    <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission-sdk-23 android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
+    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ORIGIN"/>
+    <uses-permission-sdk-23 android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    <uses-feature android:glEsVersion="0x20000" android:required="true"/>
+    <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
+    <uses-feature android:name="android.hardware.wifi" android:required="false"/>
+    <uses-feature android:name="android.hardware.location.network" android:required="false"/>
+    <uses-feature android:name="android.hardware.location" android:required="false"/>
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone" android:required="false"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
+    <uses-permission android:minSdkVersion="33" android:name="android.permission.READ_BASIC_PHONE_STATE"/>
+    <uses-feature android:name="android.software.leanback" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_TOPICS"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+    <permission android:name="com.opera.browser.beta.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" android:protectionLevel="signature"/>
+    <uses-permission android:name="com.opera.browser.beta.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <uses-permission android:name="com.samsung.android.mapsagent.permission.READ_APP_INFO"/>
+    <uses-permission android:name="com.huawei.appmarket.service.commondata.permission.GET_COMMON_DATA"/>
+    <application android:allowBackup="true" android:appComponentFactory="androidx.core.app.CoreComponentFactory" android:backupAgent="com.opera.android.backup.OperaBackupAgent" android:dataExtractionRules="@xml/data_extraction_rules" android:enableOnBackInvokedCallback="false" android:extractNativeLibs="false" android:fullBackupContent="@xml/full_backup_content" android:fullBackupOnly="true" android:hardwareAccelerated="true" android:hasCode="true" android:icon="@drawable/ic_launcher" android:label="@string/app_icon_label" android:manageSpaceActivity="com.opera.android.settings.cleardata.StorageActivity" android:memtagMode="async" android:multiArch="true" android:name="com.opera.android.OperaApplication" android:networkSecurityConfig="@xml/network_security_config_official_build" android:process="com.opera.browser.beta" android:requestLegacyExternalStorage="true" android:roundIcon="@drawable/ic_launcher" android:supportsRtl="true" android:theme="@style/ActivityWithThemedSystemBarsDefault" android:use32bitAbi="true" android:zygotePreloadName="org.chromium.content_public.app.ZygotePreload">
+        <property android:name="android.app.backup.PROPERTY_USE_RESTRICTED_BACKUP_MODE" android:value="false"/>
+        <provider android:authorities="com.opera.browser.beta.DownloadProvider" android:exported="false" android:grantUriPermissions="true" android:name="com.opera.android.downloads.DownloadProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <provider android:authorities="com.opera.browser.beta.FileProvider" android:exported="false" android:grantUriPermissions="true" android:name="androidx.core.content.FileProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
+        </provider>
+        <provider android:authorities="com.opera.browser.beta.UserSettingsContentProvider" android:exported="false" android:name="com.opera.android.settings.UserSettingsContentProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <provider android:authorities="com.opera.browser.beta.newsfeed" android:exported="false" android:name="com.opera.android.news.newsfeed.internal.cache.NewsfeedContentProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <provider android:authorities="com.opera.browser.beta.BrowserActivityStateContentProvider" android:exported="false" android:name="com.opera.android.BrowserActivityStateContentProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <provider android:authorities="com.opera.browser.beta.BreakpadInitProvider" android:exported="false" android:initOrder="2147483647" android:name="com.opera.android.BreakpadInitProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <provider android:authorities="com.opera.browser.beta.UnparcelIntentExtras" android:enabled="true" android:exported="false" android:initOrder="2147483646" android:name="com.opera.android.UnparcelIntentExtras" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="true" android:launchMode="singleTask" android:name="com.opera.android.BrowserActivity" android:resizeableActivity="true" android:supportsPictureInPicture="true" android:theme="@style/BrowserActivityDefault" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@null" android:label="@string/internet_launcher_a" android:name="com.opera.InternetLauncherA" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_11" android:name="com.opera.Launcher11" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_10" android:name="com.opera.Launcher10" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_9" android:name="com.opera.Launcher9" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_8" android:name="com.opera.Launcher8" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_7" android:name="com.opera.Launcher7" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_6" android:name="com.opera.Launcher6" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_5" android:name="com.opera.Launcher5" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_4" android:name="com.opera.Launcher4" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_3" android:name="com.opera.Launcher3" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_2" android:name="com.opera.Launcher2" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:icon="@drawable/ic_launcher_1" android:name="com.opera.Launcher1" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity-alias android:enabled="true" android:exported="true" android:name="com.opera.Opera" android:targetActivity="com.opera.android.BrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_BROWSER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.startup.WelcomeActivity" android:theme="@style/WelcomeActivityDefault" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.startup.PreviousCrashActivity" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.startup.InstallSplitLocaleActivity" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="false" android:name="com.opera.android.settings.cleardata.StorageActivity" android:process=":manage_space_process" android:theme="@style/AppTheme.Light.Default" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="true" android:launchMode="singleTask" android:name="com.opera.android.uninstall.UninstallActivity" android:theme="@style/UninstallActivityTheme" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity android:configChanges="mcc|mnc|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="true" android:exported="false" android:name="com.opera.android.IntentDispatcherActivity" android:relinquishTaskIdentity="true" android:taskAffinity="" android:theme="@android:style/Theme.NoDisplay">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity-alias android:enabled="false" android:exported="true" android:label="@string/send_to_flow" android:name="com.opera.android.MyFlowSendActivity" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:exported="true" android:name="com.opera.android.webapps.WebappLauncherActivity" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter>
+                <action android:name="com.opera.android.ACTION_START_WEBAPP"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:enabled="@bool/enable_private_search" android:exported="true" android:label="@string/search_private_activity" android:name="com.opera.android.PrivateSearch" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:enabled="true" android:exported="true" android:label="@string/search_in_opera_beta" android:name="com.opera.android.SearchInOpera" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:enabled="false" android:exported="true" android:name="com.opera.android.WebSearchActivity" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.WEB_SEARCH"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:exported="true" android:name="com.opera.android.MainLauncherActivity" android:targetActivity="com.opera.android.IntentDispatcherActivity">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="www.opera.com"/>
+                <data android:path="/ofa/ofa-beta"/>
+                <data android:path="/ofa/ofa-beta/config-bundle"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="about"/>
+                <data android:scheme="ofa"/>
+                <data android:scheme="momi"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+                <data android:mimeType="text/html"/>
+                <data android:mimeType="text/plain"/>
+                <data android:mimeType="application/xhtml+xml"/>
+                <data android:mimeType="application/vnd.wap.xhtml+xml"/>
+                <data android:mimeType="multipart/related"/>
+                <data android:mimeType="message/rfc822"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:mimeType="audio/*"/>
+                <data android:mimeType="video/*"/>
+                <data android:mimeType="application/ogg"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="file"/>
+                <data android:scheme="content"/>
+                <data android:host="*"/>
+                <data android:mimeType="*/*"/>
+                <data android:pathPattern=".*\\.htm"/>
+                <data android:pathPattern=".*\\.html"/>
+                <data android:pathPattern=".*\\.mht"/>
+                <data android:pathPattern=".*\\.mhtml"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="opera"/>
+                <data android:host="jump"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="about"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.speech.action.VOICE_SEARCH_RESULTS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity-alias>
+        <activity android:excludeFromRecents="true" android:exported="false" android:launchMode="singleInstance" android:name="com.opera.android.BrowserRestartActivity" android:process=":restart_browser" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:exported="false" android:name="com.opera.android.snapshot.OfaImageEditorActivity" android:theme="@style/Hype.ImageEditor.AppTheme.Dark"/>
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize" android:exported="false" android:name="com.android.billingclient.api.ProxyBillingActivity" android:theme="@style/Theme.Translucent.TransparentSystemBars"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:documentLaunchMode="intoExisting" android:label="Webapp" android:name="com.opera.android.webapps.WebappActivity" android:persistableMode="persistNever"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.opera.android.FullscreenWebActivity" android:noHistory="true"/>
+        <activity android:autoRemoveFromRecents="true" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.media.MediaPlayerActivity" android:noHistory="true" android:supportsPictureInPicture="true" android:taskAffinity="com.opera.browser.beta.media.MediaPlayerActivity" android:theme="@style/AppTheme.Dark.Default.Translucent"/>
+        <activity android:autoRemoveFromRecents="true" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="true" android:exported="false" android:name="com.opera.android.media.WebPictureInPictureActivity" android:noHistory="true" android:supportsPictureInPicture="true" android:theme="@style/AppTheme.Dark.Default.Translucent"/>
+        <activity android:configChanges="mcc|mnc|keyboard|keyboardHidden|navigation|orientation|screenLayout|screenSize|smallestScreenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTask" android:name="org.chromium.components.media_router.caf.remoting.CafExpandedControllerActivity" android:noHistory="true" android:theme="@style/AppTheme.Dark.Default.Translucent"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.opera.android.account.auth.OperaAuthPortalActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.opera.android.account.auth.EditProfileAuthActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:name="com.opera.android.account.auth.DeleteProfileAuthActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.opera.android.account.auth.FinishAccountSetupAuthActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:name="com.opera.android.account.auth.TwoFactorAuthenticationActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:name="com.opera.android.qr.ScanQrCodeActivity"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:name="com.opera.android.ads.admob.AdMobIntentInterceptor" android:theme="@android:style/Theme.Translucent"/>
+        <activity android:autoRemoveFromRecents="true" android:documentLaunchMode="always" android:excludeFromRecents="true" android:exported="false" android:name="com.opera.android.notifications.NotificationBridge$TrampolineActivity" android:noHistory="true" android:theme="@style/Theme.Translucent.TransparentSystemBars"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.import_data.ImportChromeBookmarksActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.import_data.ImportChromePasswordsActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.import_data.ImportChromeDataActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:excludeFromRecents="false" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.autofill.passwords.picker.AutofillPasswordPickerActivity" android:resizeableActivity="true" android:taskAffinity="com.opera.browser.beta.autofill.AutofillPasswordsActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:name="com.opera.android.weather.ui.WeatherWidgetActivity" android:theme="@style/WeatherWidgetActivityDefault" android:windowSoftInputMode="adjustResize"/>
+        <activity android:autoRemoveFromRecents="true" android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:launchMode="singleTask" android:name="com.opera.android.esim.ui.EsimActivity" android:taskAffinity="com.opera.browser.beta.esim.ui.EsimActivity" android:windowSoftInputMode="adjustResize"/>
+        <service android:exported="false" android:foregroundServiceType="dataSync" android:name="com.opera.android.startup.InitialStartupService"/>
+        <service android:exported="false" android:name="com.opera.android.pushmessaging.GCMBackgroundService"/>
+        <service android:exported="false" android:name="org.chromium.components.background_task_scheduler.internal.BackgroundTaskJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.media.MediaCaptureNotificationService"/>
+        <service android:exported="false" android:foregroundServiceType="mediaPlayback" android:name="com.opera.android.media.OperaMediaNotificationControllerDelegate$PlaybackListenerService">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </service>
+        <service android:exported="false" android:foregroundServiceType="mediaPlayback" android:name="com.opera.android.media.OperaMediaNotificationControllerDelegate$PresentationListenerService">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </service>
+        <service android:exported="false" android:foregroundServiceType="mediaPlayback" android:name="com.opera.android.media.OperaMediaNotificationControllerDelegate$CastListenerService">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </service>
+        <service android:exported="false" android:foregroundServiceType="mediaPlayback" android:name="com.opera.android.media.PlayerService"/>
+        <service android:exported="false" android:foregroundServiceType="shortService" android:name="com.opera.android.browser.external.ExternalAppService"/>
+        <receiver android:exported="true" android:name="com.opera.android.downloads.DownloadNotifierReceiver"/>
+        <meta-data android:name="google_analytics_default_allow_analytics_storage" android:value="true"/>
+        <meta-data android:name="google_analytics_default_allow_ad_storage" android:value="true"/>
+        <meta-data android:name="google_analytics_default_allow_ad_user_data" android:value="true"/>
+        <meta-data android:name="google_analytics_default_allow_ad_personalization_signals" android:value="true"/>
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode"/>
+        <meta-data android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT" android:value="true"/>
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-4721105574136909~7512795887"/>
+        <meta-data android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING" android:value="true"/>
+        <meta-data android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION" android:value="false"/>
+        <meta-data android:name="org.chromium.content.browser.SANDBOXED_SERVICES_NAME" android:value="com.opera.android.browser.chromium.services.SandboxedProcessService"/>
+        <meta-data android:name="org.chromium.content.browser.PRIVILEGED_SERVICES_NAME" android:value="com.opera.android.browser.chromium.services.PrivilegedProcessService"/>
+        <meta-data android:name="org.chromium.content.browser.NUM_SANDBOXED_SERVICES" android:value="40"/>
+        <meta-data android:name="org.chromium.content.browser.NUM_PRIVILEGED_SERVICES" android:value="5"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@null"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService0" android:process=":sandboxed_process0" android:useAppZygote="true"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService1" android:process=":sandboxed_process1"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService2" android:process=":sandboxed_process2"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService3" android:process=":sandboxed_process3"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService4" android:process=":sandboxed_process4"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService5" android:process=":sandboxed_process5"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService6" android:process=":sandboxed_process6"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService7" android:process=":sandboxed_process7"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService8" android:process=":sandboxed_process8"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService9" android:process=":sandboxed_process9"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService10" android:process=":sandboxed_process10"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService11" android:process=":sandboxed_process11"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService12" android:process=":sandboxed_process12"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService13" android:process=":sandboxed_process13"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService14" android:process=":sandboxed_process14"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService15" android:process=":sandboxed_process15"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService16" android:process=":sandboxed_process16"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService17" android:process=":sandboxed_process17"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService18" android:process=":sandboxed_process18"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService19" android:process=":sandboxed_process19"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService20" android:process=":sandboxed_process20"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService21" android:process=":sandboxed_process21"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService22" android:process=":sandboxed_process22"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService23" android:process=":sandboxed_process23"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService24" android:process=":sandboxed_process24"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService25" android:process=":sandboxed_process25"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService26" android:process=":sandboxed_process26"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService27" android:process=":sandboxed_process27"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService28" android:process=":sandboxed_process28"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService29" android:process=":sandboxed_process29"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService30" android:process=":sandboxed_process30"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService31" android:process=":sandboxed_process31"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService32" android:process=":sandboxed_process32"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService33" android:process=":sandboxed_process33"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService34" android:process=":sandboxed_process34"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService35" android:process=":sandboxed_process35"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService36" android:process=":sandboxed_process36"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService37" android:process=":sandboxed_process37"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService38" android:process=":sandboxed_process38"/>
+        <service android:exported="false" android:isolatedProcess="@bool/enable_isolated_processes" android:name="com.opera.android.browser.chromium.services.SandboxedProcessService39" android:process=":sandboxed_process39"/>
+        <service android:exported="false" android:name="com.opera.android.browser.chromium.services.PrivilegedProcessService0" android:process=":privileged_process0"/>
+        <service android:exported="false" android:name="com.opera.android.browser.chromium.services.PrivilegedProcessService1" android:process=":privileged_process1"/>
+        <service android:exported="false" android:name="com.opera.android.browser.chromium.services.PrivilegedProcessService2" android:process=":privileged_process2"/>
+        <service android:exported="false" android:name="com.opera.android.browser.chromium.services.PrivilegedProcessService3" android:process=":privileged_process3"/>
+        <service android:exported="false" android:name="com.opera.android.browser.chromium.services.PrivilegedProcessService4" android:process=":privileged_process4"/>
+        <service android:exported="false" android:name="com.opera.android.osp.OspCollectorService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:enabled="@bool/enable_sync_service" android:exported="true" android:name="com.opera.android.ping.SyncService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter" android:resource="@xml/syncadapter"/>
+        </service>
+        <provider android:authorities="com.opera.browser.beta.ping.provider" android:exported="false" android:name="com.opera.android.ping.SyncProvider" android:permission="com.opera.browser.beta.permission.PRIVATE_PROVIDERS"/>
+        <service android:exported="true" android:name="com.opera.android.ping.SyncAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@xml/authenticator"/>
+        </service>
+        <receiver android:exported="true" android:name="com.opera.android.analytics.OSPPingReceiver">
+            <intent-filter>
+                <action android:name="com.opera.android.action.APP_START"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <service android:enabled="false" android:exported="false" android:name="com.opera.android.analytics.OspAccountService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:enabled="false" android:exported="false" android:name="com.opera.android.analytics.OspPeriodicUploadService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:enabled="false" android:exported="false" android:name="com.opera.android.analytics.OspSingleUploadService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <meta-data android:name="com.samsung.android.sdk.multiwindow.enable" android:value="true"/>
+        <meta-data android:name="com.sec.android.support.multiwindow" android:value="true"/>
+        <meta-data android:name="com.lge.support.SPLIT_WINDOW" android:value="true"/>
+        <meta-data android:name="android.allow_multiple_resumed_activities" android:value="true"/>
+        <meta-data android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME" android:value="org.chromium.components.media_router.caf.CastOptionsProvider"/>
+        <meta-data android:name="org.chromium.content.browser.REMOTE_PLAYBACK_APP_ID" android:value="AA93A640"/>
+        <receiver android:exported="true" android:name="com.opera.android.warmup.PackageUpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="false" android:name="com.opera.android.vpn.VpnReceiver"/>
+        <receiver android:exported="false" android:name="com.opera.android.vpn.VpnProReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <service android:exported="false" android:foregroundServiceType="systemExempted" android:name="com.opera.android.vpn.VpnFailedToConnectService"/>
+        <service android:exported="false" android:name="com.opera.android.warmup.UpdateLibraryService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.notifications.channels.ChannelsUpdateService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.news.newsfeed.internal.NewsPushUploaderService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.gcm.PushNotificationService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.firebase.OperaFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:exported="true" android:icon="@drawable/ic_material_vpn_on" android:label="@string/vpn_pro_title" android:name="com.opera.android.vpn.quick_settings_tile.VpnProQuickSettingsTileService" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE" android:value="true"/>
+            <meta-data android:name="android.service.quicksettings.TOGGLEABLE_TILE" android:value="true"/>
+        </service>
+        <receiver android:exported="false" android:name="com.opera.android.utilities.ShortcutUtils$Receiver">
+            <intent-filter>
+                <action android:name="com.opera.android.Actions.SHORTCUT_ADDED"/>
+            </intent-filter>
+        </receiver>
+        <service android:exported="false" android:foregroundServiceType="dataSync" android:name="com.opera.android.downloads.DownloadService"/>
+        <service android:exported="false" android:name="com.opera.android.downloads.DownloadJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <receiver android:enabled="false" android:exported="true" android:name="com.opera.android.downloads.DownloadBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.opera.android.action.APP_START"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <service android:exported="false" android:name="com.opera.android.browser.PrivateTabsNotificationService"/>
+        <service android:exported="false" android:name="com.opera.android.crashhandler.CrashReportProcessingService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:exported="false" android:name="com.opera.android.notifications.NotificationService"/>
+        <receiver android:exported="true" android:name="com.opera.android.browser.PrivateTabsBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.opera.android.ACTION_CLOSE_ALL_PRIVATE_TABS"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="true" android:name="com.opera.android.preinstall.PreinstallInitializer">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_INITIALIZE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:exported="false" android:label="@string/widget_search_hint" android:name="com.opera.android.BrowserAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/browser_widget_info"/>
+        </receiver>
+        <receiver android:exported="false" android:label="@string/ai_assistant_name" android:name="com.opera.android.aiassistant.appwidget.AiAssistantAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/ai_assistant_widget_info"/>
+        </receiver>
+        <activity android:exported="true" android:icon="@drawable/ic_search_shortcut_widget" android:label="@string/shortcut_search" android:name="com.opera.android.shortcut.SearchShortcutWidgetActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:exported="true" android:icon="@drawable/ic_qr_shortcut_widget" android:label="@string/widget_shortcut_qr_scanner" android:name="com.opera.android.shortcut.QrScannerShortcutWidgetActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:exported="true" android:icon="@drawable/ic_material_ask_ai_widget" android:label="@string/ask_ai" android:name="com.opera.android.shortcut.AriaShortcutWidgetActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <receiver android:exported="false" android:label="@string/vpn_pro_title" android:name="com.opera.android.vpn.app_widget.VpnProAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/vpn_pro_widget_info"/>
+        </receiver>
+        <receiver android:exported="false" android:label="@string/minigame_jump_title" android:name="com.opera.android.minigame.appwidget.JumpMinigameAppWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/jump_minigame_widget_info"/>
+        </receiver>
+        <receiver android:enabled="false" android:exported="true" android:name="com.opera.android.esim.EsimTimeZoneChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <provider android:authorities="com.opera.browser.beta.androidx-startup" android:exported="false" android:name="androidx.startup.InitializationProvider">
+            <meta-data android:name="androidx.profileinstaller.ProfileInstallerInitializer" android:value="androidx.startup"/>
+            <meta-data android:name="androidx.lifecycle.ProcessLifecycleInitializer" android:value="androidx.startup"/>
+            <meta-data android:name="okhttp3.internal.platform.PlatformInitializer" android:value="androidx.startup"/>
+        </provider>
+        <service android:enabled="@bool/autofill_service_enabled" android:exported="true" android:name="com.opera.android.autofill.OperaAutofillService" android:permission="android.permission.BIND_AUTOFILL_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService"/>
+            </intent-filter>
+            <meta-data android:name="android.autofill" android:resource="@xml/opera_autofill_service"/>
+        </service>
+        <activity android:enabled="@bool/autofill_service_enabled" android:excludeFromRecents="true" android:exported="false" android:name="com.opera.android.autofill.OperaAutofillIntentDispatcherActivity" android:taskAffinity="com.opera.browser.beta.autofill" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" android:windowSoftInputMode="adjustResize">
+            <meta-data android:name="WindowManagerPreference:FreeformWindowSize" android:value="maximize"/>
+            <meta-data android:name="WindowManagerPreference:FreeformWindowOrientation" android:value="landscape"/>
+        </activity>
+        <activity android:exported="false" android:name="com.opera.hype.image.editor.ImageEditorActivity" android:theme="@style/Hype.ImageEditor.AppTheme.Dark"/>
+        <service android:exported="false" android:foregroundServiceType="mediaPlayback" android:name="com.opera.android.live_score.LiveCommentaryService"/>
+        <provider android:authorities="com.opera.browser.beta.com.squareup.picasso" android:exported="false" android:name="com.squareup.picasso.PicassoProvider"/>
+        <service android:enabled="false" android:exported="false" android:name="androidx.camera.core.impl.MetadataHolderService">
+            <meta-data android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER" android:value="androidx.camera.camera2.Camera2Config$DefaultProvider"/>
+        </service>
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale" android:enableOnBackInvokedCallback="false" android:exported="false" android:hardwareAccelerated="true" android:name="com.opera.ads.internal.fullscreenad.AdActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|fontScale" android:exported="false" android:name="com.opera.ad.interstitial.AdActivity" android:theme="@android:style/Theme.Translucent"/>
+        <activity android:exported="false" android:name="com.google.android.tv.ads.controls.FallbackImageActivity" android:theme="@style/Theme.AppCompat.NoActionBar.Translucent"/>
+        <receiver android:exported="false" android:name="com.google.android.gms.cast.framework.media.MediaIntentReceiver"/>
+        <service android:exported="false" android:name="com.google.android.gms.cast.framework.ReconnectionService"/>
+        <service android:directBootAware="true" android:exported="false" android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService">
+            <meta-data android:name="com.google.firebase.components:com.google.mlkit.vision.barcode.internal.BarcodeRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <provider android:authorities="com.opera.browser.beta.mlkitinitprovider" android:exported="false" android:initOrder="99" android:name="com.google.mlkit.common.internal.MlKitInitProvider"/>
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="false" android:name="com.google.android.libraries.ads.mobile.sdk.common.AdActivity" android:theme="@style/Theme.GoogleMobileAds"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenLayout|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:name="com.google.android.play.core.hsdp.service.HsdpShimActivity" android:theme="@style/Theme.HsdpServiceTransparent"/>
+        <receiver android:enabled="true" android:exported="false" android:name="com.leanplum.LeanplumPushReceiver">
+            <intent-filter>
+                <action android:name="com.leanplum.LeanplumPushFirebaseMessagingService"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.leanplum.LeanplumJobStartReceiver"/>
+        <service android:name="com.leanplum.LeanplumLocalPushListenerService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <provider android:authorities="com.opera.browser.beta.resources.AndroidContextProvider" android:enabled="true" android:exported="false" android:name="org.jetbrains.compose.resources.AndroidContextProvider"/>
+        <activity android:excludeFromRecents="true" android:exported="false" android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <service android:exported="true" android:name="com.google.android.gms.auth.api.signin.RevocationBoundService" android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION" android:visibleToInstantApps="true"/>
+        <meta-data android:name="com.google.android.play.billingclient.version" android:value="9.0.0"/>
+        <activity android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize" android:exported="false" android:name="com.android.billingclient.api.ProxyBillingActivityV2" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <receiver android:exported="true" android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+            <meta-data android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED" android:value="true"/>
+        </receiver>
+        <service android:directBootAware="true" android:exported="false" android:name="com.google.firebase.messaging.FirebaseMessagingService">
+            <intent-filter android:priority="-500">
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:directBootAware="true" android:exported="false" android:name="com.google.firebase.components.ComponentDiscoveryService">
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar" android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <receiver android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementReceiver"/>
+        <service android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementService"/>
+        <service android:enabled="true" android:exported="false" android:name="com.google.android.gms.measurement.AppMeasurementJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <activity android:exported="false" android:name="com.google.android.gms.common.api.GoogleApiActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <service android:directBootAware="false" android:enabled="@bool/enable_system_alarm_service_default" android:exported="false" android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"/>
+        <service android:directBootAware="false" android:enabled="@bool/enable_system_job_service_default" android:exported="true" android:name="androidx.work.impl.background.systemjob.SystemJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:directBootAware="false" android:enabled="@bool/enable_system_foreground_service_default" android:exported="false" android:name="androidx.work.impl.foreground.SystemForegroundService"/>
+        <receiver android:directBootAware="false" android:enabled="true" android:exported="false" android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"/>
+        <receiver android:directBootAware="false" android:enabled="false" android:exported="false" android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="false" android:exported="false" android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_OKAY"/>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="false" android:exported="false" android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy">
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW"/>
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="false" android:exported="false" android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="false" android:exported="false" android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="@bool/enable_system_alarm_service_default" android:exported="false" android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver">
+            <intent-filter>
+                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:directBootAware="false" android:enabled="true" android:exported="true" android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver" android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS"/>
+            </intent-filter>
+        </receiver>
+        <uses-library android:name="androidx.window.extensions" android:required="false"/>
+        <uses-library android:name="androidx.window.sidecar" android:required="false"/>
+        <uses-library android:name="android.ext.adservices" android:required="false"/>
+        <service android:directBootAware="true" android:exported="false" android:name="androidx.room.MultiInstanceInvalidationService"/>
+        <receiver android:directBootAware="false" android:enabled="true" android:exported="true" android:name="androidx.profileinstaller.ProfileInstallReceiver" android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
+        <provider android:authorities="com.opera.browser.beta.OperaAdsInitProvider" android:exported="false" android:initOrder="101" android:name="com.opera.ads.internal.OperaAdsInitProvider"/>
+        <service android:exported="false" android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery">
+            <meta-data android:name="backend:com.google.android.datatransport.cct.CctBackendFactory" android:value="cct"/>
+        </service>
+        <service android:exported="false" android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <receiver android:exported="false" android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"/>
+        <activity android:exported="false" android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity" android:stateNotNeeded="true" android:theme="@style/Theme.PlayCore.Transparent"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:hardwareAccelerated="true" android:launchMode="singleTop" android:name="com.vungle.ads.internal.ui.VungleActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <activity android:configChanges="locale|keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale" android:exported="false" android:name="com.mbridge.msdk.config.activity.MBRewardVideoActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:configChanges="keyboard|orientation" android:exported="false" android:name="com.mbridge.msdk.activity.MBCommonActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name="com.mbridge.msdk.out.LoadingActivity"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="com.mbridge.msdk.reward.player.MBRewardVideoActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <service android:exported="false" android:foregroundServiceType="systemExempted" android:name="com.kape.vpnservicemanager.data.externals.Service" android:permission="android.permission.BIND_VPN_SERVICE">
+            <meta-data android:name="android.net.VpnService.SUPPORTS_ALWAYS_ON" android:value="false"/>
+            <intent-filter>
+                <action android:name="android.net.VpnService"/>
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.bytedance.sdk.pangle.version" android:value="8.2.0.4"/>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTCeilingLandingPageActivity">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.IABLandingPageActivity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTLandingPageActivity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTPlayableLandingPageActivity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTVideoLandingPageLink2Activity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTHistoryLandingPageActivity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTHistoryActivity" android:theme="@style/tt_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTDelegateActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTWebsiteActivity" android:theme="@style/tt_privacy_landing_page">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTAppOpenAdActivity" android:theme="@style/tt_app_open_ad_no_animation">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTAppOpenAdTransActivity" android:theme="@style/tt_app_open_ad_no_animation_trans">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTRewardVideoActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:name="com.bytedance.sdk.openadsdk.activity.TTRewardWebActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:name="com.bytedance.sdk.openadsdk.activity.TTFullWebActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTRewardExpressVideoActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTFullScreenVideoActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTFullScreenExpressVideoActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <activity android:configChanges="keyboardHidden|orientation|screenSize" android:launchMode="standard" android:multiprocess="true" android:name="com.bytedance.sdk.openadsdk.activity.single.TTAdActivity" android:theme="@style/tt_full_screen_new">
+            <property android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY" android:value="true"/>
+        </activity>
+        <meta-data android:name="com.android.dynamic.apk.fused.modules" android:value="base,liftoff_ads,mintegral_ads"/>
+        <meta-data android:name="com.android.vending.splits.required" android:value="true"/>
+        <meta-data android:name="com.android.stamp.source" android:value="https://play.google.com/store"/>
+        <meta-data android:name="com.android.stamp.type" android:value="STAMP_TYPE_DISTRIBUTION_APK"/>
+        <meta-data android:name="com.android.vending.splits" android:resource="@xml/splits0"/>
+        <meta-data android:name="com.android.vending.derived.apk.id" android:value="1"/>
+    </application>
+</manifest>

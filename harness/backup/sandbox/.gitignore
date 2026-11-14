@@ -1,2 +1,10 @@
-skills/
+upload/
+tools/
+download/
+opera/decoded/
+opera/verify/
+opera/build/
+opera/bundle-src/
+opera/apkm/
 node_modules/
+skills/

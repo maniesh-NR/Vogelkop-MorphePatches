@@ -1,0 +1,1334 @@
+     1→.class public final Lssi;
+     2→.super Ljava/lang/Object;
+     3→.source "SourceFile"
+     4→
+     5→# interfaces
+     6→.implements Ljava/lang/Runnable;
+     7→.implements Lih4;
+     8→
+     9→
+    10→# instance fields
+    11→.field public final synthetic a:B
+    12→
+    13→.field public b:Ljava/lang/Object;
+    14→
+    15→
+    16→# direct methods
+    17→.method public synthetic constructor <init>()V
+    18→    .locals 1
+    19→
+    20→    .line 17
+    21→    const/16 v0, 0xf
+    22→
+    23→    iput-byte v0, p0, Lssi;->a:B
+    24→
+    25→    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    26→
+    27→    return-void
+    28→.end method
+    29→
+    30→.method public synthetic constructor <init>(Ljava/lang/Object;B)V
+    31→    .locals 0
+    32→
+    33→    .line 15
+    34→    iput-byte p2, p0, Lssi;->a:B
+    35→
+    36→    iput-object p1, p0, Lssi;->b:Ljava/lang/Object;
+    37→
+    38→    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    39→
+    40→    return-void
+    41→.end method
+    42→
+    43→.method public synthetic constructor <init>(Ljava/lang/Object;Ljava/lang/Object;B)V
+    44→    .locals 0
+    45→
+    46→    .line 16
+    47→    iput-byte p3, p0, Lssi;->a:B
+    48→
+    49→    iput-object p2, p0, Lssi;->b:Ljava/lang/Object;
+    50→
+    51→    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    52→
+    53→    return-void
+    54→.end method
+    55→
+    56→.method public constructor <init>(Lpno;)V
+    57→    .locals 1
+    58→
+    59→    const/16 v0, 0x1a
+    60→
+    61→    iput-byte v0, p0, Lssi;->a:B
+    62→
+    63→    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    64→
+    65→    .line 13
+    66→    iget-object p1, p1, Lpno;->g:Landroid/webkit/WebView;
+    67→
+    68→    .line 14
+    69→    iput-object p1, p0, Lssi;->b:Ljava/lang/Object;
+    70→
+    71→    return-void
+    72→.end method
+    73→
+    74→.method public constructor <init>(Luuj;)V
+    75→    .locals 1
+    76→
+    77→    const/16 v0, 0x18
+    78→
+    79→    iput-byte v0, p0, Lssi;->a:B
+    80→
+    81→    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+    82→
+    83→    invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+    84→
+    85→    iput-object p1, p0, Lssi;->b:Ljava/lang/Object;
+    86→
+    87→    return-void
+    88→.end method
+    89→
+    90→
+    91→# virtual methods
+    92→.method public final a()V
+    93→    .locals 10
+    94→
+    95→    const/4 v0, 0x0
+    96→
+    97→    move v1, v0
+    98→
+    99→    :goto_0
+   100→    :try_start_0
+   101→    iget-object v2, p0, Lssi;->b:Ljava/lang/Object;
+   102→
+   103→    check-cast v2, Lb2j;
+   104→
+   105→    iget-object v2, v2, Lb2j;->a:Ljava/util/ArrayDeque;
+   106→
+   107→    monitor-enter v2
+   108→    :try_end_0
+   109→    .catchall {:try_start_0 .. :try_end_0} :catchall_1
+   110→
+   111→    const/4 v3, 0x1
+   112→
+   113→    if-nez v0, :cond_1
+   114→
+   115→    :try_start_1
+   116→    iget-object v0, p0, Lssi;->b:Ljava/lang/Object;
+   117→
+   118→    check-cast v0, Lb2j;
+   119→
+   120→    iget v4, v0, Lb2j;->d:I
+   121→
+   122→    const/4 v5, 0x4
+   123→
+   124→    if-ne v4, v5, :cond_0
+   125→
+   126→    monitor-exit v2
+   127→
+   128→    if-eqz v1, :cond_2
+   129→
+   130→    goto :goto_1
+   131→
+   132→    :cond_0
+   133→    iget-wide v6, v0, Lb2j;->e:J
+   134→
+   135→    const-wide/16 v8, 0x1
+   136→
+   137→    add-long/2addr v6, v8
+   138→
+   139→    iput-wide v6, v0, Lb2j;->e:J
+   140→
+   141→    iput v5, v0, Lb2j;->d:I
+   142→
+   143→    move v0, v3
+   144→
+   145→    :cond_1
+   146→    iget-object v4, p0, Lssi;->b:Ljava/lang/Object;
+   147→
+   148→    check-cast v4, Lb2j;
+   149→
+   150→    iget-object v4, v4, Lb2j;->a:Ljava/util/ArrayDeque;
+   151→
+   152→    invoke-virtual {v4}, Ljava/util/ArrayDeque;->poll()Ljava/lang/Object;
+   153→
+   154→    move-result-object v4
+   155→
+   156→    check-cast v4, Ljava/lang/Runnable;
+   157→
+   158→    if-nez v4, :cond_3
+   159→
+   160→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   161→
+   162→    check-cast p0, Lb2j;
+   163→
+   164→    iput v3, p0, Lb2j;->d:I
+   165→
+   166→    monitor-exit v2
+   167→    :try_end_1
+   168→    .catchall {:try_start_1 .. :try_end_1} :catchall_0
+   169→
+   170→    if-eqz v1, :cond_2
+   171→
+   172→    :goto_1
+   173→    invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
+   174→
+   175→    move-result-object p0
+   176→
+   177→    invoke-virtual {p0}, Ljava/lang/Thread;->interrupt()V
+   178→
+   179→    :cond_2
+   180→    return-void
+   181→
+   182→    :cond_3
+   183→    :try_start_2
+   184→    monitor-exit v2
+   185→    :try_end_2
+   186→    .catchall {:try_start_2 .. :try_end_2} :catchall_0
+   187→
+   188→    :try_start_3
+   189→    invoke-static {}, Ljava/lang/Thread;->interrupted()Z
+   190→
+   191→    move-result v2
+   192→    :try_end_3
+   193→    .catchall {:try_start_3 .. :try_end_3} :catchall_1
+   194→
+   195→    or-int/2addr v1, v2
+   196→
+   197→    :try_start_4
+   198→    invoke-interface {v4}, Ljava/lang/Runnable;->run()V
+   199→    :try_end_4
+   200→    .catch Ljava/lang/RuntimeException; {:try_start_4 .. :try_end_4} :catch_0
+   201→    .catchall {:try_start_4 .. :try_end_4} :catchall_1
+   202→
+   203→    goto :goto_0
+   204→
+   205→    :catch_0
+   206→    :try_start_5
+   207→    invoke-virtual {v4}, Ljava/lang/Object;->toString()Ljava/lang/String;
+   208→    :try_end_5
+   209→    .catchall {:try_start_5 .. :try_end_5} :catchall_1
+   210→
+   211→    goto :goto_0
+   212→
+   213→    :goto_2
+   214→    :try_start_6
+   215→    monitor-exit v2
+   216→    :try_end_6
+   217→    .catchall {:try_start_6 .. :try_end_6} :catchall_0
+   218→
+   219→    :try_start_7
+   220→    throw p0
+   221→    :try_end_7
+   222→    .catchall {:try_start_7 .. :try_end_7} :catchall_1
+   223→
+   224→    :catchall_0
+   225→    move-exception p0
+   226→
+   227→    goto :goto_2
+   228→
+   229→    :catchall_1
+   230→    move-exception p0
+   231→
+   232→    if-eqz v1, :cond_4
+   233→
+   234→    invoke-static {}, Ljava/lang/Thread;->currentThread()Ljava/lang/Thread;
+   235→
+   236→    move-result-object v0
+   237→
+   238→    invoke-virtual {v0}, Ljava/lang/Thread;->interrupt()V
+   239→
+   240→    :cond_4
+   241→    throw p0
+   242→.end method
+   243→
+   244→.method public final cancel()V
+   245→    .locals 1
+   246→
+   247→    const/4 v0, 0x0
+   248→
+   249→    iput-object v0, p0, Lssi;->b:Ljava/lang/Object;
+   250→
+   251→    return-void
+   252→.end method
+   253→
+   254→.method public final run()V
+   255→    .locals 9
+   256→
+   257→    iget-byte v0, p0, Lssi;->a:B
+   258→
+   259→    const/4 v1, 0x4
+   260→
+   261→    const/4 v2, 0x2
+   262→
+   263→    const/4 v3, -0x1
+   264→
+   265→    const/4 v4, 0x1
+   266→
+   267→    const/4 v5, 0x0
+   268→
+   269→    const/4 v6, 0x3
+   270→
+   271→    const/4 v7, 0x0
+   272→
+   273→    const/4 v8, 0x0
+   274→
+   275→    packed-switch v0, :pswitch_data_0
+   276→
+   277→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   278→
+   279→    check-cast p0, Ltko;
+   280→
+   281→    iget-object p0, p0, Ltko;->b:Ljava/lang/Object;
+   282→
+   283→    check-cast p0, Lg7m;
+   284→
+   285→    iget-object v0, p0, Lg7m;->k:Ljava/lang/Object;
+   286→
+   287→    check-cast v0, Landroid/os/IInterface;
+   288→
+   289→    if-eqz v0, :cond_0
+   290→
+   291→    invoke-virtual {v0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+   292→
+   293→    check-cast v0, Landroid/os/IInterface;
+   294→
+   295→    invoke-interface {v0}, Landroid/os/IInterface;->asBinder()Landroid/os/IBinder;
+   296→
+   297→    move-result-object v0
+   298→
+   299→    iget-object v1, p0, Lg7m;->i:Ljava/lang/Object;
+   300→
+   301→    check-cast v1, Lxip;
+   302→
+   303→    invoke-interface {v0, v1, v8}, Landroid/os/IBinder;->unlinkToDeath(Landroid/os/IBinder$DeathRecipient;I)Z
+   304→
+   305→    iput-object v7, p0, Lg7m;->k:Ljava/lang/Object;
+   306→
+   307→    invoke-virtual {p0}, Lg7m;->r()V
+   308→
+   309→    :cond_0
+   310→    iput-boolean v8, p0, Lg7m;->a:Z
+   311→
+   312→    return-void
+   313→
+   314→    :pswitch_0
+   315→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   316→
+   317→    check-cast p0, Lwtm;
+   318→
+   319→    iget-object v0, p0, Lwtm;->a:Ljava/lang/Object;
+   320→
+   321→    check-cast v0, Landroid/app/Activity;
+   322→
+   323→    iget-object v1, p0, Lwtm;->c:Ljava/lang/Object;
+   324→
+   325→    check-cast v1, Landroid/view/View;
+   326→
+   327→    if-eqz v1, :cond_3
+   328→
+   329→    invoke-virtual {v0}, Landroid/app/Activity;->isInPictureInPictureMode()Z
+   330→
+   331→    move-result v2
+   332→
+   333→    if-eqz v2, :cond_1
+   334→
+   335→    iget-object v0, p0, Lwtm;->c:Ljava/lang/Object;
+   336→
+   337→    check-cast v0, Landroid/view/View;
+   338→
+   339→    if-eqz v0, :cond_3
+   340→
+   341→    iget-object v1, p0, Lwtm;->a:Ljava/lang/Object;
+   342→
+   343→    check-cast v1, Landroid/app/Activity;
+   344→
+   345→    new-instance v2, Lvr9;
+   346→
+   347→    const/16 v3, 0x1d
+   348→
+   349→    invoke-direct {v2, p0, v0, v3}, Lvr9;-><init>(Ljava/lang/Object;Ljava/lang/Object;B)V
+   350→
+   351→    invoke-virtual {v1, v2}, Landroid/app/Activity;->runOnUiThread(Ljava/lang/Runnable;)V
+   352→
+   353→    goto :goto_1
+   354→
+   355→    :cond_1
+   356→    :try_start_0
+   357→    invoke-virtual {v1}, Landroid/view/View;->getLayoutParams()Landroid/view/ViewGroup$LayoutParams;
+   358→
+   359→    move-result-object v2
+   360→
+   361→    check-cast v2, Landroid/view/WindowManager$LayoutParams;
+   362→
+   363→    if-eqz v2, :cond_3
+   364→
+   365→    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+   366→
+   367→    move-result-object v4
+   368→
+   369→    const v5, 0x7f0708b0
+   370→
+   371→    invoke-virtual {v4, v5}, Landroid/content/res/Resources;->getDimensionPixelSize(I)I
+   372→
+   373→    move-result v4
+   374→
+   375→    invoke-static {v0}, Lhyg;->s(Landroid/app/Activity;)I
+   376→
+   377→    move-result v5
+   378→
+   379→    int-to-float v5, v5
+   380→
+   381→    const v6, 0x3f19999a    # 0.6f
+   382→
+   383→    mul-float/2addr v5, v6
+   384→
+   385→    float-to-int v5, v5
+   386→
+   387→    invoke-static {v4, v5}, Ljava/lang/Math;->min(II)I
+   388→
+   389→    move-result v4
+   390→
+   391→    iput v4, v2, Landroid/view/WindowManager$LayoutParams;->height:I
+   392→
+   393→    invoke-virtual {v0}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+   394→
+   395→    move-result-object v4
+   396→
+   397→    invoke-virtual {v4}, Landroid/content/res/Resources;->getConfiguration()Landroid/content/res/Configuration;
+   398→
+   399→    move-result-object v4
+   400→
+   401→    iget v4, v4, Landroid/content/res/Configuration;->screenWidthDp:I
+   402→
+   403→    const/16 v5, 0x280
+   404→
+   405→    if-le v4, v5, :cond_2
+   406→
+   407→    invoke-static {v0, v5}, Lhyg;->r(Landroid/app/Activity;I)I
+   408→
+   409→    move-result v0
+   410→
+   411→    iput v0, v2, Landroid/view/WindowManager$LayoutParams;->width:I
+   412→
+   413→    goto :goto_0
+   414→
+   415→    :cond_2
+   416→    iput v3, v2, Landroid/view/WindowManager$LayoutParams;->width:I
+   417→
+   418→    :goto_0
+   419→    iget-object p0, p0, Lwtm;->b:Ljava/lang/Object;
+   420→
+   421→    check-cast p0, Landroid/view/WindowManager;
+   422→
+   423→    invoke-interface {p0, v1, v2}, Landroid/view/ViewManager;->updateViewLayout(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+   424→    :try_end_0
+   425→    .catch Ljava/lang/RuntimeException; {:try_start_0 .. :try_end_0} :catch_0
+   426→
+   427→    :catch_0
+   428→    :cond_3
+   429→    :goto_1
+   430→    return-void
+   431→
+   432→    :pswitch_1
+   433→    iget-object v0, p0, Lssi;->b:Ljava/lang/Object;
+   434→
+   435→    check-cast v0, Louo;
+   436→
+   437→    iget-object v1, v0, Louo;->d:Landroid/media/AudioManager;
+   438→
+   439→    invoke-virtual {v1, v6}, Landroid/media/AudioManager;->getStreamVolume(I)I
+   440→
+   441→    move-result v2
+   442→
+   443→    invoke-virtual {v1, v6}, Landroid/media/AudioManager;->getStreamMaxVolume(I)I
+   444→
+   445→    move-result v1
+   446→
+   447→    iget-object v3, v0, Louo;->h:Ljava/lang/Object;
+   448→
+   449→    check-cast v3, Lcpj;
+   450→
+   451→    invoke-virtual {v3}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+   452→
+   453→    if-lez v1, :cond_4
+   454→
+   455→    if-lez v2, :cond_4
+   456→
+   457→    int-to-float v2, v2
+   458→
+   459→    int-to-float v1, v1
+   460→
+   461→    div-float v5, v2, v1
+   462→
+   463→    const/high16 v1, 0x3f800000    # 1.0f
+   464→
+   465→    cmpl-float v2, v5, v1
+   466→
+   467→    if-lez v2, :cond_4
+   468→
+   469→    move v5, v1
+   470→
+   471→    :cond_4
+   472→    iget-object v1, v0, Louo;->f:Ljava/util/concurrent/atomic/AtomicBoolean;
+   473→
+   474→    invoke-virtual {v1, v8}, Ljava/util/concurrent/atomic/AtomicBoolean;->set(Z)V
+   475→
+   476→    iget-object v1, v0, Louo;->e:Ljava/util/concurrent/atomic/AtomicReference;
+   477→
+   478→    invoke-static {v5}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+   479→
+   480→    move-result-object v2
+   481→
+   482→    invoke-virtual {v1, v2}, Ljava/util/concurrent/atomic/AtomicReference;->getAndSet(Ljava/lang/Object;)Ljava/lang/Object;
+   483→
+   484→    move-result-object v1
+   485→
+   486→    check-cast v1, Ljava/lang/Float;
+   487→
+   488→    invoke-virtual {v1}, Ljava/lang/Float;->floatValue()F
+   489→
+   490→    move-result v1
+   491→
+   492→    cmpl-float v1, v1, v5
+   493→
+   494→    if-eqz v1, :cond_5
+   495→
+   496→    iget-object v0, v0, Louo;->b:Landroid/os/Handler;
+   497→
+   498→    new-instance v1, Lhto;
+   499→
+   500→    invoke-direct {v1, p0, v5, v8}, Lhto;-><init>(Ljava/lang/Runnable;FB)V
+   501→
+   502→    invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+   503→
+   504→    :cond_5
+   505→    return-void
+   506→
+   507→    :pswitch_2
+   508→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   509→
+   510→    check-cast p0, Landroid/webkit/WebView;
+   511→
+   512→    invoke-virtual {p0}, Landroid/webkit/WebView;->destroy()V
+   513→
+   514→    return-void
+   515→
+   516→    :pswitch_3
+   517→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   518→
+   519→    check-cast p0, Lhoo;
+   520→
+   521→    iget-object p0, p0, Lhoo;->d:Lmjo;
+   522→
+   523→    new-instance v0, Lumo;
+   524→
+   525→    const-string v1, "timeout"
+   526→
+   527→    invoke-direct {v0, v3, v1}, Lfoo;-><init>(ILjava/lang/String;)V
+   528→
+   529→    new-instance v1, Llio;
+   530→
+   531→    invoke-direct {v1, v0}, Llio;-><init>(Ljava/lang/Exception;)V
+   532→
+   533→    invoke-interface {p0, v1}, Lmjo;->d(Lqio;)V
+   534→
+   535→    return-void
+   536→
+   537→    :pswitch_4
+   538→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   539→
+   540→    check-cast p0, Luuj;
+   541→
+   542→    iget-object v0, p0, Luuj;->c:Ljava/lang/Object;
+   543→
+   544→    check-cast v0, Landroid/view/ViewGroup;
+   545→
+   546→    const/16 v1, 0x8
+   547→
+   548→    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+   549→
+   550→    iget-object v0, p0, Luuj;->c:Ljava/lang/Object;
+   551→
+   552→    check-cast v0, Landroid/view/ViewGroup;
+   553→
+   554→    invoke-virtual {v0}, Landroid/view/View;->getParent()Landroid/view/ViewParent;
+   555→
+   556→    move-result-object v0
+   557→
+   558→    check-cast v0, Landroid/view/ViewGroup;
+   559→
+   560→    iget-object v1, p0, Luuj;->c:Ljava/lang/Object;
+   561→
+   562→    check-cast v1, Landroid/view/ViewGroup;
+   563→
+   564→    invoke-virtual {v0, v1}, Landroid/view/ViewGroup;->removeView(Landroid/view/View;)V
+   565→
+   566→    iput-object v7, p0, Luuj;->c:Ljava/lang/Object;
+   567→
+   568→    return-void
+   569→
+   570→    :pswitch_5
+   571→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   572→
+   573→    check-cast p0, Lsgi;
+   574→
+   575→    iput-boolean v8, p0, Lsgi;->c:Z
+   576→
+   577→    iget-object p0, p0, Lsgi;->e:Ljava/lang/Object;
+   578→
+   579→    check-cast p0, Lrdn;
+   580→
+   581→    invoke-virtual {p0}, Lrdn;->run()V
+   582→
+   583→    return-void
+   584→
+   585→    :pswitch_6
+   586→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   587→
+   588→    check-cast p0, Lcdn;
+   589→
+   590→    iget-object v0, p0, Lcdn;->m:Ltvk;
+   591→
+   592→    iget-object v1, p0, Lcdn;->h:Leej;
+   593→
+   594→    iget-object v3, p0, Lcdn;->g:Lk6l;
+   595→
+   596→    iget v5, p0, Lcdn;->l:I
+   597→
+   598→    if-eq v5, v4, :cond_8
+   599→
+   600→    iget-object v6, p0, Lcdn;->o:Lddn;
+   601→
+   602→    if-nez v6, :cond_8
+   603→
+   604→    if-ne v5, v2, :cond_6
+   605→
+   606→    iget-object v5, p0, Lcdn;->q:Lcom/opera/android/browser/chromium/NetworkTester$NonProxiedTest;
+   607→
+   608→    if-nez v5, :cond_6
+   609→
+   610→    invoke-virtual {p0}, Lcdn;->R()Lydn;
+   611→
+   612→    move-result-object v5
+   613→
+   614→    iget-object v5, v5, Lydn;->c:Lgfn;
+   615→
+   616→    invoke-interface {v5}, Lgfn;->isEnabled()Z
+   617→
+   618→    move-result v5
+   619→
+   620→    if-nez v5, :cond_6
+   621→
+   622→    new-instance v0, Lcom/opera/android/browser/chromium/NetworkTester$NonProxiedTest;
+   623→
+   624→    iget-object v1, p0, Lcdn;->p:Ldcl;
+   625→
+   626→    invoke-direct {v0, v1}, Lcom/opera/android/browser/chromium/NetworkTester$NonProxiedTest;-><init>(Ldcl;)V
+   627→
+   628→    iput-object v0, p0, Lcdn;->q:Lcom/opera/android/browser/chromium/NetworkTester$NonProxiedTest;
+   629→
+   630→    goto :goto_2
+   631→
+   632→    :cond_6
+   633→    iget v5, p0, Lcdn;->l:I
+   634→
+   635→    iput v4, p0, Lcdn;->l:I
+   636→
+   637→    iget-object v4, v3, Lk6l;->o:Lb2l;
+   638→
+   639→    if-eqz v4, :cond_8
+   640→
+   641→    invoke-virtual {p0}, Lcdn;->R()Lydn;
+   642→
+   643→    move-result-object v4
+   644→
+   645→    iget-object v4, v4, Lydn;->c:Lgfn;
+   646→
+   647→    invoke-interface {v4}, Lgfn;->isEnabled()Z
+   648→
+   649→    move-result v4
+   650→
+   651→    if-eqz v4, :cond_7
+   652→
+   653→    if-ne v5, v2, :cond_8
+   654→
+   655→    iget-object v2, v3, Lk6l;->o:Lb2l;
+   656→
+   657→    invoke-virtual {v1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+   658→
+   659→    new-instance v3, Ltg7;
+   660→
+   661→    invoke-direct {v3, v5, v0}, Ltg7;-><init>(ILtvk;)V
+   662→
+   663→    iget-object v0, v1, Leej;->b:Laal;
+   664→
+   665→    invoke-virtual {v0, v3, v2, v8}, Laal;->S(Lo93;Lb2l;Z)V
+   666→
+   667→    iput-object v3, p0, Lcdn;->o:Lddn;
+   668→
+   669→    goto :goto_2
+   670→
+   671→    :cond_7
+   672→    iget-object v2, v3, Lk6l;->o:Lb2l;
+   673→
+   674→    invoke-virtual {v1}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+   675→
+   676→    new-instance v3, Ledn;
+   677→
+   678→    invoke-direct {v3, v5, v0}, Ledn;-><init>(ILtvk;)V
+   679→
+   680→    iget-object v0, v1, Leej;->b:Laal;
+   681→
+   682→    invoke-virtual {v0, v3, v2}, Laal;->R(Lcej;Lb2l;)V
+   683→
+   684→    iput-object v3, p0, Lcdn;->o:Lddn;
+   685→
+   686→    :cond_8
+   687→    :goto_2
+   688→    return-void
+   689→
+   690→    :pswitch_7
+   691→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   692→
+   693→    check-cast p0, Landroidx/viewpager/widget/ViewPager;
+   694→
+   695→    invoke-virtual {p0, v8}, Landroidx/viewpager/widget/ViewPager;->setScrollState(I)V
+   696→
+   697→    invoke-virtual {p0}, Landroidx/viewpager/widget/ViewPager;->populate()V
+   698→
+   699→    return-void
+   700→
+   701→    :pswitch_8
+   702→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   703→
+   704→    check-cast p0, Lx5n;
+   705→
+   706→    invoke-virtual {p0, v8}, Lx5n;->m(I)V
+   707→
+   708→    return-void
+   709→
+   710→    :pswitch_9
+   711→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   712→
+   713→    check-cast p0, Li3n;
+   714→
+   715→    iput-boolean v8, p0, Li3n;->G:Z
+   716→
+   717→    iget-object v0, p0, Li3n;->i:Landroid/hardware/camera2/CameraDevice;
+   718→
+   719→    if-eqz v0, :cond_9
+   720→
+   721→    invoke-virtual {v0}, Landroid/hardware/camera2/CameraDevice;->close()V
+   722→
+   723→    invoke-virtual {p0, v6}, Li3n;->i(I)V
+   724→
+   725→    new-instance v0, Landroid/graphics/Rect;
+   726→
+   727→    invoke-direct {v0}, Landroid/graphics/Rect;-><init>()V
+   728→
+   729→    iput-object v0, p0, Li3n;->s:Landroid/graphics/Rect;
+   730→
+   731→    :cond_9
+   732→    return-void
+   733→
+   734→    :pswitch_a
+   735→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   736→
+   737→    check-cast p0, Lpom;
+   738→
+   739→    invoke-virtual {p0}, Lpom;->S()V
+   740→
+   741→    invoke-virtual {p0, v8}, Lpom;->T(I)V
+   742→
+   743→    return-void
+   744→
+   745→    :pswitch_b
+   746→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   747→
+   748→    check-cast p0, Ln9h;
+   749→
+   750→    iget-object p0, p0, Ln9h;->c:Ljava/lang/Object;
+   751→
+   752→    check-cast p0, Lm6m;
+   753→
+   754→    iput-object v7, p0, Lm6m;->e:Lk6m;
+   755→
+   756→    return-void
+   757→
+   758→    :pswitch_c
+   759→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   760→
+   761→    check-cast p0, Lg6m;
+   762→
+   763→    iget-object p0, p0, Lg6m;->e:Liuh;
+   764→
+   765→    iget-object v0, p0, Liuh;->c:Ljava/lang/Object;
+   766→
+   767→    check-cast v0, Lwtm;
+   768→
+   769→    new-instance v1, Lzto;
+   770→
+   771→    invoke-direct {v1, p0}, Lqno;-><init>(Liuh;)V
+   772→
+   773→    iput-object v0, v1, Lqno;->a:Lwtm;
+   774→
+   775→    iget-object p0, v0, Lwtm;->b:Ljava/lang/Object;
+   776→
+   777→    check-cast p0, Ljava/util/ArrayDeque;
+   778→
+   779→    invoke-virtual {p0, v1}, Ljava/util/ArrayDeque;->add(Ljava/lang/Object;)Z
+   780→
+   781→    iget-object v1, v0, Lwtm;->c:Ljava/lang/Object;
+   782→
+   783→    check-cast v1, Lqno;
+   784→
+   785→    if-nez v1, :cond_a
+   786→
+   787→    invoke-virtual {p0}, Ljava/util/ArrayDeque;->poll()Ljava/lang/Object;
+   788→
+   789→    move-result-object p0
+   790→
+   791→    check-cast p0, Lqno;
+   792→
+   793→    iput-object p0, v0, Lwtm;->c:Ljava/lang/Object;
+   794→
+   795→    if-eqz p0, :cond_a
+   796→
+   797→    iget-object v0, v0, Lwtm;->a:Ljava/lang/Object;
+   798→
+   799→    check-cast v0, Ljava/util/concurrent/ThreadPoolExecutor;
+   800→
+   801→    new-array v1, v8, [Ljava/lang/Object;
+   802→
+   803→    invoke-virtual {p0, v0, v1}, Landroid/os/AsyncTask;->executeOnExecutor(Ljava/util/concurrent/Executor;[Ljava/lang/Object;)Landroid/os/AsyncTask;
+   804→
+   805→    :cond_a
+   806→    return-void
+   807→
+   808→    :pswitch_d
+   809→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   810→
+   811→    check-cast p0, Lwe9;
+   812→
+   813→    if-eqz p0, :cond_b
+   814→
+   815→    invoke-virtual {p0}, Lwe9;->run()V
+   816→
+   817→    :cond_b
+   818→    return-void
+   819→
+   820→    :pswitch_e
+   821→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   822→
+   823→    check-cast p0, Lrzg;
+   824→
+   825→    invoke-virtual {p0}, Lrzg;->g()V
+   826→
+   827→    return-void
+   828→
+   829→    :pswitch_f
+   830→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   831→
+   832→    check-cast p0, Lusl;
+   833→
+   834→    iget-object v0, p0, Lusl;->b:Lsp1;
+   835→
+   836→    invoke-virtual {p0}, Lusl;->w()Litd;
+   837→
+   838→    move-result-object p0
+   839→
+   840→    if-eqz p0, :cond_c
+   841→
+   842→    move-object v1, p0
+   843→
+   844→    goto :goto_3
+   845→
+   846→    :cond_c
+   847→    move-object v1, v7
+   848→
+   849→    :goto_3
+   850→    if-eqz v1, :cond_d
+   851→
+   852→    invoke-virtual {v1}, Litd;->w()V
+   853→
+   854→    :cond_d
+   855→    :try_start_1
+   856→    invoke-virtual {p0}, Litd;->clear()V
+   857→
+   858→    invoke-virtual {v0, v8, p0}, Lsp1;->onCreatePanelMenu(ILandroid/view/Menu;)Z
+   859→
+   860→    move-result v2
+   861→
+   862→    if-eqz v2, :cond_e
+   863→
+   864→    invoke-virtual {v0, v8, v7, p0}, Lsp1;->onPreparePanel(ILandroid/view/View;Landroid/view/Menu;)Z
+   865→
+   866→    move-result v0
+   867→
+   868→    if-nez v0, :cond_f
+   869→
+   870→    :cond_e
+   871→    invoke-virtual {p0}, Litd;->clear()V
+   872→    :try_end_1
+   873→    .catchall {:try_start_1 .. :try_end_1} :catchall_0
+   874→
+   875→    :cond_f
+   876→    if-eqz v1, :cond_10
+   877→
+   878→    invoke-virtual {v1}, Litd;->v()V
+   879→
+   880→    :cond_10
+   881→    return-void
+   882→
+   883→    :catchall_0
+   884→    move-exception p0
+   885→
+   886→    if-eqz v1, :cond_11
+   887→
+   888→    invoke-virtual {v1}, Litd;->v()V
+   889→
+   890→    :cond_11
+   891→    throw p0
+   892→
+   893→    :pswitch_10
+   894→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   895→
+   896→    check-cast p0, Landroidx/appcompat/widget/Toolbar;
+   897→
+   898→    invoke-virtual {p0}, Landroidx/appcompat/widget/Toolbar;->F()Z
+   899→
+   900→    return-void
+   901→
+   902→    :pswitch_11
+   903→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   904→
+   905→    check-cast p0, Ldnl;
+   906→
+   907→    iget-object v0, p0, Ldnl;->d:Lorg/chromium/content/browser/input/ImeAdapterImpl;
+   908→
+   909→    invoke-virtual {v0}, Lorg/chromium/content/browser/input/ImeAdapterImpl;->t()Z
+   910→
+   911→    move-result v0
+   912→
+   913→    if-nez v0, :cond_12
+   914→
+   915→    invoke-static {}, Lwxe;->n()V
+   916→
+   917→    sget-object v0, Ldnl;->m:Lcnl;
+   918→
+   919→    invoke-static {}, Lwxe;->n()V
+   920→
+   921→    :try_start_2
+   922→    iget-object v1, p0, Ldnl;->g:Ljava/util/concurrent/LinkedBlockingQueue;
+   923→
+   924→    invoke-virtual {v1, v0}, Ljava/util/concurrent/LinkedBlockingQueue;->put(Ljava/lang/Object;)V
+   925→    :try_end_2
+   926→    .catch Ljava/lang/InterruptedException; {:try_start_2 .. :try_end_2} :catch_1
+   927→
+   928→    :catch_1
+   929→    iget-object v0, p0, Ldnl;->e:Landroid/os/Handler;
+   930→
+   931→    iget-object p0, p0, Ldnl;->a:Lyml;
+   932→
+   933→    invoke-virtual {v0, p0}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
+   934→
+   935→    :cond_12
+   936→    return-void
+   937→
+   938→    :pswitch_12
+   939→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   940→
+   941→    check-cast p0, Lcom/google/android/material/textfield/TextInputLayout;
+   942→
+   943→    iget-object p0, p0, Lcom/google/android/material/textfield/TextInputLayout;->c:Lz28;
+   944→
+   945→    iget-object p0, p0, Lz28;->f:Lcom/google/android/material/internal/CheckableImageButton;
+   946→
+   947→    invoke-virtual {p0}, Landroid/view/View;->performClick()Z
+   948→
+   949→    invoke-virtual {p0}, Landroid/view/View;->jumpDrawablesToCurrentState()V
+   950→
+   951→    return-void
+   952→
+   953→    :pswitch_13
+   954→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   955→
+   956→    check-cast p0, Lxbf;
+   957→
+   958→    iget-object v0, p0, Lxbf;->b:Ljava/lang/Object;
+   959→
+   960→    check-cast v0, Landroid/widget/FrameLayout;
+   961→
+   962→    invoke-virtual {v0, v1}, Landroid/view/View;->setVisibility(I)V
+   963→
+   964→    iget-object v1, p0, Lxbf;->f:Ljava/lang/Object;
+   965→
+   966→    check-cast v1, Landroid/view/View;
+   967→
+   968→    invoke-virtual {v0, v1}, Landroid/view/ViewGroup;->removeView(Landroid/view/View;)V
+   969→
+   970→    iget-object v1, p0, Lxbf;->g:Ljava/lang/Object;
+   971→
+   972→    check-cast v1, Landroid/view/View;
+   973→
+   974→    invoke-virtual {v0, v1}, Landroid/view/ViewGroup;->removeView(Landroid/view/View;)V
+   975→
+   976→    iget-object v0, p0, Lxbf;->c:Ljava/lang/Object;
+   977→
+   978→    check-cast v0, Landroid/view/View;
+   979→
+   980→    invoke-virtual {v0, v5}, Landroid/view/View;->setTranslationX(F)V
+   981→
+   982→    iget-object p0, p0, Lxbf;->d:Ljava/lang/Object;
+   983→
+   984→    check-cast p0, Lcom/opera/android/browser/chromium/ChromiumContainerView;
+   985→
+   986→    invoke-virtual {p0, v5}, Landroid/view/View;->setTranslationX(F)V
+   987→
+   988→    return-void
+   989→
+   990→    :pswitch_14
+   991→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+   992→
+   993→    check-cast p0, Lcy3;
+   994→
+   995→    iget-object p0, p0, Lcy3;->d:Lorg/chromium/third_party/android/swiperefresh/SwipeRefreshLayout;
+   996→
+   997→    invoke-virtual {p0, v8, v8}, Lorg/chromium/third_party/android/swiperefresh/SwipeRefreshLayout;->c(ZZ)V
+   998→
+   999→    return-void
+  1000→
+  1001→    :pswitch_15
+  1002→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1003→
+  1004→    check-cast p0, Lt0g;
+  1005→
+  1006→    sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
+  1007→
+  1008→    invoke-virtual {p0, v0}, Lt0g;->setValue(Ljava/lang/Object;)V
+  1009→
+  1010→    return-void
+  1011→
+  1012→    :pswitch_16
+  1013→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1014→
+  1015→    check-cast p0, Landroidx/recyclerview/widget/StaggeredGridLayoutManager;
+  1016→
+  1017→    invoke-virtual {p0}, Landroidx/recyclerview/widget/StaggeredGridLayoutManager;->p()Z
+  1018→
+  1019→    return-void
+  1020→
+  1021→    :pswitch_17
+  1022→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1023→
+  1024→    check-cast p0, Lcom/opera/android/custom_views/SplashView;
+  1025→
+  1026→    const v0, 0x7f0a0ab3
+  1027→
+  1028→    invoke-virtual {p0, v0}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+  1029→
+  1030→    move-result-object p0
+  1031→
+  1032→    invoke-virtual {p0, v8}, Landroid/view/View;->setVisibility(I)V
+  1033→
+  1034→    return-void
+  1035→
+  1036→    :pswitch_18
+  1037→    iget-object v0, p0, Lssi;->b:Ljava/lang/Object;
+  1038→
+  1039→    check-cast v0, Lsyj;
+  1040→
+  1041→    iget-object v1, v0, Lsyj;->f:Lsyj;
+  1042→
+  1043→    monitor-enter v1
+  1044→
+  1045→    :try_start_3
+  1046→    iget-object v0, v0, Lsyj;->g:Ljava/lang/Long;
+  1047→    :try_end_3
+  1048→    .catchall {:try_start_3 .. :try_end_3} :catchall_2
+  1049→
+  1050→    monitor-exit v1
+  1051→
+  1052→    if-eqz v0, :cond_14
+  1053→
+  1054→    invoke-virtual {v0}, Ljava/lang/Long;->longValue()J
+  1055→
+  1056→    move-result-wide v0
+  1057→
+  1058→    invoke-static {}, Landroid/os/SystemClock;->uptimeMillis()J
+  1059→
+  1060→    move-result-wide v2
+  1061→
+  1062→    const-wide/16 v6, 0x14
+  1063→
+  1064→    div-long/2addr v2, v6
+  1065→
+  1066→    sub-long/2addr v2, v0
+  1067→
+  1068→    long-to-int v0, v2
+  1069→
+  1070→    iget-object v1, p0, Lssi;->b:Ljava/lang/Object;
+  1071→
+  1072→    check-cast v1, Lsyj;
+  1073→
+  1074→    iget-object v2, v1, Lsyj;->a:Lode;
+  1075→
+  1076→    iget-object v3, v1, Lsyj;->e:Ljava/util/ArrayList;
+  1077→
+  1078→    monitor-enter v3
+  1079→
+  1080→    :try_start_4
+  1081→    iget-object v4, v1, Lsyj;->e:Ljava/util/ArrayList;
+  1082→
+  1083→    invoke-virtual {v4}, Ljava/util/ArrayList;->size()I
+  1084→
+  1085→    move-result v4
+  1086→
+  1087→    if-ge v0, v4, :cond_13
+  1088→
+  1089→    iget-object v1, v1, Lsyj;->e:Ljava/util/ArrayList;
+  1090→
+  1091→    invoke-virtual {v1, v0}, Ljava/util/ArrayList;->get(I)Ljava/lang/Object;
+  1092→
+  1093→    move-result-object v0
+  1094→
+  1095→    check-cast v0, Ljava/lang/Number;
+  1096→
+  1097→    invoke-virtual {v0}, Ljava/lang/Number;->floatValue()F
+  1098→
+  1099→    move-result v5
+  1100→    :try_end_4
+  1101→    .catchall {:try_start_4 .. :try_end_4} :catchall_1
+  1102→
+  1103→    :cond_13
+  1104→    monitor-exit v3
+  1105→
+  1106→    iget-object v0, p0, Lssi;->b:Ljava/lang/Object;
+  1107→
+  1108→    check-cast v0, Lsyj;
+  1109→
+  1110→    iget v0, v0, Lsyj;->c:F
+  1111→
+  1112→    mul-float/2addr v5, v0
+  1113→
+  1114→    invoke-static {v5}, Ljava/lang/Float;->valueOf(F)Ljava/lang/Float;
+  1115→
+  1116→    move-result-object v0
+  1117→
+  1118→    invoke-virtual {v2, v0}, Lekc;->r(Ljava/lang/Object;)V
+  1119→
+  1120→    invoke-static {p0, v6, v7}, Lvml;->d(Ljava/lang/Runnable;J)V
+  1121→
+  1122→    goto :goto_4
+  1123→
+  1124→    :catchall_1
+  1125→    move-exception p0
+  1126→
+  1127→    monitor-exit v3
+  1128→
+  1129→    throw p0
+  1130→
+  1131→    :cond_14
+  1132→    :goto_4
+  1133→    return-void
+  1134→
+  1135→    :catchall_2
+  1136→    move-exception p0
+  1137→
+  1138→    monitor-exit v1
+  1139→
+  1140→    throw p0
+  1141→
+  1142→    :pswitch_19
+  1143→    iget-object v0, p0, Lssi;->b:Ljava/lang/Object;
+  1144→
+  1145→    check-cast v0, Lcom/opera/android/custom_views/SmoothProgressBar;
+  1146→
+  1147→    invoke-virtual {v0}, Landroid/widget/ProgressBar;->getProgress()I
+  1148→
+  1149→    move-result v2
+  1150→
+  1151→    iget v3, v0, Lcom/opera/android/custom_views/SmoothProgressBar;->b:I
+  1152→
+  1153→    if-eq v2, v3, :cond_16
+  1154→
+  1155→    iget-boolean v2, v0, Lcom/opera/android/custom_views/SmoothProgressBar;->a:Z
+  1156→
+  1157→    if-nez v2, :cond_15
+  1158→
+  1159→    invoke-virtual {v0, v3}, Lcom/opera/android/custom_views/SmoothProgressBar;->a(I)V
+  1160→
+  1161→    goto :goto_5
+  1162→
+  1163→    :cond_15
+  1164→    invoke-virtual {v0}, Landroid/widget/ProgressBar;->getProgress()I
+  1165→
+  1166→    move-result v2
+  1167→
+  1168→    iget v3, v0, Lcom/opera/android/custom_views/SmoothProgressBar;->b:I
+  1169→
+  1170→    invoke-virtual {v0}, Landroid/widget/ProgressBar;->getProgress()I
+  1171→
+  1172→    move-result v4
+  1173→
+  1174→    sub-int/2addr v3, v4
+  1175→
+  1176→    add-int/2addr v3, v6
+  1177→
+  1178→    div-int/2addr v3, v1
+  1179→
+  1180→    add-int/2addr v3, v2
+  1181→
+  1182→    invoke-virtual {v0, v3}, Lcom/opera/android/custom_views/SmoothProgressBar;->a(I)V
+  1183→
+  1184→    const-wide/16 v1, 0x10
+  1185→
+  1186→    invoke-virtual {v0, p0, v1, v2}, Landroid/view/View;->postOnAnimationDelayed(Ljava/lang/Runnable;J)V
+  1187→
+  1188→    :cond_16
+  1189→    :goto_5
+  1190→    return-void
+  1191→
+  1192→    :pswitch_1a
+  1193→    :try_start_5
+  1194→    invoke-virtual {p0}, Lssi;->a()V
+  1195→    :try_end_5
+  1196→    .catch Ljava/lang/Error; {:try_start_5 .. :try_end_5} :catch_2
+  1197→
+  1198→    return-void
+  1199→
+  1200→    :catch_2
+  1201→    move-exception v0
+  1202→
+  1203→    iget-object v1, p0, Lssi;->b:Ljava/lang/Object;
+  1204→
+  1205→    check-cast v1, Lb2j;
+  1206→
+  1207→    iget-object v1, v1, Lb2j;->a:Ljava/util/ArrayDeque;
+  1208→
+  1209→    monitor-enter v1
+  1210→
+  1211→    :try_start_6
+  1212→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1213→
+  1214→    check-cast p0, Lb2j;
+  1215→
+  1216→    iput v4, p0, Lb2j;->d:I
+  1217→
+  1218→    monitor-exit v1
+  1219→    :try_end_6
+  1220→    .catchall {:try_start_6 .. :try_end_6} :catchall_3
+  1221→
+  1222→    throw v0
+  1223→
+  1224→    :goto_6
+  1225→    :try_start_7
+  1226→    monitor-exit v1
+  1227→    :try_end_7
+  1228→    .catchall {:try_start_7 .. :try_end_7} :catchall_3
+  1229→
+  1230→    throw p0
+  1231→
+  1232→    :catchall_3
+  1233→    move-exception p0
+  1234→
+  1235→    goto :goto_6
+  1236→
+  1237→    :pswitch_1b
+  1238→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1239→
+  1240→    check-cast p0, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;
+  1241→
+  1242→    sget-boolean v0, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;->R:Z
+  1243→
+  1244→    invoke-static {}, Landroid/view/ViewConfiguration;->getDefaultActionModeHideDuration()J
+  1245→
+  1246→    move-result-wide v0
+  1247→
+  1248→    iget-object v2, p0, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;->b:Landroid/os/Handler;
+  1249→
+  1250→    iget-object v3, p0, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;->k:Lssi;
+  1251→
+  1252→    const-wide/16 v4, 0x1
+  1253→
+  1254→    sub-long v4, v0, v4
+  1255→
+  1256→    invoke-virtual {v2, v3, v4, v5}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+  1257→
+  1258→    invoke-virtual {p0}, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;->g()Z
+  1259→
+  1260→    move-result v2
+  1261→
+  1262→    if-eqz v2, :cond_17
+  1263→
+  1264→    iget-object p0, p0, Lorg/chromium/content/browser/selection/SelectionPopupControllerImpl;->n:Landroid/view/ActionMode;
+  1265→
+  1266→    invoke-virtual {p0, v0, v1}, Landroid/view/ActionMode;->hide(J)V
+  1267→
+  1268→    :cond_17
+  1269→    return-void
+  1270→
+  1271→    :pswitch_1c
+  1272→    iget-object p0, p0, Lssi;->b:Ljava/lang/Object;
+  1273→
+  1274→    check-cast p0, Lvsi;
+  1275→
+  1276→    iget v0, p0, Lvsi;->h:I
+  1277→
+  1278→    sub-int/2addr v0, v4
+  1279→
+  1280→    iput v0, p0, Lvsi;->h:I
+  1281→
+  1282→    if-nez v0, :cond_18
+  1283→
+  1284→    iget-object v0, p0, Lvsi;->e:Ltsi;
+  1285→
+  1286→    if-eqz v0, :cond_18
+  1287→
+  1288→    invoke-virtual {p0, v8}, Lvsi;->c(Z)V
+  1289→
+  1290→    iget v0, p0, Lvsi;->b:I
+  1291→
+  1292→    if-eq v0, v2, :cond_18
+  1293→
+  1294→    iget-object v0, p0, Lvsi;->e:Ltsi;
+  1295→
+  1296→    invoke-virtual {p0, v0}, Lvsi;->f(Ltsi;)V
+  1297→
+  1298→    :cond_18
+  1299→    return-void
+  1300→
+  1301→    :pswitch_data_0
+  1302→    .packed-switch 0x0
+  1303→        :pswitch_1c
+  1304→        :pswitch_1b
+  1305→        :pswitch_1a
+  1306→        :pswitch_19
+  1307→        :pswitch_18
+  1308→        :pswitch_17
+  1309→        :pswitch_16
+  1310→        :pswitch_15
+  1311→        :pswitch_14
+  1312→        :pswitch_13
+  1313→        :pswitch_12
+  1314→        :pswitch_11
+  1315→        :pswitch_10
+  1316→        :pswitch_f
+  1317→        :pswitch_e
+  1318→        :pswitch_d
+  1319→        :pswitch_c
+  1320→        :pswitch_b
+  1321→        :pswitch_a
+  1322→        :pswitch_9
+  1323→        :pswitch_8
+  1324→        :pswitch_7
+  1325→        :pswitch_6
+  1326→        :pswitch_5
+  1327→        :pswitch_4
+  1328→        :pswitch_3
+  1329→        :pswitch_2
+  1330→        :pswitch_1
+  1331→        :pswitch_0
+  1332→    .end packed-switch
+  1333→.end method
+  1334→
