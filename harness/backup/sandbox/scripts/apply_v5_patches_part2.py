@@ -16,8 +16,8 @@ def edit(path, pattern, repl, flags=0):
     print(f'  patched {path.split("/smali")[-1]}')
 
 
-T3 = '/tmp/v5/smali3/smali'
-T1 = '/tmp/v5/smali1/smali'
+T3 = '/tmp/v6/smali3/smali'
+T1 = '/tmp/v6/smali1/smali'
 
 
 def s2_xnh():

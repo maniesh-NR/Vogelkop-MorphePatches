@@ -1,0 +1,6 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public interface w5g {
+    void a();
+}

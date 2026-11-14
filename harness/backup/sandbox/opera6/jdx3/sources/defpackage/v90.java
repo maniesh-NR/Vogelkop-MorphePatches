@@ -1,0 +1,46 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public final class v90 extends jf0 {
+    public static final ef0[] f;
+    public static final df0[] g;
+
+    static {
+        ef0 ef0Var = ef0.e;
+        f = new ef0[]{ef0Var, ef0Var};
+        df0 df0Var = df0.d;
+        g = new df0[]{df0Var, df0Var};
+    }
+
+    @Override // defpackage.jf0
+    public final df0 a(int i) {
+        return g[i];
+    }
+
+    @Override // defpackage.jf0
+    public final ef0 b(int i) {
+        return f[i];
+    }
+
+    @Override // defpackage.jf0
+    public final jf0 m(jf0 jf0Var) {
+        v90 v90Var = (v90) jf0Var;
+        w90 w90Var = (w90) v90Var.n(0);
+        w90 w90Var2 = (w90) n(0);
+        if (w90Var == null || w90Var2 != null) {
+            w90Var = w90Var2;
+        }
+        if (w90Var != null) {
+            q(0, 1, w90Var);
+        }
+        String str = (String) v90Var.n(1);
+        String str2 = (String) n(1);
+        if (str == null || str2 != null) {
+            str = str2;
+        }
+        if (str != null) {
+            q(1, 1, str);
+        }
+        return this;
+    }
+}

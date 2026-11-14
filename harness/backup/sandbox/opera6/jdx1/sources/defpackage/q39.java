@@ -1,0 +1,87 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public abstract class q39 {
+    public static final ta5 A;
+    public static final ta5 B;
+    public static final ta5 C;
+    public static final ta5 D;
+    public static final ta5 E;
+    public static final ta5 F;
+    public static final ta5 G;
+    public static final ta5 H;
+    public static final ta5 I;
+    public static final ta5 J;
+    public static final ta5 K;
+    public static final ta5 a;
+    public static final ta5 b;
+    public static final ta5 c;
+    public static final cbj d;
+    public static final ta5 e;
+    public static final float f;
+    public static final ta5 g;
+    public static final float h;
+    public static final ta5 i;
+    public static final float j;
+    public static final ta5 k;
+    public static final float l;
+    public static final ta5 m;
+    public static final float n;
+    public static final ta5 o;
+    public static final float p;
+    public static final ta5 q;
+    public static final ta5 r;
+    public static final ta5 s;
+    public static final ta5 t;
+    public static final ta5 u;
+    public static final ta5 v;
+    public static final ta5 w;
+    public static final ta5 x;
+    public static final ta5 y;
+    public static final ta5 z;
+
+    static {
+        ta5 ta5Var = ta5.h;
+        a = ta5Var;
+        ta5 ta5Var2 = ta5.k;
+        b = ta5Var2;
+        c = ta5.q;
+        d = cbj.c;
+        ta5 ta5Var3 = ta5.g;
+        e = ta5Var3;
+        f = 0.38f;
+        g = ta5Var3;
+        h = 0.38f;
+        i = ta5Var3;
+        j = 0.38f;
+        k = ta5Var3;
+        l = 0.38f;
+        m = ta5Var3;
+        n = 0.38f;
+        o = ta5Var3;
+        p = 0.38f;
+        ta5 ta5Var4 = ta5.a;
+        q = ta5Var4;
+        r = ta5Var4;
+        s = ta5Var3;
+        t = ta5Var4;
+        u = ta5Var;
+        v = ta5Var4;
+        w = ta5Var4;
+        x = ta5Var2;
+        y = ta5Var3;
+        z = ta5Var2;
+        A = ta5Var;
+        B = ta5Var;
+        C = ta5Var;
+        D = ta5Var3;
+        xam xamVar = xam.a;
+        E = ta5Var;
+        F = ta5Var;
+        G = ta5Var;
+        H = ta5Var;
+        I = ta5Var;
+        J = ta5Var;
+        K = ta5Var;
+    }
+}

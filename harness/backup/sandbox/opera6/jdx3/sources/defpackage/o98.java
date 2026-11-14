@@ -1,0 +1,22 @@
+package defpackage;
+
+import com.opera.android.esim.work.EsimPromotionWorker;
+
+/* loaded from: classes.dex */
+public final class o98 extends nt5 {
+    public /* synthetic */ Object t;
+    public final /* synthetic */ EsimPromotionWorker u;
+    public int v;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public o98(EsimPromotionWorker esimPromotionWorker, nt5 nt5Var) {
+        super(nt5Var);
+        this.u = esimPromotionWorker;
+    }
+
+    public final Object invokeSuspend(Object obj) {
+        this.t = obj;
+        this.v |= Integer.MIN_VALUE;
+        return this.u.c(this);
+    }
+}

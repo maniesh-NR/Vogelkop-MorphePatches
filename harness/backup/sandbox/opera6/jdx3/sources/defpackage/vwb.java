@@ -1,0 +1,7 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public abstract class vwb {
+    public static final kk3 a = new kk3((byte) 6);
+    public static final kk3 b = new kk3((byte) 7);
+}

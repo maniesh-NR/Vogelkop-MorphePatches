@@ -1,0 +1,77 @@
+package defpackage;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/* loaded from: classes.dex */
+public final class yjh implements Parcelable {
+    public static final Parcelable.Creator<yjh> CREATOR = new zug((byte) 4);
+    public final int a;
+    public final float b;
+    public Parcelable c;
+
+    public yjh(int i, float f) {
+        this.a = i;
+        this.b = f;
+    }
+
+    public static yjh c(float f) {
+        if (f >= 0.0f && f <= 100.0f) {
+            return new yjh(6, f);
+        }
+        w7d.q("Invalid percentage-based rating value");
+        return null;
+    }
+
+    public static yjh d(float f, int i) {
+        float f2;
+        if (i == 3) {
+            f2 = 3.0f;
+        } else if (i == 4) {
+            f2 = 4.0f;
+        } else {
+            if (i != 5) {
+                w7d.q("Invalid rating style (" + i + ") for a star rating");
+                return null;
+            }
+            f2 = 5.0f;
+        }
+        if (f >= 0.0f && f <= f2) {
+            return new yjh(i, f);
+        }
+        w7d.q("Trying to set out of range star-based rating");
+        return null;
+    }
+
+    public final float a() {
+        int i = this.a;
+        if ((i == 3 || i == 4 || i == 5) && b()) {
+            return this.b;
+        }
+        return -1.0f;
+    }
+
+    public final boolean b() {
+        return this.b >= 0.0f;
+    }
+
+    @Override // android.os.Parcelable
+    public final int describeContents() {
+        return this.a;
+    }
+
+    public final String toString() {
+        StringBuilder sb = new StringBuilder("Rating:style=");
+        sb.append(this.a);
+        sb.append(" rating=");
+        float f = this.b;
+        sb.append(f < 0.0f ? "unrated" : String.valueOf(f));
+        return sb.toString();
+    }
+
+    @Override // android.os.Parcelable
+    public final void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.a);
+        parcel.writeFloat(this.b);
+    }
+}

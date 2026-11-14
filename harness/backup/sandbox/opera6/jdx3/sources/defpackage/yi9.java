@@ -1,0 +1,26 @@
+package defpackage;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/* loaded from: classes.dex */
+public final class yi9 extends nt5 {
+    public ArrayList t;
+    public Iterator u;
+    public jdj v;
+    public /* synthetic */ Object w;
+    public final /* synthetic */ zi9 x;
+    public int y;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public yi9(zi9 zi9Var, nt5 nt5Var) {
+        super(nt5Var);
+        this.x = zi9Var;
+    }
+
+    public final Object invokeSuspend(Object obj) {
+        this.w = obj;
+        this.y |= Integer.MIN_VALUE;
+        return this.x.b(this);
+    }
+}

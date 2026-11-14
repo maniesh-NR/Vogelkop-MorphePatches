@@ -1,0 +1,30 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public final class cg0 extends jf0 {
+    public static final ef0[] f = {ef0.b};
+    public static final df0[] g = {df0.d};
+
+    @Override // defpackage.jf0
+    public final df0 a(int i) {
+        return g[i];
+    }
+
+    @Override // defpackage.jf0
+    public final ef0 b(int i) {
+        return f[i];
+    }
+
+    @Override // defpackage.jf0
+    public final jf0 m(jf0 jf0Var) {
+        eb0 eb0Var = (eb0) ((cg0) jf0Var).n(0);
+        eb0 eb0Var2 = (eb0) n(0);
+        if (eb0Var == null || eb0Var2 != null) {
+            eb0Var = eb0Var2;
+        }
+        if (eb0Var != null) {
+            q(0, 1, eb0Var);
+        }
+        return this;
+    }
+}

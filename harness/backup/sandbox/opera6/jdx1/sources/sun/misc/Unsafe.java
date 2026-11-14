@@ -1,0 +1,40 @@
+package sun.misc;
+
+import androidx.annotation.Keep;
+import java.lang.reflect.Field;
+
+@Keep
+/* loaded from: classes.dex */
+public class Unsafe {
+    public native int addressSize();
+
+    public int arrayBaseOffset(Class cls) {
+        throw new RuntimeException("Stub!");
+    }
+
+    public native byte getByte(long j);
+
+    public native int getInt(long j);
+
+    public native int getInt(Object obj, long j);
+
+    public native long getLong(long j);
+
+    public native long getLong(Object obj, long j);
+
+    public native Object getObject(Object obj, long j);
+
+    public native short getShort(Object obj, long j);
+
+    public long objectFieldOffset(Field field) {
+        throw new RuntimeException("Stub!");
+    }
+
+    public native void putByte(long j, byte b);
+
+    public native void putInt(Object obj, long j, int i);
+
+    public native void putLong(Object obj, long j, long j2);
+
+    public native void putObject(Object obj, long j, Object obj2);
+}

@@ -38,10 +38,10 @@ match (fail-loud), mirroring apply_v4_patches.py.
 import re
 import sys
 
-USAGE NOTE (v5 session): S1 (SettingsManager defaults) is applied by this
-script; the remaining edits (S2..K1) are applied by apply_v5_patches_part2.py,
-which contains the indentation-corrected anchors (this file's later patterns
-predate a whitespace fix). Run part1 then part2 on a fresh tree.
+# USAGE NOTE (v5 session): S1 (SettingsManager defaults) is applied by this
+# script; the remaining edits (S2..K1) are applied by apply_v5_patches_part2.py,
+# which contains the indentation-corrected anchors (this file's later patterns
+# predate a whitespace fix). Run part1 then part2 on a fresh tree.
 
 
 def edit(path, pattern, repl, flags=0, count=1):
@@ -54,8 +54,8 @@ def edit(path, pattern, repl, flags=0, count=1):
     print(f'  patched {path.split("/smali")[-1]}')
 
 
-T3 = '/tmp/v5/smali3/smali'
-T1 = '/tmp/v5/smali1/smali'
+T3 = '/tmp/v6/smali3/smali'
+T1 = '/tmp/v6/smali1/smali'
 
 
 # ---------------- S1: SettingsManager Bundle defaults ----------------
@@ -225,21 +225,9 @@ def k1_splash():
 
 
 def main():
-    print('applying v5 patches (classes3 tree + classes1 tree)')
+    print('applying v5 patches part 1 (S1 defaults only; S2..K1 live in part2)')
     s1_defaults()
-    s2_xnh()
-    v1_ggn()
-    v2_zfn()
-    v3_cgn()
-    v4_ldn()
-    r1_k15()
-    r2_at1()
-    e1_l98()
-    e2_receiver()
-    e3_d37()
-    b1_daj()
-    k1_splash()
-    print('all v5 patches applied')
+    print('v5 S1 applied')
 
 
 if __name__ == '__main__':

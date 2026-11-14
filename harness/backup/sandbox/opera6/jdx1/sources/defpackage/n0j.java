@@ -1,0 +1,50 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public abstract class n0j {
+    public static final p0j a = new p0j("ContentDescription", true, new ali(9));
+    public static final p0j b = new p0j("StateDescription", 0);
+    public static final p0j c = new p0j("ProgressBarRangeInfo", 0);
+    public static final p0j d = new p0j("PaneTitle", true, new ali(18));
+    public static final p0j e = new p0j("SelectableGroup", 0);
+    public static final p0j f = new p0j("CollectionInfo", 0);
+    public static final p0j g = new p0j("CollectionItemInfo", 0);
+    public static final p0j h = new p0j("Heading", 0);
+    public static final p0j i = new p0j("TextEntryKey", 0);
+    public static final p0j j = new p0j("Disabled", 0);
+    public static final p0j k = new p0j("LiveRegion", 0);
+    public static final p0j l = new p0j("Focused", 0);
+    public static final p0j m = new p0j("IsContainer", 0);
+    public static final p0j n = new p0j("IsTraversalGroup");
+    public static final p0j o = new p0j("IsSensitiveData");
+    public static final p0j p = new p0j("InvisibleToUser", new ali(15));
+    public static final p0j q = new p0j("HideFromAccessibility", new ali(15));
+    public static final p0j r = new p0j("ContentType", new ali(19));
+    public static final p0j s = new p0j("ContentDataType", new ali(20));
+    public static final p0j t = new p0j("FillableData", new ali(21));
+    public static final p0j u = new p0j("TraversalIndex", new ali(10));
+    public static final p0j v = new p0j("HorizontalScrollAxisRange", 0);
+    public static final p0j w = new p0j("VerticalScrollAxisRange", 0);
+    public static final p0j x = new p0j("IsPopup", true, new ali(11));
+    public static final p0j y = new p0j("IsDialog", true, new ali(12));
+    public static final p0j z = new p0j("Role", true, new ali(13));
+    public static final p0j A = new p0j("TestTag", false, new ali(14));
+    public static final p0j B = new p0j("LinkTestMarker", false, new ali(15));
+    public static final p0j C = new p0j("Text", true, new ali(16));
+    public static final p0j D = new p0j("TextSubstitution");
+    public static final p0j E = new p0j("IsShowingTextSubstitution");
+    public static final p0j F = new p0j("InputText", 0);
+    public static final p0j G = new p0j("EditableText", 0);
+    public static final p0j H = new p0j("TextSelectionRange", 0);
+    public static final p0j I = new p0j("TextCompositionRange", 0);
+    public static final p0j J = new p0j("ImeAction", 0);
+    public static final p0j K = new p0j("Selected", 0);
+    public static final p0j L = new p0j("ToggleableState", 0);
+    public static final p0j M = new p0j("InputTextSuggestionState", 0);
+    public static final p0j N = new p0j("Password", 0);
+    public static final p0j O = new p0j("Error", 0);
+    public static final p0j P = new p0j("IndexForKey");
+    public static final p0j Q = new p0j("IsEditable");
+    public static final p0j R = new p0j("MaxTextLength");
+    public static final p0j S = new p0j("Shape", false, new ali(17));
+}

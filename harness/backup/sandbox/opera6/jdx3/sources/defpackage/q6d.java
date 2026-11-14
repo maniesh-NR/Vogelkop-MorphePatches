@@ -1,0 +1,20 @@
+package defpackage;
+
+/* loaded from: classes.dex */
+public final class q6d extends nt5 {
+    public /* synthetic */ Object t;
+    public int u;
+    public final /* synthetic */ hz6 v;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public q6d(hz6 hz6Var, mt5 mt5Var) {
+        super(mt5Var);
+        this.v = hz6Var;
+    }
+
+    public final Object invokeSuspend(Object obj) {
+        this.t = obj;
+        this.u |= Integer.MIN_VALUE;
+        return this.v.emit(null, this);
+    }
+}

@@ -1,0 +1,30 @@
+package androidx.fragment.app;
+
+import android.view.View;
+import defpackage.hl9;
+import defpackage.o18;
+
+/* loaded from: classes.dex */
+public final class k extends hl9 {
+    public final /* synthetic */ Fragment a;
+
+    public k(Fragment fragment) {
+        this.a = fragment;
+    }
+
+    @Override // defpackage.hl9
+    public final View b(int i) {
+        Fragment fragment = this.a;
+        View view = fragment.mView;
+        if (view != null) {
+            return view.findViewById(i);
+        }
+        qp2.n(o18.o("Fragment ", fragment, " does not have a view"));
+        return null;
+    }
+
+    @Override // defpackage.hl9
+    public final boolean c() {
+        return this.a.mView != null;
+    }
+}
