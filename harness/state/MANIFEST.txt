@@ -1,10 +1,13 @@
         50  ./.env
        119  ./.gitignore
-      3407  ./download/INSTALL-AND-TEST.md
+      3364  ./download/INSTALL-AND-TEST.md
   96461215  ./download/OperaBeta-104.0.5262.91143-custom-v2.apkm
+  96260465  ./download/OperaBeta-104.0.5262.91143-custom-v3.apkm
       4760  ./download/PATCH-NOTES-v2.md
+      3266  ./download/PATCH-NOTES-v3.md
         34  ./download/README.md
        354  ./download/V2-SHA256SUMS.txt
+       278  ./download/V3-SHA256SUMS.txt
       4760  ./opera/PATCHES.md
  147556726  ./opera/apkm/base.apk
      66730  ./opera/apkm/icon.png
@@ -106688,7 +106691,9 @@
        282  ./opera/verify/unknown/res/raw/keep_mintegral.xml
      70660  ./opera/verify/unknown/res/raw/omid_session_client_v1_5_7.js
      45692  ./opera/verify/unknown/res/raw/omsdk_v1_5_7.js
+      5161  ./scripts/apk_diag.py
       1202  ./scripts/bootstrap_harness.sh
+      4569  ./scripts/build_v3_16k.sh
        893  ./scripts/gh_check.sh
        500  ./scripts/gh_dir.sh
        412  ./scripts/gh_fetch.sh
@@ -106696,6 +106701,8 @@
       1213  ./scripts/gh_repo_content.sh
        507  ./scripts/gh_repos.sh
        488  ./scripts/gh_tree.sh
+      2552  ./scripts/sigblock.py
+      1703  ./scripts/verify_download.sh
       1080  ./skills/ASR/LICENSE.txt
      15470  ./skills/ASR/SKILL.md
        650  ./skills/ASR/scripts/asr.ts
@@ -106943,6 +106950,7 @@
      16609  ./skills/xlsx/templates/palettes.py
      51963  ./skills/xlsx/xlsx.py
      60282  ./tool-results/bash_1794618813600_3e23a040d0e8.txt
+     47974  ./tool-results/bash_1794625020695_f19e8b2aa20f.txt
      50351  ./tool-results/read_1794618443077_508802c49bbe.txt
      40095  ./tool-results/read_1794618666454_e0ce49c6a873.txt
      37225  ./tool-results/read_1794618817062_860394f3b6fc.txt
