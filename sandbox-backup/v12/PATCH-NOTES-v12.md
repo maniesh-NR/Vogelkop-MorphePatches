@@ -85,11 +85,21 @@ updates). The complete machine-readable ledger ships in the patch bundle:
   kotlin_module preserved; arsc + 10 `.so` STORED (structural PASS).
 - `assets/op/abp.manifest` and all 12 bundled lists are **byte-identical to
   the working v9/v10 files**.
-- Signature: v1+v2+v3, certificate identical to v9/v10/v11 (SHA-256
+- Signature: **v3 scheme only** (apksigner: v1=false, v2=false, v3=true; the
+  META-INF v1 files are present but non-verifying) — functionally correct for
+  this build's Android 10+ (minSdk 29) target; certificate identical to
+  v9/v10/v11 (SHA-256
   `62:C9:FA:6F:DA:E6:82:66:29:93:A5:AB:41:7C:71:17:79:D1:A0:BC:8F:F6:43:E4:4D:E5:20:11:87:A9:6A:DF`)
   → **installs in place over v9/v10/v11**.
 - Updater flow simulated end-to-end (fetch from maintainer → gzip → store
   under manifest hash) with live fetches of EasyList, EasyPrivacy, RUAdList.
+- **Independent adversarial audit (2026-11-16, 4-agent RED/BLUE/GRAY/BLACK
+  panel)**: all 44 patches, the class-set equality and the v11-crash-fix
+  asset-layer claims re-verified from the shipped bytes — the fix holds
+  (`docs/audit/2026-11-16-adversarial-review/` in the repo). Residual risks
+  and the go/no-go conditions (device test protocol, v13 updater hardening)
+  are recorded there. Known doc correction in these notes: the signature
+  scheme line above (was wrongly listed as v1+v2+v3).
 
 ## Install
 
@@ -98,6 +108,14 @@ updates). The complete machine-readable ledger ships in the patch bundle:
    scan silently; the signature is unchanged from v10.
 3. Blocklists: the selected lists load from the bundled/CDN copies on first
    run and refresh from their maintainers on the usual schedule afterwards.
+
+## Rollback
+
+The last device-proven build remains v10
+(`OperaBeta-104.0.5262.91143-custom-v10-universal.apk`, sha256
+`44a70d1c4f4c0c0bc7399f3e2f1cb6bc1536413e723f8b7377e913c808829ecd`):
+`adb install -r -d <v10.apk>` downgrades in place (same certificate) if v12
+misbehaves.
 
 ## Details
 
