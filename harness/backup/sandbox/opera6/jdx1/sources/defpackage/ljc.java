@@ -1,7 +1,0 @@
-package defpackage;
-
-import java.util.RandomAccess;
-
-/* loaded from: classes.dex */
-public final class ljc extends njc implements RandomAccess {
-}

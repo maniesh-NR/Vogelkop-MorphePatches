@@ -1,7 +1,0 @@
-package androidx.camera.core.internal.compat.quirk;
-
-import defpackage.tgh;
-
-/* loaded from: classes.dex */
-public interface AeFpsRangeQuirk extends tgh {
-}
