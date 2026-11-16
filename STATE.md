@@ -226,3 +226,47 @@ N3 (upgrade-over-crashed-v11 inherits unknown /data). **Decision: install v12
 now; run RD.1 device protocol within 24 h; v10 pinned rollback
 (`adb install -r -d`); bisect, don't rebuild, on failure; v13 = RD.2 + RD.3
 (see `docs/v13-ROADMAP.md`).** Verdict line for v12: _pending device result_.
+
+## v12 device verdict + Mixture-of-Experts root cause + v13 (2026-11-16)
+
+**v12 device result: CRASH.** Installs without the Play Protect dialog
+(retained improvement), then white screen ~5 s → immediate crash, every
+launch. The audit's GO-condition 3 (bisection ladder, not blind rebuild)
+was executed as a Mixture-of-Experts panel instead of sequential device
+rounds: E2 (differential patch audit), E3 (adblock subsystem trace),
+E4 (packaging & signing), gate (chief analyst; E1's startup-timeline
+mandate folded into E3 + gate after its first run overran).
+
+**Root cause (panel verdict, evidence-cited):** the AB.1–AB.4 updater
+patch set. Opera's resolver `k9d` pairs every files-dir blocklist file
+with its manifest entry by the sha256 of the file's **content** (a
+digesting stream — not the filename). AB.4 stored live maintainer bytes
+under the manifest-hash name, so the file can never pair: stale-deleted +
+entry-missing → re-download → mismatch again → endless churn, and every
+launch re-evaluates the pipeline. Additionally AB.3's `f9.v` gzip
+normalizer buffers each entire response body in RAM outside cv2's
+try/catchall (vtp.Q catches only IOException; an OOM Error escapes
+uncaught); with PD.9's 27 unbundled lists, ~27 concurrent maintainer
+fetches run during first launch. Rejected en route: packaging/signature
+(E4: v10 is v3-only too, APK delta = 2 dexes exactly), PD.9-on-stock-code
+(E3: defensive end-to-end), DoH defaults (E3: mode 1 = Cloudflare preset).
+Two prior-audit claims corrected: v10 was never v1+v2+v3 (all builds
+v3-only); the v1 META-INF files are incomplete-coverage, not stale-content.
+
+**v13 (shipped):** single-variable revert of AB.1–AB.4 via the registry
+(`enabled=false`; apply.py SKIP; manifest.json + PATCHES.md record it).
+Built through the standard pipeline with three equivalence gates: v13
+classes3 disassembly == v11's shipped classes3 (tree-identical); v13
+classes.dex == v12's classes.dex bytes; f9/cv2/lj3 == stock v9. APK
+entry-diff vs v12: exactly `classes3.dex` + 3 META-INF signature files.
+40/40 patches verified in the shipped signed file; 45,244/45,244 classes;
+assets byte-identical to stock; same cert → in-place upgrade over
+v9–v12; **self-heals a v12 install** (stale cleanup + CDN re-fetch).
+sha256 `f8fb687b6d27e4e8a4836e6ecf3066e7988063be42a926d5c7b4e7a5037f2918`.
+
+Panel reports: `docs/moe/2026-11-16-v12-crash/` (E2/E3/E4 + gating
+synthesis). Full narrative + verification matrix:
+`Vogelkop-v13-MoE-Analysis-2026-11-16.docx/.pdf` (release sandbox-storage).
+v14 redesign of maintainer-direct updates (filename-pairing / runtime
+manifest-hash refresh / out-of-app updater) documented in the MoE report
+§10. Verdict line for v13: _pending device result_.
